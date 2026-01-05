@@ -27,6 +27,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <div class="d-flex align-items-center">
+                        <form asp-controller="Home" asp-action="Stop" method="post" class="ms-2">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Möchten Sie die Anwendung wirklich beenden?');">Beenden</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </nav>

@@ -1,8 +1,20 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Willkommen bei OpenTrainDrive</h1>
+    <p class="lead">Diese Seite zeigt eine einfache Startseite — hier kannst du die Anwendung testen.</p>
+
+    <p>Serverzeit: <strong>@DateTime.Now.ToString("G")</strong></p>
+
+    <p>
+        <a class="btn btn-primary" href="/Home/Privacy">Zur Privacy-Seite</a>
+        <button id="openWindowBtn" class="btn btn-secondary">Neues Fenster öffnen</button>
+    </p>
 </div>
+
+<script>
+    document.getElementById('openWindowBtn').addEventListener('click', function () {
+        window.open('/Home/Privacy', '_blank', 'noopener');
+    });
+</script>
