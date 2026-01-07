@@ -2,6 +2,9 @@
     ViewData["Title"] = "Start";
     ViewData["FullBleed"] = true;
 }
+@section Styles {
+    <link rel="stylesheet" href="~/elements/symbols.css" asp-append-version="true" />
+}
 <div class="otd-shell">
     <header class="otd-topbar">
         <div class="otd-brand">
@@ -23,6 +26,8 @@
                     <a role="menuitem" href="#">Status</a>
                     <a role="menuitem" href="#">Verbindungen</a>
                     <a role="menuitem" href="#">Logs</a>
+                    <button class="otd-dropdown-button" type="button" id="otd-menu-edit">Plan bearbeiten</button>
+                    <button class="otd-dropdown-button" type="button" id="otd-menu-save">Speichern</button>
                     <div class="otd-dropdown-submenu">
                         <button class="otd-dropdown-button otd-submenu-trigger" type="button">Meldeverwalter &gt;</button>
                         <div class="otd-dropdown otd-dropdown-submenu-panel" role="menu">
@@ -71,6 +76,8 @@
             <div class="otd-nav-item">
                 <button class="otd-nav-trigger" type="button" aria-haspopup="true">Lupenbilder</button>
                 <div class="otd-dropdown" role="menu">
+                    <button class="otd-dropdown-button" type="button" onclick="openLupenbild();">Lupenbild anzeigen</button>
+                    <div class="otd-dropdown-separator"></div>
                     <a role="menuitem" href="#">Kamerapositionen</a>
                     <a role="menuitem" href="#">Zoom</a>
                     <a role="menuitem" href="#">Archiv</a>
@@ -90,6 +97,7 @@
                     <a role="menuitem" href="#">Projekte</a>
                     <a role="menuitem" href="#">Benutzer</a>
                     <a role="menuitem" href="#">Einstellungen</a>
+                    <a role="menuitem" href="/PlanGen">PlanGen</a>
                 </div>
             </div>
             <div class="otd-nav-item">
@@ -106,6 +114,119 @@
         </div>
     </header>
     <section class="otd-workspace" aria-label="Arbeitsbereich">
+        <div class="otd-plan-panel" aria-label="Plan aus plan.xml">
+            <div class="otd-plan-toolbar">
+                <span class="otd-plan-title">plan.xml</span>
+                <div class="otd-plan-actions">
+                    <button class="otd-plan-btn" type="button" id="otd-plan-reload">Neu laden</button>
+                    <span class="otd-plan-status" id="otd-plan-status">–</span>
+                </div>
+            </div>
+            <div class="otd-plan-canvas" id="otd-plan-canvas" tabindex="0" role="application" aria-label="Planfläche"></div>
+        </div>
+
+        <div class="otd-plangen-drawer otd-hidden" id="otd-plangen-drawer" aria-label="Plan bearbeiten">
+            <div class="otd-plangen-header">
+                <span>Plan bearbeiten</span>
+                <button class="otd-plan-btn" type="button" id="otd-plangen-close">Schließen</button>
+            </div>
+            <div class="otd-plangen-row">
+                <label for="otd-plangen-grid">Raster</label>
+                <select id="otd-plangen-grid">
+                    <option value="48" selected>48</option>
+                </select>
+            </div>
+            <div class="otd-plangen-row">
+                <label><input type="checkbox" id="otd-plangen-snap" checked /> Snap</label>
+                <button class="otd-plan-btn" type="button" id="otd-plan-save">Speichern</button>
+            </div>
+            <div class="otd-plangen-row">
+                <button class="otd-plan-btn" type="button" id="otd-plan-delete" disabled>Auswahl löschen</button>
+            </div>
+        </div>
+
+        <div class="otd-lupenbild otd-lupenbild--lupe otd-hidden" id="otd-lupenbild" role="dialog" aria-label="Lupenbild">
+            <div class="otd-lupenbild-titlebar" data-drag-handle="true">
+                <span class="otd-lupenbild-title">Lupenbild</span>
+                <button class="otd-lupenbild-close" type="button" aria-label="Schliessen" onclick="closeLupenbild();">×</button>
+            </div>
+            <div class="otd-lupenbild-menubar">
+                <button class="otd-lupenbild-menuitem" type="button">Bild</button>
+                <button class="otd-lupenbild-menuitem" type="button">Optionen</button>
+                <button class="otd-lupenbild-menuitem" type="button">Texte</button>
+            </div>
+            <div class="otd-lupe-frame">
+                <div class="otd-lupe-canvas" aria-label="Lupenbild Inhalt">
+                    <svg viewBox="0 0 1000 260" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true">
+                        <rect x="0" y="0" width="1000" height="260" fill="#000" />
+
+                        <g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">
+                            <path d="M40 140 H420" />
+                            <path d="M420 140 H640" />
+                            <path d="M640 140 H1000" />
+                            <path d="M640 140 v60 h170" />
+                        </g>
+
+                        <g fill="none" stroke="#ff0000" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">
+                            <path d="M240 126 l20 14 -20 14" />
+                            <path d="M400 126 l-20 14 20 14" />
+                            <path d="M560 126 l20 14 -20 14" />
+                            <path d="M820 126 l-20 14 20 14" />
+                        </g>
+
+                        <g fill="#30dc30" stroke="#30dc30" stroke-width="0">
+                            <rect x="340" y="78" width="120" height="34" fill="transparent" stroke="#6b6b6b" stroke-width="1" />
+                            <text x="400" y="103" font-family="Trebuchet MS, Verdana, sans-serif" font-size="28" text-anchor="middle">LUET</text>
+                            <rect x="480" y="78" width="44" height="34" fill="transparent" stroke="#6b6b6b" stroke-width="1" />
+                            <path d="M505 87 l-16 8 16 8" fill="none" stroke="#30dc30" stroke-width="3" />
+                        </g>
+
+                        <g fill="#ff0000" stroke="#ff0000" stroke-width="0">
+                            <rect x="540" y="78" width="64" height="34" fill="transparent" stroke="#6b6b6b" stroke-width="1" />
+                            <text x="572" y="103" font-family="Trebuchet MS, Verdana, sans-serif" font-size="28" text-anchor="middle">AB</text>
+                        </g>
+
+                        <g fill="#fff" stroke="#fff" stroke-width="0">
+                            <rect x="620" y="78" width="44" height="34" fill="transparent" stroke="#6b6b6b" stroke-width="1" />
+                            <path d="M635 87 l16 8 -16 8" fill="none" stroke="#fff" stroke-width="3" />
+                        </g>
+
+                        <g fill="#fff" font-family="Trebuchet MS, Verdana, sans-serif" font-size="22">
+                            <text x="60" y="92" opacity="0.85">Bild</text>
+                            <text x="120" y="92" opacity="0.85">Optionen</text>
+                            <text x="225" y="92" opacity="0.85">Texte</text>
+
+                            <text x="40" y="136">BAZ</text>
+                            <text x="890" y="136">BUET</text>
+
+                            <text x="150" y="136">808</text>
+                            <text x="210" y="136">11</text>
+                            <text x="350" y="136">1</text>
+                            <text x="690" y="136">81</text>
+                            <text x="690" y="176">82</text>
+                            <text x="790" y="136">811</text>
+
+                            <text x="250" y="226">km9.909</text>
+                            <text x="660" y="254">km10.665</text>
+                            <text x="850" y="226">km11.215</text>
+                            <text x="850" y="254">km11.427</text>
+                        </g>
+
+                        <g stroke="#6b6b6b" stroke-width="2">
+                            <path d="M290 114 v80" />
+                            <path d="M320 114 v80" />
+                            <path d="M760 114 v80" />
+                            <path d="M790 114 v80" />
+                        </g>
+
+                        <g fill="#30dc30" stroke="#30dc30" stroke-width="0">
+                            <rect x="320" y="175" width="6" height="22" />
+                            <rect x="750" y="160" width="6" height="22" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
         <div class="otd-melde-panel otd-hidden" id="otd-melde-panel" aria-label="Meldeverwalter">
             <div class="otd-melde-titlebar">
                 <span class="otd-melde-title">Projektname</span>
@@ -194,6 +315,348 @@
         const panel = document.getElementById('otd-melde-panel');
         panel.classList.add('otd-hidden');
     }
+
+    function openLupenbild() {
+        const panel = document.getElementById('otd-lupenbild');
+        panel.classList.remove('otd-hidden');
+
+        if (!panel.style.left && !panel.style.top) {
+            const workspace = document.querySelector('.otd-workspace');
+            const rect = workspace?.getBoundingClientRect();
+            const width = panel.offsetWidth || 720;
+            const height = panel.offsetHeight || 340;
+            const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+            const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+            panel.style.left = `${left}px`;
+            panel.style.top = `${top}px`;
+        }
+    }
+
+    function closeLupenbild() {
+        const panel = document.getElementById('otd-lupenbild');
+        panel.classList.add('otd-hidden');
+    }
+
+    (function enableLupenbildDragging() {
+        const panel = document.getElementById('otd-lupenbild');
+        const handle = panel?.querySelector('[data-drag-handle="true"]');
+        if (!panel || !handle) {
+            return;
+        }
+
+        let startX = 0;
+        let startY = 0;
+        let startLeft = 0;
+        let startTop = 0;
+        let dragging = false;
+
+        const onPointerMove = (event) => {
+            if (!dragging) {
+                return;
+            }
+            const dx = event.clientX - startX;
+            const dy = event.clientY - startY;
+            panel.style.left = `${startLeft + dx}px`;
+            panel.style.top = `${startTop + dy}px`;
+        };
+
+        const onPointerUp = () => {
+            dragging = false;
+            window.removeEventListener('pointermove', onPointerMove);
+            window.removeEventListener('pointerup', onPointerUp);
+        };
+
+        handle.addEventListener('pointerdown', (event) => {
+            if (event.button !== 0) {
+                return;
+            }
+            dragging = true;
+            startX = event.clientX;
+            startY = event.clientY;
+            startLeft = panel.offsetLeft;
+            startTop = panel.offsetTop;
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
+        });
+    })();
+
+    // --- Plan Viewer + Editor (plan.xml) ---
+    (function planViewer() {
+        const canvas = document.getElementById('otd-plan-canvas');
+        const status = document.getElementById('otd-plan-status');
+        const reloadBtn = document.getElementById('otd-plan-reload');
+        const drawer = document.getElementById('otd-plangen-drawer');
+        const drawerClose = document.getElementById('otd-plangen-close');
+        const gridSelect = document.getElementById('otd-plangen-grid');
+        const snapToggle = document.getElementById('otd-plangen-snap');
+        const saveBtn = document.getElementById('otd-plan-save');
+        const deleteBtn = document.getElementById('otd-plan-delete');
+        const menuEdit = document.getElementById('otd-menu-edit');
+        const menuSave = document.getElementById('otd-menu-save');
+        if (!canvas || !status || !reloadBtn) return;
+
+        const state = {
+            gridSize: 48,
+            symbols: [],
+            selectedId: null,
+            scale: 1,
+            editing: false,
+            activePrototype: null,
+            drag: null,
+            snap: true
+        };
+
+        function setStatus(text) {
+            status.textContent = text;
+        }
+
+        function snapVal(value) {
+            if (!state.snap) return value;
+            return Math.round(value / state.gridSize) * state.gridSize + state.gridSize / 2;
+        }
+
+        function point(evt) {
+            const rect = canvas.getBoundingClientRect();
+            return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
+        }
+
+        function render() {
+            canvas.innerHTML = '';
+            const scale = state.scale;
+            for (const sym of state.symbols) {
+                const el = document.createElement('div');
+                el.className = `otd-plan-symbol otd-symbol ${sym.classes}`;
+                el.dataset.id = sym.id;
+                el.style.left = `${sym.x * scale}px`;
+                el.style.top = `${sym.y * scale}px`;
+                if (sym.id === state.selectedId) {
+                    el.classList.add('is-selected');
+                }
+                canvas.appendChild(el);
+            }
+            deleteBtn.disabled = !state.selectedId;
+        }
+
+        function loadPlanXml(text) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'application/xml');
+            const plan = doc.querySelector('plan');
+            if (!plan) throw new Error('Kein <plan> Element gefunden.');
+            // Raster fix auf 48px
+            state.gridSize = 48;
+            gridSelect.value = "48";
+            state.scale = 1;
+            canvas.style.setProperty('--otd-plan-grid', `${state.gridSize}px`);
+            canvas.style.setProperty('--otd-symbol-size', `${state.gridSize}px`);
+            const syms = [];
+            for (const node of plan.querySelectorAll('symbols > symbol')) {
+                syms.push({
+                    id: node.getAttribute('id') || crypto.randomUUID(),
+                    type: node.getAttribute('type') || '',
+                    classes: node.getAttribute('classes') || '',
+                    x: parseInt(node.getAttribute('x') || '0', 10) * state.gridSize + state.gridSize / 2,
+                    y: parseInt(node.getAttribute('y') || '0', 10) * state.gridSize + state.gridSize / 2
+                });
+            }
+            state.symbols = syms;
+            state.selectedId = null;
+            render();
+            setStatus(`Geladen (${syms.length} Symbole, Raster ${state.gridSize}px, Zoom 1.0x)`);
+        }
+
+        async function reload() {
+            try {
+                setStatus('Laden ...');
+                const resp = await fetch('/plan.xml', { cache: 'no-store' });
+                if (!resp.ok) throw new Error(`${resp.status}`);
+                const text = await resp.text();
+                loadPlanXml(text);
+            } catch (err) {
+                setStatus('plan.xml nicht gefunden');
+            }
+        }
+
+        canvas.addEventListener('click', (evt) => {
+            const target = evt.target.closest('.otd-plan-symbol');
+            if (!target) return;
+            state.selectedId = target.dataset.id;
+            render();
+        });
+
+        canvas.addEventListener('dblclick', (evt) => {
+            const target = evt.target.closest('.otd-plan-symbol');
+            if (!target) return;
+            target.classList.toggle('is-highlighted');
+        });
+
+        canvas.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            const factor = evt.deltaY < 0 ? 1.1 : 0.9;
+            state.scale = Math.min(3, Math.max(0.4, state.scale * factor));
+            const gridScaled = state.gridSize * state.scale;
+            canvas.style.backgroundSize = `${gridScaled}px ${gridScaled}px`;
+            canvas.style.setProperty('--otd-symbol-size', `${gridScaled}px`);
+            render();
+            setStatus(`Zoom ${state.scale.toFixed(2)}x`);
+        }, { passive: false });
+
+        canvas.addEventListener('pointerdown', (evt) => {
+            if (!state.editing) return;
+            const target = evt.target.closest('.otd-plan-symbol');
+            if (!target) return;
+            evt.preventDefault();
+            canvas.setPointerCapture(evt.pointerId);
+            const id = target.dataset.id;
+            state.selectedId = id;
+            const p = point(evt);
+            const sym = state.symbols.find(s => s.id === id);
+            if (!sym) return;
+            state.drag = { id, dx: p.x - sym.x * state.scale, dy: p.y - sym.y * state.scale };
+        });
+
+        canvas.addEventListener('pointermove', (evt) => {
+            if (!state.editing || !state.drag) return;
+            const sym = state.symbols.find(s => s.id === state.drag.id);
+            if (!sym) return;
+            const p = point(evt);
+            const x = (p.x - state.drag.dx) / state.scale;
+            const y = (p.y - state.drag.dy) / state.scale;
+            sym.x = snapVal(x);
+            sym.y = snapVal(y);
+            render();
+        });
+
+        canvas.addEventListener('pointerup', (evt) => {
+            if (state.drag) canvas.releasePointerCapture(evt.pointerId);
+            state.drag = null;
+        });
+
+        // Drop (Palette entfernt, nur Drag von bestehenden Symbolen oder externen Daten)
+        canvas.addEventListener('dragover', (evt) => {
+            if (!state.editing) return;
+            evt.preventDefault();
+        });
+
+        canvas.addEventListener('drop', (evt) => {
+            if (!state.editing) return;
+            evt.preventDefault();
+            let proto = state.activePrototype;
+            try {
+                const data = evt.dataTransfer?.getData('application/json');
+                if (data) proto = JSON.parse(data);
+            } catch { /* ignore */ }
+            if (!proto) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (evt.clientX - rect.left) / state.scale;
+            const y = (evt.clientY - rect.top) / state.scale;
+            const symbol = {
+                id: crypto.randomUUID(),
+                type: proto.type,
+                classes: proto.classes,
+                x: snapVal(x),
+                y: snapVal(y)
+            };
+            state.symbols.push(symbol);
+            state.selectedId = symbol.id;
+            render();
+        });
+
+        function setEditing(enabled) {
+            state.editing = enabled;
+            drawer.classList.toggle('otd-hidden', !enabled);
+            if (!enabled) {
+                state.activePrototype = null;
+            }
+        }
+
+        function closeEditor() {
+            state.drag = null;
+            state.activePrototype = null;
+            state.selectedId = null;
+            setEditing(false);
+            render();
+        }
+
+        drawerClose?.addEventListener('click', (evt) => { evt.preventDefault(); closeEditor(); });
+        menuEdit?.addEventListener('click', (evt) => { evt.preventDefault(); setEditing(!state.editing); });
+        gridSelect?.addEventListener('change', (evt) => {
+            const size = parseInt(evt.target.value, 10);
+            state.gridSize = size;
+            const gridScaled = state.gridSize * state.scale;
+            canvas.style.setProperty('--otd-plan-grid', `${gridScaled}px`);
+            canvas.style.setProperty('--otd-symbol-size', `${gridScaled}px`);
+            render();
+        });
+
+        snapToggle?.addEventListener('change', (evt) => {
+            state.snap = evt.target.checked;
+        });
+
+        saveBtn?.addEventListener('click', async () => {
+            const payload = {
+                gridSize: state.gridSize,
+                symbols: state.symbols.map(s => ({
+                    id: s.id,
+                    type: s.type,
+                    classes: s.classes,
+                    x: Math.round((s.x - state.gridSize / 2) / state.gridSize),
+                    y: Math.round((s.y - state.gridSize / 2) / state.gridSize),
+                }))
+            };
+            const resp = await fetch('/PlanGen/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (resp.ok) {
+                setStatus('Gespeichert');
+            } else {
+                setStatus('Speichern fehlgeschlagen');
+            }
+        });
+
+        menuSave?.addEventListener('click', (evt) => { evt.preventDefault(); saveBtn?.click(); });
+
+        deleteBtn?.addEventListener('click', () => {
+            if (!state.selectedId) return;
+            state.symbols = state.symbols.filter(s => s.id !== state.selectedId);
+            state.selectedId = null;
+            render();
+        });
+
+        // Drag drawer
+        (function enableDrawerDrag() {
+            const handle = drawer?.querySelector('.otd-plangen-header');
+            if (!drawer || !handle) return;
+            let drag = null;
+            handle.addEventListener('pointerdown', (evt) => {
+                if (evt.button !== 0) return;
+                drag = {
+                    startX: evt.clientX,
+                    startY: evt.clientY,
+                    startLeft: drawer.offsetLeft,
+                    startTop: drawer.offsetTop
+                };
+                handle.setPointerCapture(evt.pointerId);
+            });
+            handle.addEventListener('pointermove', (evt) => {
+                if (!drag) return;
+                const dx = evt.clientX - drag.startX;
+                const dy = evt.clientY - drag.startY;
+                drawer.style.left = `${drag.startLeft + dx}px`;
+                drawer.style.top = `${drag.startTop + dy}px`;
+            });
+            handle.addEventListener('pointerup', (evt) => {
+                if (!drag) return;
+                handle.releasePointerCapture(evt.pointerId);
+                drag = null;
+            });
+        })();
+
+        setEditing(false);
+        reloadBtn.addEventListener('click', reload);
+        reload();
+    })();
 
     document.addEventListener('click', (event) => {
         const item = event.target.closest('.otd-melde-item');

@@ -184,6 +184,12 @@ body.full-bleed main {
   margin-left: 6px;
 }
 
+.otd-dropdown-separator {
+  height: 1px;
+  background: rgba(231, 236, 245, 0.15);
+  margin: 6px 0;
+}
+
 .otd-dropdown-submenu:hover .otd-dropdown-submenu-panel {
   display: block;
 }
@@ -204,6 +210,102 @@ body.full-bleed main {
   position: relative;
   background: linear-gradient(180deg, #5a657d 0%, #566177 100%);
 }
+
+
+.otd-lupenbild {
+  position: absolute;
+  z-index: 50;
+  width: 720px;
+  height: 340px;
+  background: #2a3a5a;
+  border: 2px solid #0f1626;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+}
+
+.otd-lupenbild-titlebar {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  background: linear-gradient(180deg, #0f274f 0%, #0c1f3f 100%);
+  color: #cfe0ff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: default;
+  user-select: none;
+}
+
+.otd-lupenbild-titlebar[data-drag-handle="true"] {
+  cursor: grab;
+}
+
+.otd-lupenbild-titlebar[data-drag-handle="true"]:active {
+  cursor: grabbing;
+}
+
+.otd-lupenbild-title {
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+
+.otd-lupenbild-close {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(10, 18, 34, 0.55);
+  color: #e7ecf5;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.otd-lupenbild-close:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.otd-lupenbild-menubar {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 10px;
+  background: #2a3a5a;
+  color: rgba(231, 236, 245, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.otd-lupenbild-menuitem {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  padding: 2px 0;
+  opacity: 0.9;
+}
+
+.otd-lupenbild-menuitem:hover {
+  opacity: 1;
+  color: #e7ecf5;
+}
+
+.otd-lupe-frame {
+  padding: 10px;
+}
+
+.otd-lupe-canvas {
+  height: calc(340px - 28px - 36px - 20px);
+  border: 3px solid #1e8bff;
+  background: #000;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.7);
+}
+
+.otd-lupenbild--lupe {
+  border-color: #0b1222;
+}
+
+/* Removed unused symbol palette containers */
 
 .otd-hidden {
   display: none;

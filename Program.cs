@@ -1,40 +1,10 @@
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
-
-// Temporary file logging to capture startup/shutdown errors
-try
-{
-    var logsDir = Path.Combine(Directory.GetCurrentDirectory(), "logs");
-    Directory.CreateDirectory(logsDir);
-    var logPath = Path.Combine(logsDir, "app.log");
-    var logStream = new StreamWriter(new FileStream(logPath, FileMode.Append, FileAccess.Write, FileShare.Read)) { AutoFlush = true };
-    Console.SetOut(logStream);
-    Console.SetError(logStream);
-    AppDomain.CurrentDomain.UnhandledException += (s, e) => logStream.WriteLine($"UnhandledException: {e.ExceptionObject}");
-    TaskScheduler.UnobservedTaskException += (s, e) => { logStream.WriteLine($"UnobservedTaskException: {e.Exception}"); e.SetObserved(); };
-    logStream.WriteLine($"--- App start {DateTime.Now:O} ---");
-}
-catch
-{
-    // if logging setup fails, continue without file logging
-}
-
-// Write quick markers so we can detect start/stop even if console is redirected
-try
-{
-    var markersDir = Path.Combine(Directory.GetCurrentDirectory(), "logs");
-    Directory.CreateDirectory(markersDir);
-    File.WriteAllText(Path.Combine(markersDir, "started.txt"), DateTime.Now.ToString("O"));
-    AppDomain.CurrentDomain.ProcessExit += (s, e) =>
-    {
-        try { File.WriteAllText(Path.Combine(markersDir, "stopped.txt"), DateTime.Now.ToString("O")); } catch { }
-    };
-}
-catch { }
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.StaticFiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,8 +20,24 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "OTD", "Elements")),
+    RequestPath = "/elements"
+});
+
+// Serve generated plan.xml explicitly without exposing entire content root
+app.MapGet("/plan.xml", () =>
+{
+    var path = Path.Combine(app.Environment.ContentRootPath, "plan.xml");
+    if (!File.Exists(path))
+    {
+        return Results.NotFound();
+    }
+    return Results.File(path, "application/xml");
+});
 
 app.UseRouting();
 
@@ -61,28 +47,32 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Open the default browser once the application has started and server addresses are available
-app.Lifetime.ApplicationStarted.Register(() =>
+// Open default browser at the first bound URL (configurable via OTD_AUTO_OPEN=false)
+var autoOpen = !string.Equals(app.Configuration["OTD_AUTO_OPEN"], "false", StringComparison.OrdinalIgnoreCase);
+if (autoOpen)
 {
-    try
+    app.Lifetime.ApplicationStarted.Register(() =>
     {
-        var server = app.Services.GetRequiredService<IServer>();
-        var addressesFeature = server.Features.Get<IServerAddressesFeature>();
-        var url = addressesFeature?.Addresses?.FirstOrDefault() ?? "http://localhost:65001";
         try
         {
-            Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
+            var server = app.Services.GetRequiredService<IServer>();
+            var addressesFeature = server.Features.Get<IServerAddressesFeature>();
+            var url = addressesFeature?.Addresses?.FirstOrDefault() ?? "http://localhost:65001";
+            try
+            {
+                Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
+            }
+            catch (Exception)
+            {
+                // ignore if shell cannot start a browser in this environment
+            }
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Failed to open browser for {url}: {ex}");
+            // ignore failures obtaining server addresses
         }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error attempting to open browser: {ex}");
-    }
-});
+    });
+}
 
 app.Run();
 

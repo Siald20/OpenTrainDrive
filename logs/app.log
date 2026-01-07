@@ -1,102 +1,4 @@
---- App start 2026-01-05T14:48:50.5988934+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5000
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
---- App start 2026-01-05T14:59:56.2764535+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5000
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-05T15:03:04.9483607+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5000
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-05T15:03:22.8840270+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5000
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-05T15:04:39.5129783+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5000
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-05T15:04:57.0269354+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5000
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
---- App start 2026-01-05T16:15:57.3036418+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5000
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-05T16:18:44.9461636+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:5000
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-05T16:22:34.5641857+01:00 ---
+--- App start 2026-01-07T15:25:20.6695866+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -109,7 +11,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-05T16:25:40.5297990+01:00 ---
+--- App start 2026-01-07T15:31:40.3327307+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -122,7 +24,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-05T16:26:59.5932966+01:00 ---
+--- App start 2026-01-07T15:36:25.4422155+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -135,7 +37,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:07:09.8531081+01:00 ---
+--- App start 2026-01-07T15:39:58.0396491+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -148,7 +50,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:12:56.7819295+01:00 ---
+--- App start 2026-01-07T15:41:53.6439881+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -161,7 +63,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:15:15.5174446+01:00 ---
+--- App start 2026-01-07T15:43:08.6282222+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -174,7 +76,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:18:52.5114411+01:00 ---
+--- App start 2026-01-07T15:43:57.4061134+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -187,7 +89,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:26:43.9687644+01:00 ---
+--- App start 2026-01-07T15:45:04.1496904+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -200,7 +102,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:28:23.5217146+01:00 ---
+--- App start 2026-01-07T15:45:43.7740539+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -213,7 +115,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:30:17.9216057+01:00 ---
+--- App start 2026-01-07T15:46:23.7504902+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -226,7 +128,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:32:15.9931844+01:00 ---
+--- App start 2026-01-07T15:52:36.1502055+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -239,7 +141,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:34:36.1914224+01:00 ---
+--- App start 2026-01-07T16:01:11.2392006+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -252,7 +154,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:37:06.5595284+01:00 ---
+--- App start 2026-01-07T16:34:14.7748561+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -265,7 +167,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:38:15.5632794+01:00 ---
+--- App start 2026-01-07T16:37:34.6621982+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -278,7 +180,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:39:59.9272563+01:00 ---
+--- App start 2026-01-07T16:41:41.4735027+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -291,7 +193,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:40:56.6203695+01:00 ---
+--- App start 2026-01-07T16:42:20.2244984+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
@@ -304,124 +206,7 @@
       Failed to determine the https port for redirect.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...
---- App start 2026-01-07T08:45:16.3548404+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:65001
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-07T08:47:08.1204756+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:65001
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-07T08:48:27.7680147+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:65001
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-07T08:49:59.4785031+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:65001
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-07T08:51:54.7202137+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:65001
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-07T08:53:48.6397888+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:65001
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-07T08:54:46.2135269+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:65001
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-07T08:56:03.7395591+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:65001
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-07T09:01:28.5329443+01:00 ---
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
-      Now listening on: http://localhost:65001
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\saemi\Documents\OpenTrainDrive
-[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-      Failed to determine the https port for redirect.
-[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
---- App start 2026-01-07T09:03:55.6571588+01:00 ---
+--- App start 2026-01-07T17:02:43.3416825+01:00 ---
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:65001
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]

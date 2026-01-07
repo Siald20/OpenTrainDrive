@@ -94,5 +94,5 @@ C:\Users\saemi\Documents\OpenTrainDrive\obj\Debug\net10.0\OpenTrainDrive.pdb
 C:\Users\saemi\Documents\OpenTrainDrive\obj\Debug\net10.0\OpenTrainDrive.genruntimeconfig.cache
 C:\Users\saemi\Documents\OpenTrainDrive\obj\Debug\net10.0\ref\OpenTrainDrive.dll
 C:\Users\saemi\Documents\OpenTrainDrive\obj\Debug\net10.0\OpenTrainDrive.sourcelink.json
-C:\Users\saemi\Documents\OpenTrainDrive\obj\Debug\net10.0\compressed\ntamb02y97-{0}-i8cphn8i8x-i8cphn8i8x.gz
-C:\Users\saemi\Documents\OpenTrainDrive\obj\Debug\net10.0\compressed\4t9a1z5c7m-{0}-aochu44wbl-aochu44wbl.gz
+C:\Users\saemi\Documents\OpenTrainDrive\obj\Debug\net10.0\compressed\ntamb02y97-{0}-gikykm6394-gikykm6394.gz
+C:\Users\saemi\Documents\OpenTrainDrive\obj\Debug\net10.0\compressed\4t9a1z5c7m-{0}-dwo5rbyr3m-dwo5rbyr3m.gz
