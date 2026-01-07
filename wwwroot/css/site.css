@@ -67,6 +67,35 @@ body.full-bleed main {
   font-size: 12px;
 }
 
+.otd-brand-menu {
+  position: relative;
+}
+
+.otd-brand-trigger {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.otd-brand-trigger:hover,
+.otd-brand-trigger:focus {
+  color: #f6f7fb;
+  outline: none;
+}
+
+.otd-brand-dropdown {
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+}
+
+.otd-brand-menu:hover .otd-brand-dropdown {
+  display: block;
+}
+
 .otd-nav {
   display: flex;
   align-items: center;
@@ -145,8 +174,22 @@ body.full-bleed main {
   outline: none;
 }
 
-.otd-nav-item:hover .otd-dropdown,
-.otd-nav-item:focus-within .otd-dropdown {
+.otd-dropdown-submenu {
+  position: relative;
+}
+
+.otd-dropdown-submenu-panel {
+  left: 100%;
+  top: 0;
+  margin-left: 6px;
+}
+
+.otd-dropdown-submenu:hover .otd-dropdown-submenu-panel {
+  display: block;
+}
+
+.otd-nav-item:hover > .otd-dropdown,
+.otd-nav-item:focus-within > .otd-dropdown {
   display: block;
 }
 
@@ -171,12 +214,20 @@ body.full-bleed main {
   left: 10px;
   right: 10px;
   bottom: 10px;
-  height: 320px;
+  height: 300px;
   background: #40485a;
   color: #e7ecf5;
   font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
   padding: 10px;
   border: 1px solid #1b2438;
+}
+
+.otd-melde-left {
+  width: 360px;
+  right: auto;
+  top: 10px;
+  bottom: 10px;
+  height: auto;
 }
 
 .otd-melde-shell {
@@ -223,6 +274,15 @@ body.full-bleed main {
   padding: 8px;
 }
 
+.otd-melde-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.otd-melde-vertical .otd-melde-column {
+  min-height: 120px;
+}
+
 .otd-melde-column {
   border: 1px solid #293659;
   background: #223050;
@@ -242,4 +302,37 @@ body.full-bleed main {
   flex: 1;
 }
 
+.otd-melde-item {
+  padding: 6px 8px;
+  font-size: 12px;
+  border-bottom: 1px solid #23324f;
+}
 
+.otd-melde-item:last-child {
+  border-bottom: 0;
+}
+
+.otd-melde-item-green {
+  background: #1f6e39;
+  color: #eaf6ee;
+}
+
+.otd-melde-item-blue {
+  background: #215a9b;
+  color: #eaf1fb;
+}
+
+.otd-melde-item-red {
+  background: #c41519;
+  color: #fff0f0;
+}
+
+.otd-melde-item-gray {
+  background: #5a626e;
+  color: #f1f1f1;
+}
+
+.otd-melde-item-ack {
+  background: transparent;
+  color: #c9d3e6;
+}

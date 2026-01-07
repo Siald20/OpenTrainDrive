@@ -5,7 +5,16 @@
 <div class="otd-shell">
     <header class="otd-topbar">
         <div class="otd-brand">
-            <span class="otd-brand-badge">OpenTrainDrive</span>
+            <div class="otd-brand-menu">
+                <button class="otd-brand-trigger" type="button" aria-haspopup="true">
+                    <span class="otd-brand-badge">OpenTrainDrive</span>
+                </button>
+                <div class="otd-dropdown otd-brand-dropdown" role="menu">
+                    <button class="otd-dropdown-button" type="button">Oeffnen</button>
+                    <button class="otd-dropdown-button" type="button">Speichern</button>
+                    <button class="otd-dropdown-button" type="button">Speichern unter</button>
+                </div>
+            </div>
         </div>
         <nav class="otd-nav" aria-label="Hauptnavigation">
             <div class="otd-nav-item">
@@ -14,7 +23,13 @@
                     <a role="menuitem" href="#">Status</a>
                     <a role="menuitem" href="#">Verbindungen</a>
                     <a role="menuitem" href="#">Logs</a>
-                    <button class="otd-dropdown-button" type="button" onclick="openMeldeverwalter();">Meldeverwalter</button>
+                    <div class="otd-dropdown-submenu">
+                        <button class="otd-dropdown-button otd-submenu-trigger" type="button">Meldeverwalter &gt;</button>
+                        <div class="otd-dropdown otd-dropdown-submenu-panel" role="menu">
+                            <button class="otd-dropdown-button" type="button" onclick="openMeldeverwalter('horizontal');">Horizontal</button>
+                            <button class="otd-dropdown-button" type="button" onclick="openMeldeverwalter('vertical');">Vertikal</button>
+                        </div>
+                    </div>
                     <form asp-controller="Home" asp-action="Stop" method="post" class="otd-dropdown-form">
                         @Html.AntiForgeryToken()
                         <button class="otd-dropdown-button" type="submit" onclick="return confirm('Moechten Sie die Anwendung und den Server wirklich beenden?');">Beenden</button>
@@ -93,25 +108,37 @@
     <section class="otd-workspace" aria-label="Arbeitsbereich">
         <div class="otd-melde-panel otd-hidden" id="otd-melde-panel" aria-label="Meldeverwalter">
             <div class="otd-melde-titlebar">
-                <span class="otd-melde-title">Praettigau</span>
+                <span class="otd-melde-title">Projektname</span>
                 <button class="otd-melde-close-button" type="button" onclick="closeMeldeverwalter();">X</button>
             </div>
-            <div class="otd-melde-columns">
+            <div class="otd-melde-columns" id="otd-melde-columns">
                 <div class="otd-melde-column">
                     <div class="otd-melde-header">Bedienaufforderungen</div>
-                    <div class="otd-melde-body"></div>
+                    <div class="otd-melde-body" data-section="bedien">
+                        <div class="otd-melde-item otd-melde-item-green">Weiche 12 pruefen</div>
+                        <div class="otd-melde-item otd-melde-item-green">Bahnuebergang quittieren</div>
+                    </div>
                 </div>
                 <div class="otd-melde-column">
                     <div class="otd-melde-header">Betriebsmeldungen</div>
-                    <div class="otd-melde-body"></div>
+                    <div class="otd-melde-body" data-section="betrieb">
+                        <div class="otd-melde-item otd-melde-item-blue">Zug 4711 abgefahren</div>
+                        <div class="otd-melde-item otd-melde-item-blue">Signal S5 auf Fahrt</div>
+                    </div>
                 </div>
                 <div class="otd-melde-column">
                     <div class="otd-melde-header">Stoerungen</div>
-                    <div class="otd-melde-body"></div>
+                    <div class="otd-melde-body" data-section="stoerung">
+                        <div class="otd-melde-item otd-melde-item-red">SCRS W 5 keine Ueberwachung</div>
+                        <div class="otd-melde-item otd-melde-item-red">SCRS W 5 aufgeschnitten</div>
+                    </div>
                 </div>
                 <div class="otd-melde-column">
                     <div class="otd-melde-header">System</div>
-                    <div class="otd-melde-body"></div>
+                    <div class="otd-melde-body" data-section="system">
+                        <div class="otd-melde-item otd-melde-item-gray">Serverstart abgeschlossen</div>
+                        <div class="otd-melde-item otd-melde-item-gray">Projekt Praettigau geladen</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -150,13 +177,41 @@
     updateZeit();
     setInterval(updateZeit, 1000);
 
-    function openMeldeverwalter() {
+    function openMeldeverwalter(layout) {
         const panel = document.getElementById('otd-melde-panel');
+        const columns = document.getElementById('otd-melde-columns');
         panel.classList.remove('otd-hidden');
+        panel.classList.remove('otd-melde-left');
+        columns.classList.remove('otd-melde-vertical');
+
+        if (layout === 'vertical') {
+            panel.classList.add('otd-melde-left');
+            columns.classList.add('otd-melde-vertical');
+        }
     }
 
     function closeMeldeverwalter() {
         const panel = document.getElementById('otd-melde-panel');
         panel.classList.add('otd-hidden');
     }
+
+    document.addEventListener('click', (event) => {
+        const item = event.target.closest('.otd-melde-item');
+        if (!item) {
+            return;
+        }
+        const body = item.closest('.otd-melde-body');
+        const section = body?.getAttribute('data-section');
+        if (section === 'system') {
+            item.remove();
+            return;
+        }
+        item.classList.remove(
+            'otd-melde-item-green',
+            'otd-melde-item-blue',
+            'otd-melde-item-red',
+            'otd-melde-item-gray'
+        );
+        item.classList.add('otd-melde-item-ack');
+    });
 </script>
