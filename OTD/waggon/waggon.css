@@ -1,0 +1,170 @@
+.otd-waggon-window {
+  position: absolute;
+  z-index: 45;
+  top: 48px;
+  left: 32px;
+  width: max-content;
+  max-width: 90vw;
+  background: #23314f;
+  color: #e7ecf5;
+  border: 2px solid #0f1626;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+}
+
+.otd-waggon-titlebar {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background: linear-gradient(180deg, #0f274f 0%, #0c1f3f 100%);
+  color: #cfe0ff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+  user-select: none;
+}
+
+.otd-waggon-titlebar:active {
+  cursor: grabbing;
+}
+
+.otd-waggon-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.otd-waggon-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.otd-waggon-status {
+  color: #f0e34a;
+}
+
+.otd-waggon-close {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 18, 34, 0.55);
+  color: #e7ecf5;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.otd-waggon-close:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.otd-waggon-body {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 10px;
+  padding: 10px;
+}
+
+.otd-waggon-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.otd-waggon-form input,
+.otd-waggon-form textarea {
+  background: #1b263f;
+  border: 1px solid #0f1626;
+  color: #e7ecf5;
+  padding: 6px 8px;
+  font: inherit;
+  border-radius: 2px;
+}
+
+.otd-waggon-notes textarea {
+  resize: vertical;
+}
+
+.otd-waggon-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.otd-waggon-buttons button,
+.otd-waggon-list-head button {
+  background: #2a3859;
+  border: 1px solid #101826;
+  color: #e7ecf5;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.otd-waggon-buttons button:hover,
+.otd-waggon-list-head button:hover {
+  background: #36466d;
+}
+
+.otd-waggon-list {
+  border: 1px solid #101826;
+  background: #1f2b45;
+  display: flex;
+  flex-direction: column;
+}
+
+.otd-waggon-list-head {
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #101826;
+  font-size: 13px;
+}
+
+.otd-waggon-list-table {
+  overflow: auto;
+}
+
+.otd-waggon-list table {
+  width: max-content;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.otd-waggon-list th,
+.otd-waggon-list td {
+  border-bottom: 1px solid #23324f;
+  padding: 6px 8px;
+  white-space: nowrap;
+}
+
+.otd-waggon-actions-cell {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.otd-waggon-actions-cell button {
+  background: #2a3859;
+  border: 1px solid #101826;
+  color: #e7ecf5;
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.otd-waggon-actions-cell button:hover {
+  background: #36466d;
+}
+
+.otd-waggon-list tbody tr:hover {
+  background: #2a3859;
+}

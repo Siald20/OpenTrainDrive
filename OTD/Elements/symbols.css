@@ -1,28 +1,11 @@
 /* OpenTrainDrive: symbol library (CSS-only) */
 
 :root {
-  /* Base palette (approx. from Symbolkatalog RGB 16-bit values) */
-  --otd-color-black: #000000;
-  --otd-color-white: #ffffff;
-  --otd-color-lightgray: #bcbcbc;
-  --otd-color-darkgray: #727272;
-  --otd-color-magenta: #ff00ff;
-  --otd-color-violet: #a900ff;
-  --otd-color-blue: #0087ff;
-  --otd-color-darkblue: #4169e1;
-  --otd-color-green: #30dc30;
-  --otd-color-darkgreen: #224e22;
-  --otd-color-yellow: #ffff00;
-  --otd-color-orange: #ffa400;
-  --otd-color-red: #ff0000;
-  --otd-color-brown: #ce7f38;
-
-  /* Symbol defaults */
   --otd-symbol-size: 28px;
-  --otd-symbol-bg: transparent;
-  --otd-symbol-border: rgba(255, 255, 255, 0.45);
-  --otd-symbol-fg: var(--otd-color-white);
-  --otd-symbol-accent: var(--otd-color-magenta);
+  --otd-symbol-bg: #ffffff;
+  --otd-symbol-border: transparent;
+  --otd-symbol-fg: #000000;
+  --otd-symbol-accent: #000000;
   --otd-symbol-stroke: 2px;
 }
 
@@ -30,12 +13,12 @@
   width: var(--otd-symbol-size);
   height: var(--otd-symbol-size);
   background: var(--otd-symbol-bg);
-  border: 1px solid var(--otd-symbol-border);
+  border: 0;
   box-sizing: border-box;
   position: relative;
   display: inline-block;
   border-radius: 1px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.55);
+  box-shadow: none;
 
   --otd-symbol-rotate: 0deg;
   --otd-symbol-mask: none;
@@ -65,39 +48,153 @@
   background-image: var(--otd-symbol-accent1), var(--otd-symbol-accent2);
 }
 
-.otd-symbol--accent-bar {
-  --otd-symbol-accent1: linear-gradient(
-    90deg,
-    transparent 47%,
-    var(--otd-symbol-accent) 47%,
-    var(--otd-symbol-accent) 53%,
-    transparent 53%
-  );
+.otd-symbol--track-straight-h,
+.otd-symbol--track-straight-v,
+.otd-symbol--track-curve-ne,
+.otd-symbol--track-curve-nw,
+.otd-symbol--track-curve-se,
+.otd-symbol--track-curve-sw,
+.otd-symbol--switch-left,
+.otd-symbol--switch-right {
+  background-color: transparent;
 }
 
-.otd-symbol--accent-slash {
-  --otd-symbol-accent2: linear-gradient(
-    135deg,
+
+.otd-symbol--track-straight-h {
+  background-image: linear-gradient(
     transparent 45%,
-    var(--otd-symbol-accent) 45%,
-    var(--otd-symbol-accent) 55%,
+    var(--otd-symbol-fg) 45%,
+    var(--otd-symbol-fg) 55%,
     transparent 55%
   );
 }
 
-.otd-symbol--dir-left {
-  --otd-symbol-rotate: 180deg;
+.otd-symbol--track-straight-v {
+  background-image: linear-gradient(
+    90deg,
+    transparent 45%,
+    var(--otd-symbol-fg) 45%,
+    var(--otd-symbol-fg) 55%,
+    transparent 55%
+  );
 }
 
-.otd-symbol--dir-up {
-  --otd-symbol-rotate: -90deg;
+.otd-symbol--track-curve-ne::after,
+.otd-symbol--track-curve-nw::after,
+.otd-symbol--track-curve-se::after,
+.otd-symbol--track-curve-sw::after {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border-width: var(--otd-symbol-stroke);
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 999px;
 }
 
-.otd-symbol--dir-down {
-  --otd-symbol-rotate: 90deg;
+.otd-symbol--track-curve-ne::after {
+  border-top-color: var(--otd-symbol-fg);
+  border-right-color: var(--otd-symbol-fg);
 }
 
-.otd-symbol--Gleis-gerade {
-  width: 48px;
-  color: var(--otd-color-black);
+.otd-symbol--track-curve-nw::after {
+  border-top-color: var(--otd-symbol-fg);
+  border-left-color: var(--otd-symbol-fg);
+}
+
+.otd-symbol--track-curve-se::after {
+  border-bottom-color: var(--otd-symbol-fg);
+  border-right-color: var(--otd-symbol-fg);
+}
+
+.otd-symbol--track-curve-sw::after {
+  border-bottom-color: var(--otd-symbol-fg);
+  border-left-color: var(--otd-symbol-fg);
+}
+
+.otd-symbol--switch-left,
+.otd-symbol--switch-right {
+  background-image:
+    linear-gradient(
+      transparent 45%,
+      var(--otd-symbol-fg) 45%,
+      var(--otd-symbol-fg) 55%,
+      transparent 55%
+    ),
+    linear-gradient(
+      135deg,
+      transparent 46%,
+      var(--otd-symbol-fg) 46%,
+      var(--otd-symbol-fg) 54%,
+      transparent 54%
+    );
+  background-size: 100% 100%, 65% 65%;
+  background-position: center, 28% 28%;
+  background-repeat: no-repeat;
+}
+
+.otd-symbol--switch-right {
+  background-image:
+    linear-gradient(
+      transparent 45%,
+      var(--otd-symbol-fg) 45%,
+      var(--otd-symbol-fg) 55%,
+      transparent 55%
+    ),
+    linear-gradient(
+      45deg,
+      transparent 46%,
+      var(--otd-symbol-fg) 46%,
+      var(--otd-symbol-fg) 54%,
+      transparent 54%
+    );
+  background-position: center, 72% 28%;
+}
+
+.otd-symbol--signal-left,
+.otd-symbol--signal-right,
+.otd-symbol--signal-up,
+.otd-symbol--signal-down {
+  --otd-symbol-fg: #e10600;
+}
+
+
+.otd-symbol--signal-left {
+  width: 0px;
+height: 0px;
+-webkit-transform:rotate(360deg);
+transform:rotate(360deg);
+border-style: solid;
+border-width: 24px 24px 24px 0;
+border-color: transparent #eb1d36 transparent transparent;
+}
+
+.otd-symbol--signal-right {
+  width: 0px;
+height: 0px;
+-webkit-transform:rotate(360deg);
+transform:rotate(360deg);
+border-style: solid;
+border-width: 24px 0 24px 24px;
+border-color: transparent transparent transparent #eb1d36;
+}
+
+.otd-symbol--signal-up {
+  width: 0px;
+height: 0px;
+-webkit-transform:rotate(360deg);
+transform:rotate(360deg);
+border-style: solid;
+border-width: 0 24px 24px 24px;
+border-color: transparent transparent #eb1d36 transparent;
+}
+
+.otd-symbol--signal-down {
+width: 0px;
+height: 0px;
+-webkit-transform:rotate(360deg);
+transform:rotate(360deg);
+border-style: solid;
+border-width: 24px 24px 0 24px;
+border-color: #eb1d36 transparent transparent transparent;
 }

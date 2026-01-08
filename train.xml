@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<trains>
+  <train id="d8487146-7006-4f48-b26c-7e01ac243b03">
+    <name>Test2</name>
+    <length>0</length>
+    <vmax>0</vmax>
+    <cars />
+  </train>
+  <train id="fe1857ef-0525-4e75-8f8e-f4d2ad421b3b">
+    <name>IC2000</name>
+    <length>80</length>
+    <vmax>80</vmax>
+    <cars>
+      <car id="ea3cd9c4-199e-4a56-960c-d8ccac2f17e0" type="loco" length="20" vmax="200">
+        <name>re460</name>
+      </car>
+      <car id="85a2b97c-d49d-4349-95ea-c57d28d25ad5" type="waggon" length="20" vmax="80">
+        <name>Bpm200</name>
+      </car>
+      <car id="1fa3725e-9dc3-460b-a5e2-81d1beb4b47f" type="waggon" length="20" vmax="80">
+        <name>Bpm200</name>
+      </car>
+      <car id="30330646-48c5-4581-aded-e70fba4c1026" type="waggon" length="20" vmax="80">
+        <name>Bpm200</name>
+      </car>
+    </cars>
+  </train>
+  <train id="74453016-3f61-478c-96b0-06f835d6d803">
+    <name>Güterzug</name>
+    <length>60</length>
+    <vmax>80</vmax>
+    <cars>
+      <car id="d53713b0-76e6-47cb-93dd-0c4b1955955e" type="waggon" length="20" vmax="80">
+        <name>Bpm200</name>
+      </car>
+      <car id="1a1bac70-a573-472c-b406-1f8e3c43e354" type="waggon" length="20" vmax="80">
+        <name>Bpm200</name>
+      </car>
+      <car id="c2a69a92-8aac-4316-93d1-393730f1ff4a" type="loco" length="20" vmax="200">
+        <name>re460</name>
+      </car>
+    </cars>
+  </train>
+</trains>

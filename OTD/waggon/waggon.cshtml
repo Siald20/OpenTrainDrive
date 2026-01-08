@@ -1,0 +1,271 @@
+<div class="otd-waggon-window otd-hidden" id="otd-waggon" role="dialog" aria-label="Waggon">
+    <div class="otd-waggon-titlebar" data-drag-handle="true">
+        <span class="otd-waggon-title">Waggon</span>
+        <div class="otd-waggon-title-actions">
+            <span class="otd-waggon-status" id="otd-waggon-status">Bereit</span>
+            <button class="otd-waggon-close" type="button" aria-label="Schliessen" onclick="closeWaggonFenster();">X</button>
+        </div>
+    </div>
+    <div class="otd-waggon-body">
+        <div class="otd-waggon-form">
+            <label>
+                Name
+                <input type="text" id="waggon-name" maxlength="10" />
+            </label>
+        
+            <label>
+                Length (cm)
+                <input type="number" id="waggon-length" min="0" max="50" />
+            </label>
+            <label>
+                Vmax (km/h)
+                <input type="number" id="waggon-vmax" min="1" max="500" />
+            </label>
+          
+            <label class="otd-waggon-notes">
+                Notes
+                <textarea id="waggon-notes" rows="2" maxlength="240"></textarea>
+            </label>
+            <div class="otd-waggon-buttons">
+                <button type="button" id="waggon-new">Neu</button>
+                <button type="button" id="waggon-add">Hinzufuegen / Aktualisieren</button>
+                <button type="button" id="waggon-delete">Loeschen</button>
+                <button type="button" id="waggon-save">Speichern</button>
+            </div>
+        </div>
+        <div class="otd-waggon-list">
+            <div class="otd-waggon-list-head">
+                <span>Vorhandene Waggons</span>
+                <button type="button" id="waggon-reload">Aktualisieren</button>
+            </div>
+            <div class="otd-waggon-list-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Length</th>
+                            <th>Vmax</th>
+                            <th>Notes</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="waggon-rows"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- Waggon Fenster ---
+    (function waggonEditor() {
+        const panel = document.getElementById('otd-waggon');
+        if (!panel) return;
+
+        const statusEl = document.getElementById('otd-waggon-status');
+        const nameInput = document.getElementById('waggon-name');
+        const lengthInput = document.getElementById('waggon-length');
+        const vmaxInput = document.getElementById('waggon-vmax');
+        const notesInput = document.getElementById('waggon-notes');
+        const rowsBody = document.getElementById('waggon-rows');
+        const addBtn = document.getElementById('waggon-add');
+        const newBtn = document.getElementById('waggon-new');
+        const deleteBtn = document.getElementById('waggon-delete');
+        const saveBtn = document.getElementById('waggon-save');
+        const reloadBtn = document.getElementById('waggon-reload');
+
+        const state = {
+            items: [],
+            selectedId: null,
+            loadedOnce: false
+        };
+
+        function setStatus(text) {
+            if (statusEl) statusEl.textContent = text;
+        }
+
+        function resetForm() {
+            nameInput.value = '';
+            lengthInput.value = '';
+            vmaxInput.value = '';
+            notesInput.value = '';
+            state.selectedId = null;
+            addBtn.textContent = 'Hinzufuegen / Aktualisieren';
+        }
+
+        function renderList() {
+            rowsBody.innerHTML = '';
+            for (const item of state.items) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.name ?? ''}</td>
+                    <td>${item.length ?? ''}</td>
+                    <td>${item.vmax ?? ''}</td>
+                    <td>${item.notes ?? ''}</td>
+                    <td class="otd-waggon-actions-cell">
+                        <button type="button" data-id="${item.id}" class="otd-waggon-row-edit">Bearbeiten</button>
+                        <button type="button" data-id="${item.id}" class="otd-waggon-row-delete">Entfernen</button>
+                    </td>
+                `;
+                tr.dataset.id = item.id ?? '';
+                tr.draggable = true;
+                rowsBody.appendChild(tr);
+            }
+        }
+
+        function fillForm(item) {
+            nameInput.value = item.name ?? '';
+            lengthInput.value = item.length ?? '';
+            vmaxInput.value = item.vmax ?? '';
+            notesInput.value = item.notes ?? '';
+            state.selectedId = item.id;
+            addBtn.textContent = 'Aktualisieren';
+        }
+
+        async function loadFromServer() {
+            try {
+                setStatus('Laden ...');
+                const resp = await fetch('/waggon.xml', { cache: 'no-store' });
+                if (!resp.ok) {
+                    state.items = [];
+                    renderList();
+                    setStatus('Keine waggon.xml gefunden - neue Datei anlegen');
+                    state.loadedOnce = true;
+                    return;
+                }
+                const xml = await resp.text();
+                const doc = new DOMParser().parseFromString(xml, 'application/xml');
+                const list = [];
+                doc.querySelectorAll('waggons > waggon').forEach(node => {
+                    list.push({
+                        id: node.getAttribute('id') || crypto.randomUUID(),
+                        name: node.querySelector('name')?.textContent ?? '',
+                        length: node.querySelector('length')?.textContent ?? '',
+                        vmax: node.querySelector('vmax')?.textContent ?? '',
+                        notes: node.querySelector('notes')?.textContent ?? ''
+                    });
+                });
+                state.items = list;
+                renderList();
+                setStatus(`Geladen (${list.length} Eintraege)`);
+                state.loadedOnce = true;
+            } catch (err) {
+                setStatus('Laden fehlgeschlagen');
+            }
+        }
+
+        async function saveToServer() {
+            try {
+                setStatus('Speichere ...');
+                const resp = await fetch('/waggon/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(state.items)
+                });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                setStatus(`Gespeichert (${state.items.length} Eintraege)`);
+            } catch (err) {
+                setStatus('Speichern fehlgeschlagen');
+            }
+        }
+
+        function addOrUpdate() {
+            const name = nameInput.value.trim();
+            if (!name) {
+                setStatus('Name wird benoetigt');
+                return;
+            }
+            const id = state.selectedId ?? crypto.randomUUID();
+            const existing = state.items.find(i => i.id === id);
+            const payload = {
+                id,
+                name,
+                length: lengthInput.value.trim(),
+                vmax: vmaxInput.value.trim(),
+                notes: notesInput.value.trim()
+            };
+            if (existing) {
+                Object.assign(existing, payload);
+            } else {
+                state.items.push(payload);
+            }
+            renderList();
+            state.selectedId = id;
+            addBtn.textContent = 'Aktualisieren';
+            setStatus('Waggon uebernommen (nicht gespeichert)');
+        }
+
+        rowsBody.addEventListener('click', (evt) => {
+            const editBtn = evt.target.closest('.otd-waggon-row-edit');
+            const delBtn = evt.target.closest('.otd-waggon-row-delete');
+            if (editBtn) {
+                const item = state.items.find(i => i.id === editBtn.dataset.id);
+                if (item) fillForm(item);
+            } else if (delBtn) {
+                state.items = state.items.filter(i => i.id !== delBtn.dataset.id);
+                if (state.selectedId === delBtn.dataset.id) {
+                    state.selectedId = null;
+                    resetForm();
+                }
+                renderList();
+                setStatus('Geloescht (nicht gespeichert)');
+            }
+        });
+
+        rowsBody.addEventListener('dragstart', (evt) => {
+            const row = evt.target.closest('tr');
+            if (!row) return;
+            const item = state.items.find(i => i.id === row.dataset.id);
+            if (!item) return;
+            const payload = {
+                type: 'waggon',
+                id: item.id,
+                name: item.name,
+                length: item.length,
+                vmax: item.vmax
+            };
+            evt.dataTransfer?.setData('application/json', JSON.stringify(payload));
+            evt.dataTransfer?.setDragImage(row, 16, 16);
+        });
+
+        async function deleteSelected() {
+            if (!state.selectedId) {
+                setStatus('Kein Eintrag ausgewaehlt');
+                return;
+            }
+            state.items = state.items.filter(i => i.id !== state.selectedId);
+            state.selectedId = null;
+            resetForm();
+            renderList();
+            setStatus('Geloescht');
+            await saveToServer();
+        }
+
+        addBtn?.addEventListener('click', addOrUpdate);
+        newBtn?.addEventListener('click', () => resetForm());
+        deleteBtn?.addEventListener('click', deleteSelected);
+        saveBtn?.addEventListener('click', saveToServer);
+        reloadBtn?.addEventListener('click', loadFromServer);
+
+        window.openWaggonFenster = function () {
+            panel.classList.remove('otd-hidden');
+            if (!panel.style.left || !panel.style.top) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = panel.offsetWidth || 720;
+                const height = panel.offsetHeight || 360;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                panel.style.left = `${left}px`;
+                panel.style.top = `${top}px`;
+            }
+            if (!state.loadedOnce) {
+                loadFromServer();
+            }
+        };
+
+        window.closeWaggonFenster = function () {
+            panel.classList.add('otd-hidden');
+        };
+    })();
+</script>

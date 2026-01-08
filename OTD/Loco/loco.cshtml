@@ -1,0 +1,292 @@
+<div class="otd-loko-window otd-hidden" id="otd-loko" role="dialog" aria-label="Lokomotiven">
+    <div class="otd-loko-titlebar" data-drag-handle="true">
+        <span class="otd-loko-title">Lokomotiven</span>
+        <div class="otd-loko-title-actions">
+            <span class="otd-loko-status" id="otd-loko-status">Bereit</span>
+            <button class="otd-loko-close" type="button" aria-label="Schliessen" onclick="closeLokoFenster();">X</button>
+        </div>
+    </div>
+    <div class="otd-loko-body">
+        <div class="otd-loko-form">
+            <label>
+                Name
+                <input type="text" id="loko-name" maxlength="10" />
+            </label>
+            <label>
+                Address
+                <input type="number" id="loko-address" min="1" max="1024" />
+
+            </label>
+            <label>
+                Length (cm)
+                <input type="number" id="loko-length" min="0" max="50" />
+            </label>
+            <label>
+                Vmax (km/h)
+                <input type="number" id="loko-vmax" min="1" max="500" />
+            </label>
+            <label>
+                Vmin (km/h)
+                <input type="number" id="loko-vmin" min="1" max="500" />
+            </label>
+            <label class="otd-loko-notes">
+                Notes
+                <textarea id="loko-notes" rows="2" maxlength="240"></textarea>
+            </label>
+            <div class="otd-loko-buttons">
+                <button type="button" id="loko-new">Neu</button>
+                <button type="button" id="loko-add">Hinzufuegen / Aktualisieren</button>
+                <button type="button" id="loko-delete">Loeschen</button>
+                <button type="button" id="loko-save">Speichern</button>
+            </div>
+        </div>
+        <div class="otd-loko-list">
+            <div class="otd-loko-list-head">
+                <span>Vorhandene Lokomotiven</span>
+                <button type="button" id="loko-reload">Aktualisieren</button>
+            </div>
+            <div class="otd-loko-list-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Adress</th>
+                            <th>Length</th>
+                            <th>Vmax</th>
+                            <th>VMin</th>
+                            <th>Notes</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="loko-rows"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- Lokomotiven Fenster ---
+    (function lokoEditor() {
+        const panel = document.getElementById('otd-loko');
+        if (!panel) return;
+
+        const statusEl = document.getElementById('otd-loko-status');
+        const nameInput = document.getElementById('loko-name');
+        const adressInput = document.getElementById('loko-address');
+        const lengthInput = document.getElementById('loko-length');
+        const vmaxInput = document.getElementById('loko-vmax');
+        const vminInput = document.getElementById('loko-vmin');
+        const notesInput = document.getElementById('loko-notes');
+        const rowsBody = document.getElementById('loko-rows');
+        const addBtn = document.getElementById('loko-add');
+        const newBtn = document.getElementById('loko-new');
+        const deleteBtn = document.getElementById('loko-delete');
+        const saveBtn = document.getElementById('loko-save');
+        const reloadBtn = document.getElementById('loko-reload');
+
+        const state = {
+            items: [],
+            selectedId: null,
+            loadedOnce: false
+        };
+
+        function setStatus(text) {
+            if (statusEl) statusEl.textContent = text;
+        }
+
+        function resetForm() {
+            nameInput.value = '';
+            adressInput.value = '';
+            lengthInput.value = '';
+            vmaxInput.value = '';
+            vminInput.value = '';
+            notesInput.value = '';
+            state.selectedId = null;
+            addBtn.textContent = 'Hinzufuegen / Aktualisieren';
+        }
+
+        function renderList() {
+            rowsBody.innerHTML = '';
+            for (const item of state.items) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.name ?? ''}</td>
+                    <td>${item.adress ?? ''}</td>
+                    <td>${item.length ?? ''}</td>
+                    <td>${item.vmax ?? ''}</td>
+                    <td>${item.vmin ?? ''}</td>
+                    <td>${item.notes ?? ''}</td>
+                    <td class="otd-loko-actions-cell">
+                        <button type="button" data-id="${item.id}" class="otd-loko-row-edit">Bearbeiten</button>
+                        <button type="button" data-id="${item.id}" class="otd-loko-row-delete">Entfernen</button>
+                    </td>
+                `;
+                tr.dataset.id = item.id ?? '';
+                tr.draggable = true;
+                rowsBody.appendChild(tr);
+            }
+        }
+
+        function fillForm(item) {
+            nameInput.value = item.name ?? '';
+            adressInput.value = item.adress ?? '';
+            lengthInput.value = item.length ?? '';
+            vmaxInput.value = item.vmax ?? '';
+            vminInput.value = item.vmin ?? '';
+            notesInput.value = item.notes ?? '';
+            state.selectedId = item.id;
+            addBtn.textContent = 'Aktualisieren';
+        }
+
+        async function loadFromServer() {
+            try {
+                setStatus('Laden ...');
+                const resp = await fetch('/loko.xml', { cache: 'no-store' });
+                if (!resp.ok) {
+                    state.items = [];
+                    renderList();
+                    setStatus('Keine loko.xml gefunden - neue Datei anlegen');
+                    state.loadedOnce = true;
+                    return;
+                }
+                const xml = await resp.text();
+                const doc = new DOMParser().parseFromString(xml, 'application/xml');
+                const list = [];
+                doc.querySelectorAll('locomotives > locomotive').forEach(node => {
+                    list.push({
+                        id: node.getAttribute('id') || crypto.randomUUID(),
+                        name: node.querySelector('name')?.textContent ?? '',
+                        adress: node.querySelector('adress')?.textContent ?? '',
+                        length: node.querySelector('length')?.textContent ?? '',
+                        vmax: node.querySelector('vmax')?.textContent ?? '',
+                        vmin: node.querySelector('vmin')?.textContent ?? '',
+                        notes: node.querySelector('notes')?.textContent ?? ''
+                    });
+                });
+                state.items = list;
+                renderList();
+                setStatus(`Geladen (${list.length} Eintraege)`);
+                state.loadedOnce = true;
+            } catch (err) {
+                setStatus('Laden fehlgeschlagen');
+            }
+        }
+
+        async function saveToServer() {
+            try {
+                setStatus('Speichere ...');
+                const resp = await fetch('/loko/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(state.items)
+                });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                setStatus(`Gespeichert (${state.items.length} Eintraege)`);
+            } catch (err) {
+                setStatus('Speichern fehlgeschlagen');
+            }
+        }
+
+        function addOrUpdate() {
+            const name = nameInput.value.trim();
+            if (!name) {
+                setStatus('Name wird benoetigt');
+                return;
+            }
+            const id = state.selectedId ?? crypto.randomUUID();
+            const existing = state.items.find(i => i.id === id);
+            const payload = {
+                id,
+                name,
+                adress: adressInput.value.trim(),
+                length: lengthInput.value.trim(),
+                vmax: vmaxInput.value.trim(),
+                vmin: vminInput.value.trim(),
+                notes: notesInput.value.trim()
+            };
+            if (existing) {
+                Object.assign(existing, payload);
+            } else {
+                state.items.push(payload);
+            }
+            renderList();
+            state.selectedId = id;
+            addBtn.textContent = 'Aktualisieren';
+            setStatus('Lokomotive uebernommen (nicht gespeichert)');
+        }
+
+        rowsBody.addEventListener('click', (evt) => {
+            const editBtn = evt.target.closest('.otd-loko-row-edit');
+            const delBtn = evt.target.closest('.otd-loko-row-delete');
+            if (editBtn) {
+                const item = state.items.find(i => i.id === editBtn.dataset.id);
+                if (item) fillForm(item);
+            } else if (delBtn) {
+                state.items = state.items.filter(i => i.id !== delBtn.dataset.id);
+                if (state.selectedId === delBtn.dataset.id) {
+                    state.selectedId = null;
+                    resetForm();
+                }
+                renderList();
+                setStatus('Geloescht (nicht gespeichert)');
+            }
+        });
+
+        rowsBody.addEventListener('dragstart', (evt) => {
+            const row = evt.target.closest('tr');
+            if (!row) return;
+            const item = state.items.find(i => i.id === row.dataset.id);
+            if (!item) return;
+            const payload = {
+                type: 'loco',
+                id: item.id,
+                name: item.name,
+                length: item.length,
+                vmax: item.vmax
+            };
+            evt.dataTransfer?.setData('application/json', JSON.stringify(payload));
+            evt.dataTransfer?.setDragImage(row, 16, 16);
+        });
+
+        async function deleteSelected() {
+            if (!state.selectedId) {
+                setStatus('Kein Eintrag ausgewaehlt');
+                return;
+            }
+            state.items = state.items.filter(i => i.id !== state.selectedId);
+            state.selectedId = null;
+            resetForm();
+            renderList();
+            setStatus('Geloescht');
+            await saveToServer();
+        }
+
+        addBtn?.addEventListener('click', addOrUpdate);
+        newBtn?.addEventListener('click', () => resetForm());
+        deleteBtn?.addEventListener('click', deleteSelected);
+        saveBtn?.addEventListener('click', saveToServer);
+        reloadBtn?.addEventListener('click', loadFromServer);
+
+        window.openLokoFenster = function () {
+            panel.classList.remove('otd-hidden');
+            if (!panel.style.left || !panel.style.top) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = panel.offsetWidth || 720;
+                const height = panel.offsetHeight || 360;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                panel.style.left = `${left}px`;
+                panel.style.top = `${top}px`;
+            }
+            if (!state.loadedOnce) {
+                loadFromServer();
+            }
+        };
+
+        window.closeLokoFenster = function () {
+            panel.classList.add('otd-hidden');
+        };
+    })();
+</script>

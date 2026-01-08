@@ -1,0 +1,451 @@
+<div class="otd-train-window otd-hidden" id="otd-train" role="dialog" aria-label="Zuege">
+    <div class="otd-train-titlebar" data-drag-handle="true">
+        <span class="otd-train-title">Zuege</span>
+        <div class="otd-train-title-actions">
+            <span class="otd-train-status" id="otd-train-status">Bereit</span>
+            <button class="otd-train-close" type="button" aria-label="Schliessen" onclick="closeTrainFenster();">X</button>
+        </div>
+    </div>
+    <div class="otd-train-body">
+        <div class="otd-train-form">
+            <div class="otd-train-overview">
+                <div class="otd-train-overview-head">
+                    <span>Zuguebersicht</span>
+                    <button type="button" id="train-new">Neu</button>
+                    <button type="button" id="train-delete">Loeschen</button>
+                </div>
+                <div class="otd-train-overview-list" id="train-list"></div>
+            </div>
+            <label>
+                Zugname
+                <input type="text" id="train-name" maxlength="24" />
+            </label>
+            <div class="otd-train-length">
+                Gesamtlaenge: <span id="train-length">0 cm</span>
+            </div>
+            <div class="otd-train-speed">
+                Vmax: <input type="number" id="train-vmax" min="0" step="0.1" /> km/h
+                <span class="otd-train-speed-hint">Max: <span id="train-vmax-max">0</span> km/h</span>
+            </div>
+            <div class="otd-train-dropzone" id="train-dropzone">
+                Lok oder Waggon hier ablegen
+            </div>
+            <div class="otd-train-buttons">
+                <button type="button" id="train-save">Speichern</button>
+                <button type="button" id="train-load">Aktualisieren</button>
+            </div>
+        </div>
+        <div class="otd-train-list">
+            <div class="otd-train-list-head">
+                <span>Zusammenstellung</span>
+                <button type="button" id="train-clear">Leeren</button>
+            </div>
+            <div class="otd-train-list-body" id="train-rows"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- Zug Fenster ---
+    (function trainEditor() {
+        const panel = document.getElementById('otd-train');
+        if (!panel) return;
+
+        const statusEl = document.getElementById('otd-train-status');
+        const nameInput = document.getElementById('train-name');
+        const lengthEl = document.getElementById('train-length');
+        const vmaxInput = document.getElementById('train-vmax');
+        const vmaxMaxEl = document.getElementById('train-vmax-max');
+        const dropzone = document.getElementById('train-dropzone');
+        const rowsBody = document.getElementById('train-rows');
+        const trainList = document.getElementById('train-list');
+        const newBtn = document.getElementById('train-new');
+        const deleteBtn = document.getElementById('train-delete');
+        const saveBtn = document.getElementById('train-save');
+        const loadBtn = document.getElementById('train-load');
+        const clearBtn = document.getElementById('train-clear');
+
+        const state = {
+            trains: [],
+            selectedTrainId: null,
+            items: [],
+            loadedOnce: false,
+            vmaxOverride: null
+        };
+
+        function setStatus(text) {
+            if (statusEl) statusEl.textContent = text;
+        }
+
+        function getSelectedTrain() {
+            return state.trains.find(t => t.id === state.selectedTrainId) || null;
+        }
+
+        function renderTrainList() {
+            if (!trainList) return;
+            trainList.innerHTML = '';
+            for (const train of state.trains) {
+                const entry = document.createElement('button');
+                entry.type = 'button';
+                entry.className = 'otd-train-overview-item';
+                if (train.id === state.selectedTrainId) {
+                    entry.classList.add('is-selected');
+                }
+                const label = train.name?.trim() ? train.name.trim() : '(Neuer Zug)';
+                entry.textContent = label;
+                entry.dataset.id = train.id;
+                trainList.appendChild(entry);
+            }
+        }
+
+        function parseLength(value) {
+            if (value === null || value === undefined) return 0;
+            const text = value.toString().trim().replace(',', '.');
+            const num = Number.parseFloat(text);
+            return Number.isFinite(num) ? num : 0;
+        }
+
+        function parseSpeed(value) {
+            if (value === null || value === undefined) return 0;
+            const text = value.toString().trim().replace(',', '.');
+            const num = Number.parseFloat(text);
+            return Number.isFinite(num) ? num : 0;
+        }
+
+        function formatLength(value) {
+            const rounded = Math.round(value * 10) / 10;
+            return rounded % 1 === 0 ? `${rounded.toFixed(0)} cm` : `${rounded.toFixed(1)} cm`;
+        }
+
+        function formatSpeed(value) {
+            const rounded = Math.round(value * 10) / 10;
+            return rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(1);
+        }
+
+        function updateTotalLength() {
+            const total = state.items.reduce((sum, item) => sum + parseLength(item.length), 0);
+            if (lengthEl) lengthEl.textContent = formatLength(total);
+        }
+
+        function updateVmax() {
+            let base = Number.POSITIVE_INFINITY;
+            for (const item of state.items) {
+                const speed = parseSpeed(item.vmax);
+                if (speed > 0 && speed < base) {
+                    base = speed;
+                }
+            }
+            if (!Number.isFinite(base)) {
+                base = 0;
+            }
+            if (state.vmaxOverride === null || state.vmaxOverride > base) {
+                state.vmaxOverride = base;
+            }
+            if (vmaxInput) {
+                vmaxInput.max = base > 0 ? base.toString() : '';
+                vmaxInput.value = formatSpeed(state.vmaxOverride);
+            }
+            if (vmaxMaxEl) {
+                vmaxMaxEl.textContent = formatSpeed(base);
+            }
+        }
+
+        function renderList() {
+            rowsBody.innerHTML = '';
+            for (const item of state.items) {
+                const row = document.createElement('div');
+                row.className = 'otd-train-row';
+                row.innerHTML = `
+                    <div class="otd-train-row-type">${item.type === 'loco' ? 'L' : 'W'}</div>
+                    <div class="otd-train-row-name">${item.name ?? ''}</div>
+                    <div class="otd-train-row-length">${formatLength(parseLength(item.length))}</div>
+                    <button type="button" class="otd-train-row-remove" data-id="${item.id}">Entfernen</button>
+                `;
+                rowsBody.appendChild(row);
+            }
+            updateTotalLength();
+            updateVmax();
+        }
+
+        function resetForm() {
+            nameInput.value = '';
+            state.items = [];
+            state.vmaxOverride = null;
+            renderList();
+        }
+
+        function addItem(payload) {
+            const lengthValue = parseLength(payload.length);
+            const lengthText = lengthValue.toString();
+            state.items.push({
+                id: crypto.randomUUID(),
+                type: payload.type,
+                name: payload.name ?? '',
+                length: lengthText,
+                vmax: payload.vmax ?? ''
+            });
+            renderList();
+            setStatus('Eintrag uebernommen');
+        }
+
+        function createNewTrain() {
+            persistCurrentTrain();
+            const id = crypto.randomUUID();
+            const train = {
+                id,
+                name: '',
+                items: [],
+                vmax: null
+            };
+            state.trains.push(train);
+            state.selectedTrainId = id;
+            resetForm();
+            renderTrainList();
+            setStatus('Neuer Zug erstellt');
+        }
+
+        function selectTrain(id) {
+            persistCurrentTrain();
+            const train = state.trains.find(t => t.id === id);
+            if (!train) return;
+            state.selectedTrainId = train.id;
+            nameInput.value = train.name ?? '';
+            state.items = (train.items || []).map(item => ({ ...item }));
+            state.vmaxOverride = train.vmax ?? null;
+            renderList();
+            renderTrainList();
+            setStatus('Zug geladen');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            dropzone.classList.remove('is-dragover');
+            const raw = event.dataTransfer?.getData('application/json');
+            if (!raw) return;
+            let payload = null;
+            try {
+                payload = JSON.parse(raw);
+            } catch {
+                return;
+            }
+            if (!payload || (payload.type !== 'loco' && payload.type !== 'waggon')) return;
+            addItem(payload);
+        }
+
+        dropzone.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropzone.classList.add('is-dragover');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('is-dragover');
+        });
+
+        dropzone.addEventListener('drop', handleDrop);
+
+        rowsBody.addEventListener('click', (event) => {
+            const removeBtn = event.target.closest('.otd-train-row-remove');
+            if (!removeBtn) return;
+            state.items = state.items.filter(i => i.id !== removeBtn.dataset.id);
+            renderList();
+            setStatus('Entfernt');
+        });
+
+        trainList?.addEventListener('click', (event) => {
+            const btn = event.target.closest('.otd-train-overview-item');
+            if (!btn) return;
+            selectTrain(btn.dataset.id);
+        });
+
+        nameInput?.addEventListener('input', () => {
+            const train = getSelectedTrain();
+            if (!train) return;
+            train.name = nameInput.value.trim();
+            renderTrainList();
+        });
+
+        vmaxInput?.addEventListener('input', () => {
+            const base = parseSpeed(vmaxMaxEl?.textContent ?? '0');
+            let value = parseSpeed(vmaxInput.value);
+            if (base > 0 && value > base) {
+                value = base;
+            }
+            if (value < 0) value = 0;
+            state.vmaxOverride = value;
+            if (vmaxInput) {
+                vmaxInput.value = formatSpeed(value);
+            }
+        });
+
+        function getCurrentVmax() {
+            const base = parseSpeed(vmaxMaxEl?.textContent ?? '0');
+            let value = state.vmaxOverride ?? base;
+            if (base > 0 && value > base) {
+                value = base;
+            }
+            return value;
+        }
+
+        function persistCurrentTrain() {
+            const train = getSelectedTrain();
+            if (!train) return;
+            train.name = nameInput.value.trim();
+            train.items = state.items.map(item => ({ ...item }));
+            train.vmax = getCurrentVmax();
+        }
+
+        async function deleteSelectedTrain() {
+            if (!state.selectedTrainId) {
+                setStatus('Kein Zug ausgewaehlt');
+                return;
+            }
+            const deleteId = state.selectedTrainId;
+            state.trains = state.trains.filter(t => t.id !== deleteId);
+            const nextId = state.trains.length > 0 ? state.trains[0].id : null;
+            state.selectedTrainId = null;
+            if (nextId) {
+                selectTrain(nextId);
+            } else {
+                resetForm();
+                renderTrainList();
+            }
+            try {
+                const resp = await fetch('/train/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: deleteId })
+                });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                setStatus('Zug geloescht');
+            } catch (err) {
+                setStatus('Loeschen fehlgeschlagen');
+            }
+        }
+
+        async function saveToServer() {
+            try {
+                setStatus('Speichere ...');
+                if (!state.selectedTrainId) {
+                    createNewTrain();
+                }
+                const train = getSelectedTrain();
+                if (train) {
+                    train.name = nameInput.value.trim();
+                    train.items = state.items.map(item => ({ ...item }));
+                    train.vmax = getCurrentVmax();
+                }
+                const payload = {
+                    id: state.selectedTrainId,
+                    name: nameInput.value.trim(),
+                    vmax: getCurrentVmax().toString(),
+                    items: state.items
+                };
+                const resp = await fetch('/train/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                setStatus(`Gespeichert (${state.items.length} Eintraege)`);
+                renderTrainList();
+            } catch (err) {
+                setStatus('Speichern fehlgeschlagen');
+            }
+        }
+
+        async function loadFromServer() {
+            try {
+                setStatus('Laden ...');
+                const resp = await fetch('/train.xml', { cache: 'no-store' });
+                if (!resp.ok) {
+                    setStatus('Keine train.xml gefunden - neue Datei anlegen');
+                    state.trains = [];
+                    state.selectedTrainId = null;
+                    resetForm();
+                    renderTrainList();
+                    state.loadedOnce = true;
+                    return;
+                }
+                const xml = await resp.text();
+                const doc = new DOMParser().parseFromString(xml, 'application/xml');
+                const trains = [];
+                const nodes = doc.querySelectorAll('trains > train');
+                const trainNodes = nodes.length > 0 ? nodes : doc.querySelectorAll('train');
+                trainNodes.forEach(node => {
+                    const cars = [];
+                    node.querySelectorAll('cars > car').forEach(carNode => {
+                        cars.push({
+                            id: carNode.getAttribute('id') || crypto.randomUUID(),
+                            type: carNode.getAttribute('type') || 'waggon',
+                            name: carNode.querySelector('name')?.textContent ?? '',
+                            length: carNode.getAttribute('length') || '0',
+                            vmax: carNode.getAttribute('vmax') || ''
+                        });
+                    });
+                    trains.push({
+                        id: node.getAttribute('id') || crypto.randomUUID(),
+                        name: node.querySelector('name')?.textContent ?? '',
+                        vmax: node.querySelector('vmax')?.textContent ? parseSpeed(node.querySelector('vmax')?.textContent ?? '') : null,
+                        items: cars
+                    });
+                });
+                state.trains = trains;
+                if (state.selectedTrainId && !state.trains.find(t => t.id === state.selectedTrainId)) {
+                    state.selectedTrainId = null;
+                }
+                if (!state.selectedTrainId && state.trains.length > 0) {
+                    state.selectedTrainId = state.trains[0].id;
+                }
+                if (state.selectedTrainId) {
+                    const selected = state.trains.find(t => t.id === state.selectedTrainId) || state.trains[0];
+                    if (selected) {
+                        state.selectedTrainId = selected.id;
+                        nameInput.value = selected.name ?? '';
+                        state.items = selected.items.map(item => ({ ...item }));
+                        state.vmaxOverride = selected.vmax ?? null;
+                    }
+                } else {
+                    resetForm();
+                }
+                renderList();
+                renderTrainList();
+                setStatus(`Geladen (${state.trains.length} Zuege)`);
+                state.loadedOnce = true;
+                return;
+            } catch (err) {
+                setStatus('Laden fehlgeschlagen');
+            }
+        }
+
+        newBtn?.addEventListener('click', createNewTrain);
+        deleteBtn?.addEventListener('click', deleteSelectedTrain);
+        saveBtn?.addEventListener('click', saveToServer);
+        loadBtn?.addEventListener('click', loadFromServer);
+        clearBtn?.addEventListener('click', () => {
+            state.items = [];
+            renderList();
+            setStatus('Liste geleert');
+        });
+
+        window.openTrainFenster = function () {
+            panel.classList.remove('otd-hidden');
+            if (!panel.style.left || !panel.style.top) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = panel.offsetWidth || 720;
+                const height = panel.offsetHeight || 360;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                panel.style.left = `${left}px`;
+                panel.style.top = `${top}px`;
+            }
+            if (!state.loadedOnce) {
+                loadFromServer();
+            }
+        };
+
+        window.closeTrainFenster = function () {
+            panel.classList.add('otd-hidden');
+        };
+    })();
+</script>

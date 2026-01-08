@@ -22,6 +22,18 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
+[C:/Users/saemi/Documents/OpenTrainDrive/OTD/Loco/loco.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REXExvY29cbG9jby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saemi/Documents/OpenTrainDrive/OTD/Train/train.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REXFRyYWluXHRyYWluLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/saemi/Documents/OpenTrainDrive/OTD/waggon/waggon.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REXHdhZ2dvblx3YWdnb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/saemi/Documents/OpenTrainDrive/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

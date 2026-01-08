@@ -1,0 +1,309 @@
+.otd-plan-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--otd-plan-width, 10000px);
+  height: var(--otd-plan-height, 8000px);
+  background-color: #4e596f;
+  background-image:
+    linear-gradient(0deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: var(--otd-plan-grid, 48px) var(--otd-plan-grid, 48px);
+  overflow: hidden;
+  z-index: 0;
+}
+
+.otd-plan-canvas:not(.is-editing) {
+  cursor: default;
+}
+
+.otd-plan-symbol {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.otd-plan-symbol.is-selected {
+  outline: 2px solid #f0e34a;
+  outline-offset: 2px;
+}
+
+.otd-plan-symbol.is-highlighted {
+  box-shadow: 0 0 0 2px #ff4b4b;
+}
+
+.otd-plan-editor {
+  position: absolute;
+  top: 60px;
+  right: 24px;
+  width: 520px;
+  max-width: 90vw;
+  background: #24314d;
+  color: #e7ecf5;
+  border: 2px solid #0f1626;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+  z-index: 60;
+  font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+}
+
+.otd-plan-editor-titlebar {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background: linear-gradient(180deg, #0f274f 0%, #0c1f3f 100%);
+  color: #cfe0ff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+  user-select: none;
+}
+
+.otd-plan-editor-titlebar:active {
+  cursor: grabbing;
+}
+
+.otd-plan-editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.otd-plan-zoom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.otd-plan-zoom button {
+  background: #2a3859;
+  border: 1px solid #101826;
+  color: #e7ecf5;
+  padding: 2px 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.otd-plan-zoom button:hover {
+  background: #36466d;
+}
+
+.otd-plan-editor-close {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 18, 34, 0.55);
+  color: #e7ecf5;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.otd-plan-editor-body {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 10px;
+  padding: 10px;
+}
+
+.otd-plan-palette,
+.otd-plan-config {
+  border: 1px solid #101826;
+  background: #1f2b45;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+}
+
+.otd-plan-palette-head,
+.otd-plan-config-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-bottom: 1px solid #101826;
+  font-size: 13px;
+}
+
+.otd-plan-palette-head input {
+  width: 120px;
+  background: #1b263f;
+  border: 1px solid #0f1626;
+  color: #e7ecf5;
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+.otd-plan-palette-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  gap: 8px;
+  padding: 8px;
+  overflow: auto;
+}
+
+.otd-plan-palette-item {
+  background: #24314d;
+  border: 1px solid #101826;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  cursor: grab;
+}
+
+.otd-plan-palette-item:active {
+  cursor: grabbing;
+}
+
+.otd-plan-palette.is-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.otd-plan-config-body {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 420px;
+  overflow: auto;
+}
+
+.otd-plan-config-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.otd-plan-config-row input,
+.otd-plan-config-row select,
+.otd-plan-config-row textarea {
+  width: 100%;
+  background: #1b263f;
+  border: 1px solid #0f1626;
+  color: #e7ecf5;
+  padding: 4px 6px;
+  font: inherit;
+}
+
+.otd-plan-config-row textarea {
+  resize: vertical;
+  min-height: 40px;
+}
+
+.otd-plan-extra-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 32px;
+  gap: 6px;
+}
+
+.otd-plan-extra-row button {
+  background: #2a3859;
+  border: 1px solid #101826;
+  color: #e7ecf5;
+  cursor: pointer;
+}
+
+.otd-plan-config-actions {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  border-top: 1px solid #101826;
+}
+
+.otd-plan-config-actions button,
+.otd-plan-config-head button {
+  background: #2a3859;
+  border: 1px solid #101826;
+  color: #e7ecf5;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.otd-plan-config-actions button:hover,
+.otd-plan-config-head button:hover {
+  background: #36466d;
+}
+
+.otd-plan-context {
+  position: absolute;
+  background: #2a3859;
+  border: 1px solid #101826;
+  padding: 6px 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
+  z-index: 65;
+}
+
+.otd-plan-context button {
+  background: transparent;
+  border: 0;
+  color: #e4ebf7;
+  font: inherit;
+  text-align: left;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.otd-plan-context button:hover {
+  background: #36466d;
+}
+
+.otd-plan-object {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  width: 320px;
+  max-width: 90vw;
+  background: #24314d;
+  color: #e7ecf5;
+  border: 2px solid #0f1626;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  z-index: 61;
+  font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+}
+
+.otd-plan-object-titlebar {
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  background: linear-gradient(180deg, #0f274f 0%, #0c1f3f 100%);
+  color: #cfe0ff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+  user-select: none;
+}
+
+.otd-plan-object-close {
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 18, 34, 0.55);
+  color: #e7ecf5;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.otd-plan-object-body {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 320px;
+  overflow: auto;
+}

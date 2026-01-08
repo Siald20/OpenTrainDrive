@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plan grid="48">
+  <symbols>
+    <symbol id="0247acbc-ca8f-49a5-ab3f-4d84ca8cbd05" type="signal-left" classes="otd-symbol--signal-left" x="22" y="7">
+      <config>
+        <field key="type" value="signal-left" />
+        <field key="classes" value="otd-symbol--signal-left" />
+      </config>
+    </symbol>
+    <symbol id="f1727f21-e04a-46c2-8951-25f9b3824aee" type="track-straight-h" classes="otd-symbol--track-straight-h" x="23" y="7">
+      <config>
+        <field key="type" value="track-straight-h" />
+        <field key="classes" value="otd-symbol--track-straight-h" />
+      </config>
+    </symbol>
+    <symbol id="689c44b0-3953-482c-8681-d9624c070265" type="switch-right" classes="otd-symbol--switch-right" x="24" y="7">
+      <config>
+        <field key="type" value="switch-right" />
+        <field key="classes" value="otd-symbol--switch-right" />
+      </config>
+    </symbol>
+  </symbols>
+</plan>

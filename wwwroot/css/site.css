@@ -209,6 +209,7 @@ body.full-bleed main {
   flex: 1;
   position: relative;
   background: linear-gradient(180deg, #5a657d 0%, #566177 100%);
+  overflow: auto;
 }
 
 
@@ -317,6 +318,7 @@ body.full-bleed main {
   right: 10px;
   bottom: 10px;
   height: 300px;
+  z-index: 40;
   background: #40485a;
   color: #e7ecf5;
   font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;

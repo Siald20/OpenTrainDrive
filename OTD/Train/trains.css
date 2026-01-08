@@ -1,0 +1,254 @@
+.otd-train-window {
+  position: absolute;
+  z-index: 45;
+  top: 48px;
+  left: 32px;
+  width: max-content;
+  max-width: 90vw;
+  background: #23314f;
+  color: #e7ecf5;
+  border: 2px solid #0f1626;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+}
+
+.otd-train-titlebar {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background: linear-gradient(180deg, #0f274f 0%, #0c1f3f 100%);
+  color: #cfe0ff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+  user-select: none;
+}
+
+.otd-train-titlebar:active {
+  cursor: grabbing;
+}
+
+.otd-train-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.otd-train-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.otd-train-status {
+  color: #f0e34a;
+}
+
+.otd-train-close {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 18, 34, 0.55);
+  color: #e7ecf5;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.otd-train-close:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.otd-train-body {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 10px;
+  padding: 10px;
+}
+
+.otd-train-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.otd-train-form input {
+  background: #1b263f;
+  border: 1px solid #0f1626;
+  color: #e7ecf5;
+  padding: 6px 8px;
+  font: inherit;
+  border-radius: 2px;
+}
+
+.otd-train-overview {
+  border: 1px solid #101826;
+  background: #1f2b45;
+  margin-bottom: 12px;
+}
+
+.otd-train-overview-head {
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #101826;
+  font-size: 13px;
+}
+
+.otd-train-overview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.otd-train-overview-item {
+  text-align: left;
+  background: #2a3859;
+  border: 1px solid #101826;
+  color: #e7ecf5;
+  padding: 6px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.otd-train-overview-item:hover,
+.otd-train-overview-item.is-selected {
+  background: #36466d;
+}
+
+.otd-train-length {
+  font-size: 12px;
+  margin: 6px 0 10px;
+  color: #cfe0ff;
+}
+
+.otd-train-speed {
+  font-size: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: #cfe0ff;
+}
+
+.otd-train-speed input {
+  width: 90px;
+}
+
+.otd-train-speed-hint {
+  color: #a9b6d6;
+}
+
+.otd-train-dropzone {
+  border: 2px dashed #3c4b6f;
+  background: #1b263f;
+  color: #a9b6d6;
+  padding: 18px 12px;
+  text-align: center;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.otd-train-dropzone.is-dragover {
+  border-color: #f0e34a;
+  color: #f0e34a;
+  background: #202c46;
+}
+
+.otd-train-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.otd-train-buttons button,
+.otd-train-list-head button,
+.otd-train-row-remove,
+.otd-train-overview-head button {
+  background: #2a3859;
+  border: 1px solid #101826;
+  color: #e7ecf5;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.otd-train-buttons button:hover,
+.otd-train-list-head button:hover,
+.otd-train-row-remove:hover,
+.otd-train-overview-head button:hover {
+  background: #36466d;
+}
+
+.otd-train-list {
+  border: 1px solid #101826;
+  background: #1f2b45;
+  display: flex;
+  flex-direction: column;
+}
+
+.otd-train-list-head {
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #101826;
+  font-size: 13px;
+}
+
+.otd-train-list-body {
+  overflow: auto;
+  max-height: 240px;
+  width: max-content;
+}
+
+.otd-train-row {
+  display: grid;
+  grid-template-columns: 34px max-content max-content auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-bottom: 1px solid #23324f;
+  font-size: 12px;
+}
+
+.otd-train-row:hover {
+  background: #2a3859;
+}
+
+.otd-train-row-type {
+  width: 28px;
+  height: 24px;
+  border-radius: 4px;
+  background: #0f274f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.otd-train-row-length {
+  text-align: right;
+  color: #cfe0ff;
+}
+
+.otd-train-row-name,
+.otd-train-row-length {
+  white-space: nowrap;
+}
+
+.otd-train-row-remove {
+  padding: 4px 8px;
+  font-size: 11px;
+}
