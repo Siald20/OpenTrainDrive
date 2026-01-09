@@ -1,9 +1,13 @@
 using System;
 using System.Xml.Linq;
 
-class Program
+/* rein KI generierter Code, hat aber nicht zum richtigen Ergebnis geführt: An sich war der Auftrag, den
+gesamten Geschwindigkeitbereich linear von 1 bis 255 auf die 128 Geschwindigkeitsstufen abzubilden. P.S.: das Auto-Ergänzen
+hier im Code-Editor hat geschnallt was ich wollte, nachdem ich den halben Test geschrieben hatte ;-). */
+
+class LocoSpeedtools
 {
-    static void Main()
+    static void CalculatingSpeedTable()
     {
         // Generate a linear speed step table for 128 speed steps
         // Speed step 1 = stop (value 0)
