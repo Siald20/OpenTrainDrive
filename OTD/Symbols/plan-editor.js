@@ -46,7 +46,7 @@
     { key: 'layer', label: 'Ebene', type: 'number' },
     { key: 'rotation', label: 'Rotation', type: 'number' },
     { key: 'direction', label: 'Richtung', type: 'text' },
-    { key: 'address', label: 'Adresse', type: 'text' },
+    { key: 'address', label: 'addresse', type: 'text' },
     { key: 'protocol', label: 'Protokoll', type: 'text' },
     { key: 'length', label: 'Laenge', type: 'number' },
     { key: 'vmax', label: 'Vmax', type: 'number' },

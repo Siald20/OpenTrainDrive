@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\saemi\\Documents\\OpenTrainDrive\\OpenTrainDrive.csproj": {}
+    "/workspaces/OpenTrainDrive/OpenTrainDrive.csproj": {}
   },
   "projects": {
-    "C:\\Users\\saemi\\Documents\\OpenTrainDrive\\OpenTrainDrive.csproj": {
+    "/workspaces/OpenTrainDrive/OpenTrainDrive.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\saemi\\Documents\\OpenTrainDrive\\OpenTrainDrive.csproj",
+        "projectUniqueName": "/workspaces/OpenTrainDrive/OpenTrainDrive.csproj",
         "projectName": "OpenTrainDrive",
-        "projectPath": "C:\\Users\\saemi\\Documents\\OpenTrainDrive\\OpenTrainDrive.csproj",
-        "packagesPath": "C:\\Users\\saemi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\saemi\\Documents\\OpenTrainDrive\\obj\\",
+        "projectPath": "/workspaces/OpenTrainDrive/OpenTrainDrive.csproj",
+        "packagesPath": "/home/codespace/.nuget/packages/",
+        "outputPath": "/workspaces/OpenTrainDrive/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\saemi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
+          "/home/codespace/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -66,7 +62,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

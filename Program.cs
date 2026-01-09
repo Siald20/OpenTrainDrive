@@ -425,7 +425,7 @@ app.MapPost("/loko/save", async (List<LokoDto> locos) =>
             locos.Select(l => new XElement("locomotive",
                 new XAttribute("id", string.IsNullOrWhiteSpace(l.Id) ? Guid.NewGuid().ToString() : l.Id),
                 new XElement("name", l.Name ?? string.Empty),
-                new XElement("adress", l.Adress ?? string.Empty),
+                new XElement("address", l.address ?? string.Empty),
                 new XElement("length", l.Length ?? string.Empty),
                 new XElement("vmax", l.VMax ?? string.Empty),
                 new XElement("vmin", l.VMin ?? string.Empty),
@@ -777,7 +777,7 @@ if (autoOpen)
 
 app.Run();
 
-public record LokoDto(string? Id, string? Name, string? Adress, string? Length, string? VMax, string? VMin, string? Notes);
+public record LokoDto(string? Id, string? Name, string? address, string? Length, string? VMax, string? VMin, string? Notes);
 public record WaggonDto(string? Id, string? Name, string? Length, string? VMax, string? Notes);
 public record TrainItemDto(string? Id, string? Type, string? Name, string? Length, string? VMax);
 public record TrainSaveDto(string? Id, string? Name, string? Number, string? Category, string? VMax, List<TrainItemDto>? Items);
