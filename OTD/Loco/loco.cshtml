@@ -50,7 +50,7 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>address</th>
+                            <th>Adress</th>
                             <th>Length</th>
                             <th>Vmax</th>
                             <th>VMin</th>
@@ -73,7 +73,7 @@
 
         const statusEl = document.getElementById('otd-loko-status');
         const nameInput = document.getElementById('loko-name');
-        const addressInput = document.getElementById('loko-address');
+        const adressInput = document.getElementById('loko-address');
         const lengthInput = document.getElementById('loko-length');
         const vmaxInput = document.getElementById('loko-vmax');
         const vminInput = document.getElementById('loko-vmin');
@@ -97,7 +97,7 @@
 
         function resetForm() {
             nameInput.value = '';
-            addressInput.value = '';
+            adressInput.value = '';
             lengthInput.value = '';
             vmaxInput.value = '';
             vminInput.value = '';
@@ -112,7 +112,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${item.name ?? ''}</td>
-                    <td>${item.address ?? ''}</td>
+                    <td>${item.adress ?? ''}</td>
                     <td>${item.length ?? ''}</td>
                     <td>${item.vmax ?? ''}</td>
                     <td>${item.vmin ?? ''}</td>
@@ -130,7 +130,7 @@
 
         function fillForm(item) {
             nameInput.value = item.name ?? '';
-            addressInput.value = item.address ?? '';
+            adressInput.value = item.adress ?? '';
             lengthInput.value = item.length ?? '';
             vmaxInput.value = item.vmax ?? '';
             vminInput.value = item.vmin ?? '';
@@ -157,7 +157,7 @@
                     list.push({
                         id: node.getAttribute('id') || crypto.randomUUID(),
                         name: node.querySelector('name')?.textContent ?? '',
-                        address: node.querySelector('address')?.textContent ?? '',
+                        adress: node.querySelector('adress')?.textContent ?? '',
                         length: node.querySelector('length')?.textContent ?? '',
                         vmax: node.querySelector('vmax')?.textContent ?? '',
                         vmin: node.querySelector('vmin')?.textContent ?? '',
@@ -199,7 +199,7 @@
             const payload = {
                 id,
                 name,
-                address: addressInput.value.trim(),
+                adress: adressInput.value.trim(),
                 length: lengthInput.value.trim(),
                 vmax: vmaxInput.value.trim(),
                 vmin: vminInput.value.trim(),

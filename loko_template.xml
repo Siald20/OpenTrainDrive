@@ -12,7 +12,7 @@
   </locomotive>
   <locomotive id="adc45874-fbf5-4b71-9b02-92c30955f6e2">
     <name>test</name>
-    <address></address>
+    <adress></adress>
     <length>20</length>
     <vmax>200</vmax>
     <vmin></vmin>
