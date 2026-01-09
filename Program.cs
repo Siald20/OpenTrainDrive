@@ -406,9 +406,9 @@ app.MapPost("/auth/logout", (HttpContext context) =>
 });
 
 // Lokomotiven lesen
-app.MapGet("/loko.xml", () =>
+app.MapGet("/loco.xml", () =>
 {
-    var path = Path.Combine(app.Environment.ContentRootPath, "loko.xml");
+    var path = Path.Combine(app.Environment.ContentRootPath, "loco.xml");
     if (!File.Exists(path))
     {
         return Results.NotFound();
@@ -417,9 +417,9 @@ app.MapGet("/loko.xml", () =>
 });
 
 // Lokomotiven speichern
-app.MapPost("/loko/save", async (List<LokoDto> locos) =>
+app.MapPost("/loco/save", async (List<LokoDto> locos) =>
 {
-    var path = Path.Combine(app.Environment.ContentRootPath, "loko.xml");
+    var path = Path.Combine(app.Environment.ContentRootPath, "loco.xml");
     var doc = new XDocument(
         new XElement("locomotives",
             locos.Select(l => new XElement("locomotive",
