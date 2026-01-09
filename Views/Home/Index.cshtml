@@ -5,8 +5,15 @@
 @section Styles {
     <link rel="stylesheet" href="~/elements/symbols.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/loco/loco.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/drive/drive.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/waggon/waggon.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/train/trains.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/timetable/timetable.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/timetable-viewer/timetableviewer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/zd/zd.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/auth/auth.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/exit/exit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/settings/settings.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/symbols/plan-editor.css" asp-append-version="true" />
 }
 
@@ -32,8 +39,6 @@
                     <a role="menuitem" href="#">Status</a>
                     <a role="menuitem" href="#">Verbindungen</a>
                     <a role="menuitem" href="#">Logs</a>
-                    <button class="otd-dropdown-button" type="button" id="otd-menu-edit">Plan bearbeiten</button>
-                    <button class="otd-dropdown-button" type="button" id="otd-menu-save">Speichern</button>
                     <div class="otd-dropdown-submenu">
                         <button class="otd-dropdown-button otd-submenu-trigger" type="button">Meldeverwalter &gt;</button>
                         <div class="otd-dropdown otd-dropdown-submenu-panel" role="menu">
@@ -41,10 +46,7 @@
                             <button class="otd-dropdown-button" type="button" onclick="openMeldeverwalter('vertical');">Vertikal</button>
                         </div>
                     </div>
-                    <form asp-controller="Home" asp-action="Stop" method="post" class="otd-dropdown-form">
-                        @Html.AntiForgeryToken()
-                        <button class="otd-dropdown-button" type="submit" onclick="return confirm('Moechten Sie die Anwendung und den Server wirklich beenden?');">Beenden</button>
-                    </form>
+                    <button class="otd-dropdown-button" type="button" onclick="openExitFenster();">Beenden</button>
                 </div>
             </div>
             <div class="otd-nav-item">
@@ -53,14 +55,33 @@
                     <a role="menuitem" href="#">Zugnummern</a>
                     <a role="menuitem" href="#">Zuglenkung</a>
                     <a role="menuitem" href="#">Prioritaeten</a>
+                    <button class="otd-dropdown-button" type="button" onclick="openZugDatenFenster();">Zugdaten bearbeiten</button>
                 </div>
             </div>
             <div class="otd-nav-item">
                 <button class="otd-nav-trigger" type="button" aria-haspopup="true">Zugdaten</button>
                 <div class="otd-dropdown" role="menu">
                     <button class="otd-dropdown-button" type="button" onclick="openLokoFenster();">Lokomotiven</button>
+                    <button class="otd-dropdown-button" type="button" onclick="openDriveFenster();">Fahrregler</button>
                     <button class="otd-dropdown-button" type="button" onclick="openWaggonFenster();">Waggons</button>
                     <button class="otd-dropdown-button" type="button" onclick="openTrainFenster();">Zuege</button>
+                </div>
+            </div>
+            <div class="otd-nav-item">
+                <button class="otd-nav-trigger" type="button" aria-haspopup="true">Fahrplan</button>
+                <div class="otd-dropdown" role="menu">
+                    <button class="otd-dropdown-button" type="button" onclick="openTimetableFenster();">Fahrplan bearbeiten</button>
+                    <button class="otd-dropdown-button" type="button" onclick="openTimetableViewer();">Fahrplananzeiger</button>
+                    <a role="menuitem" href="#">Zuege</a>
+                    <a role="menuitem" href="#">Umlaeufe</a>
+                    <a role="menuitem" href="#">Fahrzeiten</a>
+                </div>
+            </div>
+            <div class="otd-nav-item">
+                <button class="otd-nav-trigger" type="button" aria-haspopup="true">Gleisplan</button>
+                <div class="otd-dropdown" role="menu">
+                    <button class="otd-dropdown-button" type="button" id="otd-menu-edit">Plan bearbeiten</button>
+                    <button class="otd-dropdown-button" type="button" id="otd-menu-save">Speichern</button>
                 </div>
             </div>
             <div class="otd-nav-item">
@@ -102,7 +123,7 @@
                 <div class="otd-dropdown" role="menu">
                     <a role="menuitem" href="#">Projekte</a>
                     <a role="menuitem" href="#">Benutzer</a>
-                    <a role="menuitem" href="#">Einstellungen</a>
+                    <button class="otd-dropdown-button" type="button" onclick="openSettingsFenster();">Einstellungen</button>
                 </div>
             </div>
             <div class="otd-nav-item">
@@ -292,8 +313,15 @@
 </div>
 
 @await Html.PartialAsync("~/OTD/Loco/loco.cshtml")
+@await Html.PartialAsync("~/OTD/drive/drive.cshtml")
 @await Html.PartialAsync("~/OTD/waggon/waggon.cshtml")
 @await Html.PartialAsync("~/OTD/Train/train.cshtml")
+@await Html.PartialAsync("~/OTD/timetable/timetable.cshtml")
+@await Html.PartialAsync("~/OTD/timetable-viewer/timetableviewer.cshtml")
+@await Html.PartialAsync("~/OTD/ZD/zd.cshtml")
+@await Html.PartialAsync("~/OTD/auth/auth.cshtml")
+@await Html.PartialAsync("~/OTD/exit/exit.cshtml")
+@await Html.PartialAsync("~/OTD/settings.cshtml")
 
 <script src="~/symbols/plan-editor.js" asp-append-version="true"></script>
 <script>
@@ -455,8 +483,14 @@
 
     enablePanelDragging('otd-melde-panel');
     enablePanelDragging('otd-loko');
+    enablePanelDragging('otd-drive');
     enablePanelDragging('otd-waggon');
     enablePanelDragging('otd-train');
+    enablePanelDragging('otd-timetable');
+    enablePanelDragging('otd-timetableviewer');
+    enablePanelDragging('otd-zd');
+    enablePanelDragging('otd-exit');
+    enablePanelDragging('otd-settings');
     enablePanelDragging('otd-plan-editor');
 
    

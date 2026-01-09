@@ -4,10 +4,10 @@
   left: 0;
   width: var(--otd-plan-width, 10000px);
   height: var(--otd-plan-height, 8000px);
-  background-color: #4e596f;
+  background-color: var(--otd-shell-bg-alt);
   background-image:
-    linear-gradient(0deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    linear-gradient(0deg, var(--otd-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--otd-grid) 1px, transparent 1px);
   background-size: var(--otd-plan-grid, 48px) var(--otd-plan-grid, 48px);
   overflow: hidden;
   z-index: 0;
@@ -24,12 +24,12 @@
 }
 
 .otd-plan-symbol.is-selected {
-  outline: 2px solid #f0e34a;
+  outline: 2px solid var(--otd-highlight);
   outline-offset: 2px;
 }
 
 .otd-plan-symbol.is-highlighted {
-  box-shadow: 0 0 0 2px #ff4b4b;
+  box-shadow: 0 0 0 2px var(--otd-danger);
 }
 
 .otd-plan-editor {
@@ -38,12 +38,12 @@
   right: 24px;
   width: 520px;
   max-width: 90vw;
-  background: #24314d;
-  color: #e7ecf5;
-  border: 2px solid #0f1626;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+  background: var(--otd-panel-bg);
+  color: var(--otd-text);
+  border: 2px solid var(--otd-panel-border);
+  box-shadow: 0 14px 40px var(--otd-shadow-strong);
   z-index: 60;
-  font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+  font-family: var(--otd-font);
 }
 
 .otd-plan-editor-titlebar {
@@ -52,9 +52,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
-  background: linear-gradient(180deg, #0f274f 0%, #0c1f3f 100%);
-  color: #cfe0ff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, var(--otd-titlebar-start) 0%, var(--otd-titlebar-end) 100%);
+  color: var(--otd-titlebar-text);
+  border-bottom: 1px solid var(--otd-panel-border-line);
   cursor: grab;
   user-select: none;
 }
@@ -77,24 +77,24 @@
 }
 
 .otd-plan-zoom button {
-  background: #2a3859;
-  border: 1px solid #101826;
-  color: #e7ecf5;
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
   padding: 2px 6px;
   cursor: pointer;
   font-size: 12px;
 }
 
 .otd-plan-zoom button:hover {
-  background: #36466d;
+  background: var(--otd-button-hover);
 }
 
 .otd-plan-editor-close {
   width: 24px;
   height: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(10, 18, 34, 0.55);
-  color: #e7ecf5;
+  border: 1px solid var(--otd-panel-border-line);
+  background: var(--otd-panel-muted);
+  color: var(--otd-text);
   line-height: 1;
   display: inline-flex;
   align-items: center;
@@ -112,8 +112,8 @@
 
 .otd-plan-palette,
 .otd-plan-config {
-  border: 1px solid #101826;
-  background: #1f2b45;
+  border: 1px solid var(--otd-panel-border-soft);
+  background: var(--otd-panel-alt);
   display: flex;
   flex-direction: column;
   min-height: 320px;
@@ -125,15 +125,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 8px;
-  border-bottom: 1px solid #101826;
+  border-bottom: 1px solid var(--otd-panel-border-soft);
   font-size: 13px;
 }
 
 .otd-plan-palette-head input {
   width: 120px;
-  background: #1b263f;
-  border: 1px solid #0f1626;
-  color: #e7ecf5;
+  background: var(--otd-input-bg);
+  border: 1px solid var(--otd-input-border);
+  color: var(--otd-text);
   padding: 4px 6px;
   font-size: 12px;
 }
@@ -147,8 +147,8 @@
 }
 
 .otd-plan-palette-item {
-  background: #24314d;
-  border: 1px solid #101826;
+  background: var(--otd-panel-bg);
+  border: 1px solid var(--otd-panel-border-soft);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -186,9 +186,9 @@
 .otd-plan-config-row select,
 .otd-plan-config-row textarea {
   width: 100%;
-  background: #1b263f;
-  border: 1px solid #0f1626;
-  color: #e7ecf5;
+  background: var(--otd-input-bg);
+  border: 1px solid var(--otd-input-border);
+  color: var(--otd-text);
   padding: 4px 6px;
   font: inherit;
 }
@@ -205,9 +205,9 @@
 }
 
 .otd-plan-extra-row button {
-  background: #2a3859;
-  border: 1px solid #101826;
-  color: #e7ecf5;
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
   cursor: pointer;
 }
 
@@ -215,14 +215,14 @@
   display: flex;
   gap: 8px;
   padding: 8px;
-  border-top: 1px solid #101826;
+  border-top: 1px solid var(--otd-panel-border-soft);
 }
 
 .otd-plan-config-actions button,
 .otd-plan-config-head button {
-  background: #2a3859;
-  border: 1px solid #101826;
-  color: #e7ecf5;
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
   padding: 6px 10px;
   font-size: 12px;
   cursor: pointer;
@@ -230,13 +230,13 @@
 
 .otd-plan-config-actions button:hover,
 .otd-plan-config-head button:hover {
-  background: #36466d;
+  background: var(--otd-button-hover);
 }
 
 .otd-plan-context {
   position: absolute;
-  background: #2a3859;
-  border: 1px solid #101826;
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
   padding: 6px 0;
   display: flex;
   flex-direction: column;
@@ -247,7 +247,7 @@
 .otd-plan-context button {
   background: transparent;
   border: 0;
-  color: #e4ebf7;
+  color: var(--otd-text);
   font: inherit;
   text-align: left;
   padding: 6px 12px;
@@ -255,7 +255,7 @@
 }
 
 .otd-plan-context button:hover {
-  background: #36466d;
+  background: var(--otd-button-hover);
 }
 
 .otd-plan-object {
@@ -264,12 +264,12 @@
   bottom: 24px;
   width: 320px;
   max-width: 90vw;
-  background: #24314d;
-  color: #e7ecf5;
-  border: 2px solid #0f1626;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  background: var(--otd-panel-bg);
+  color: var(--otd-text);
+  border: 2px solid var(--otd-panel-border);
+  box-shadow: 0 12px 30px var(--otd-shadow-strong);
   z-index: 61;
-  font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+  font-family: var(--otd-font);
 }
 
 .otd-plan-object-titlebar {
@@ -278,9 +278,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 8px;
-  background: linear-gradient(180deg, #0f274f 0%, #0c1f3f 100%);
-  color: #cfe0ff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, var(--otd-titlebar-start) 0%, var(--otd-titlebar-end) 100%);
+  color: var(--otd-titlebar-text);
+  border-bottom: 1px solid var(--otd-panel-border-line);
   cursor: grab;
   user-select: none;
 }
@@ -288,9 +288,9 @@
 .otd-plan-object-close {
   width: 22px;
   height: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(10, 18, 34, 0.55);
-  color: #e7ecf5;
+  border: 1px solid var(--otd-panel-border-line);
+  background: var(--otd-panel-muted);
+  color: var(--otd-text);
   line-height: 1;
   display: inline-flex;
   align-items: center;
@@ -307,3 +307,6 @@
   max-height: 320px;
   overflow: auto;
 }
+
+
+

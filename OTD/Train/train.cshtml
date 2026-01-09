@@ -20,6 +20,14 @@
                 Zugname
                 <input type="text" id="train-name" maxlength="24" />
             </label>
+            <label>
+                Zugnummer
+                <input type="text" id="train-number" maxlength="16" />
+            </label>
+            <label>
+                Kategorie
+                <input type="text" id="train-category" maxlength="16" />
+            </label>
             <div class="otd-train-length">
                 Gesamtlaenge: <span id="train-length">0 cm</span>
             </div>
@@ -53,6 +61,8 @@
 
         const statusEl = document.getElementById('otd-train-status');
         const nameInput = document.getElementById('train-name');
+        const numberInput = document.getElementById('train-number');
+        const categoryInput = document.getElementById('train-category');
         const lengthEl = document.getElementById('train-length');
         const vmaxInput = document.getElementById('train-vmax');
         const vmaxMaxEl = document.getElementById('train-vmax-max');
@@ -169,6 +179,12 @@
 
         function resetForm() {
             nameInput.value = '';
+            if (numberInput) {
+                numberInput.value = '';
+            }
+            if (categoryInput) {
+                categoryInput.value = '';
+            }
             state.items = [];
             state.vmaxOverride = null;
             renderList();
@@ -194,6 +210,8 @@
             const train = {
                 id,
                 name: '',
+                number: '',
+                category: '',
                 items: [],
                 vmax: null
             };
@@ -210,6 +228,12 @@
             if (!train) return;
             state.selectedTrainId = train.id;
             nameInput.value = train.name ?? '';
+            if (numberInput) {
+                numberInput.value = train.number ?? '';
+            }
+            if (categoryInput) {
+                categoryInput.value = train.category ?? '';
+            }
             state.items = (train.items || []).map(item => ({ ...item }));
             state.vmaxOverride = train.vmax ?? null;
             renderList();
@@ -264,6 +288,18 @@
             renderTrainList();
         });
 
+        numberInput?.addEventListener('input', () => {
+            const train = getSelectedTrain();
+            if (!train) return;
+            train.number = numberInput.value.trim();
+        });
+
+        categoryInput?.addEventListener('input', () => {
+            const train = getSelectedTrain();
+            if (!train) return;
+            train.category = categoryInput.value.trim();
+        });
+
         vmaxInput?.addEventListener('input', () => {
             const base = parseSpeed(vmaxMaxEl?.textContent ?? '0');
             let value = parseSpeed(vmaxInput.value);
@@ -290,6 +326,8 @@
             const train = getSelectedTrain();
             if (!train) return;
             train.name = nameInput.value.trim();
+            train.number = numberInput?.value.trim() ?? '';
+            train.category = categoryInput?.value.trim() ?? '';
             train.items = state.items.map(item => ({ ...item }));
             train.vmax = getCurrentVmax();
         }
@@ -331,12 +369,16 @@
                 const train = getSelectedTrain();
                 if (train) {
                     train.name = nameInput.value.trim();
+                    train.number = numberInput?.value.trim() ?? '';
+                    train.category = categoryInput?.value.trim() ?? '';
                     train.items = state.items.map(item => ({ ...item }));
                     train.vmax = getCurrentVmax();
                 }
                 const payload = {
                     id: state.selectedTrainId,
                     name: nameInput.value.trim(),
+                    number: numberInput?.value.trim() ?? '',
+                    category: categoryInput?.value.trim() ?? '',
                     vmax: getCurrentVmax().toString(),
                     items: state.items
                 };
@@ -385,6 +427,8 @@
                     trains.push({
                         id: node.getAttribute('id') || crypto.randomUUID(),
                         name: node.querySelector('name')?.textContent ?? '',
+                        number: node.querySelector('number')?.textContent ?? '',
+                        category: node.querySelector('category')?.textContent ?? '',
                         vmax: node.querySelector('vmax')?.textContent ? parseSpeed(node.querySelector('vmax')?.textContent ?? '') : null,
                         items: cars
                     });
@@ -401,6 +445,12 @@
                     if (selected) {
                         state.selectedTrainId = selected.id;
                         nameInput.value = selected.name ?? '';
+                        if (numberInput) {
+                            numberInput.value = selected.number ?? '';
+                        }
+                        if (categoryInput) {
+                            categoryInput.value = selected.category ?? '';
+                        }
                         state.items = selected.items.map(item => ({ ...item }));
                         state.vmaxOverride = selected.vmax ?? null;
                     }

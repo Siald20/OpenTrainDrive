@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<zugdaten>
+  <zug id="1" number="1" suffix="" scope="ib">
+    <route>1-2-3-9</route>
+    <extra></extra>
+    <diskri>ABZ-A</diskri>
+  </zug>
+  <zug id="1745" number="1745" suffix="" scope="ib">
+    <route>1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16-17-18</route>
+    <extra></extra>
+    <diskri>B#</diskri>
+  </zug>
+  <zug id="1744" number="1744" suffix="" scope="ib">
+    <route>3-2-1</route>
+    <extra></extra>
+    <diskri></diskri>
+  </zug>
+</zugdaten>

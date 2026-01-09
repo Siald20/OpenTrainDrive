@@ -1,0 +1,289 @@
+.otd-timetable-window {
+  position: absolute;
+  z-index: 46;
+  top: 60px;
+  left: 40px;
+  width: min(980px, 92vw);
+  background: var(--otd-panel-bg);
+  color: var(--otd-text);
+  border: 2px solid var(--otd-panel-border);
+  box-shadow: 0 12px 30px var(--otd-shadow-strong);
+  font-family: var(--otd-font);
+}
+
+.otd-timetable-titlebar {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background: linear-gradient(180deg, var(--otd-titlebar-start) 0%, var(--otd-titlebar-end) 100%);
+  color: var(--otd-titlebar-text);
+  border-bottom: 1px solid var(--otd-panel-border-line);
+  cursor: grab;
+  user-select: none;
+}
+
+.otd-timetable-titlebar:active {
+  cursor: grabbing;
+}
+
+.otd-timetable-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.otd-timetable-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.otd-timetable-status {
+  color: var(--otd-highlight);
+}
+
+.otd-timetable-close {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--otd-panel-border-line);
+  background: var(--otd-panel-muted);
+  color: var(--otd-text);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.otd-timetable-close:hover {
+  background: var(--otd-button-hover);
+}
+
+.otd-timetable-body {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 12px;
+  padding: 10px;
+}
+
+.otd-timetable-list {
+  border: 1px solid var(--otd-panel-border-soft);
+  background: var(--otd-panel-alt);
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+}
+
+.otd-timetable-list-head {
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--otd-panel-border-soft);
+  font-size: 13px;
+}
+
+.otd-timetable-list-head button {
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.otd-timetable-list-head button:hover {
+  background: var(--otd-button-hover);
+}
+
+.otd-timetable-list-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  max-height: 360px;
+  overflow: auto;
+}
+
+.otd-timetable-list-item {
+  text-align: left;
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
+  padding: 6px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.otd-timetable-list-item:hover,
+.otd-timetable-list-item.is-selected {
+  background: var(--otd-button-hover);
+}
+
+.otd-timetable-editor {
+  border: 1px solid var(--otd-panel-border-soft);
+  background: var(--otd-panel-alt);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.otd-timetable-editor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.otd-timetable-train-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--otd-titlebar-text);
+}
+
+.otd-timetable-editor-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.otd-timetable-editor-actions button {
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.otd-timetable-editor-actions button:hover {
+  background: var(--otd-button-hover);
+}
+
+.otd-timetable-train-form {
+  display: grid;
+  grid-template-columns: 1fr 120px auto;
+  gap: 10px;
+  align-items: end;
+  padding: 6px 4px 8px;
+  border-bottom: 1px solid var(--otd-panel-border-line);
+}
+
+.otd-timetable-train-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.otd-timetable-train-form input {
+  background: var(--otd-input-bg);
+  border: 1px solid var(--otd-input-border);
+  color: var(--otd-text);
+  padding: 6px 8px;
+  font: inherit;
+  border-radius: 2px;
+}
+
+.otd-timetable-train-length {
+  font-size: 12px;
+  color: var(--otd-text-muted);
+  padding-bottom: 4px;
+}
+
+.otd-timetable-train-form button {
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.otd-timetable-train-form button:hover {
+  background: var(--otd-button-hover);
+}
+
+.otd-timetable-grid {
+  display: grid;
+  grid-template-columns: 160px 160px 80px 80px 70px 1fr 36px;
+  gap: 6px;
+  align-items: center;
+}
+
+.otd-timetable-grid-head {
+  font-size: 12px;
+  color: var(--otd-text-muted);
+  padding: 0 4px;
+}
+
+.otd-timetable-grid-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.otd-timetable-row {
+  display: grid;
+  grid-template-columns: 160px 160px 80px 80px 70px 1fr 36px;
+  gap: 6px;
+  align-items: center;
+}
+
+.otd-timetable-cell {
+  width: 100%;
+  background: var(--otd-input-bg);
+  border: 1px solid var(--otd-input-border);
+  color: var(--otd-text);
+  padding: 6px 8px;
+  font: inherit;
+  border-radius: 2px;
+  font-size: 12px;
+}
+
+.otd-timetable-notes {
+  min-width: 160px;
+}
+
+.otd-timetable-row-remove {
+  width: 32px;
+  height: 28px;
+  border: 1px solid var(--otd-panel-border-soft);
+  background: var(--otd-panel-muted);
+  color: var(--otd-text);
+  cursor: pointer;
+}
+
+.otd-timetable-row-remove:hover {
+  background: var(--otd-button-hover);
+}
+
+.otd-timetable-empty {
+  font-size: 12px;
+  color: var(--otd-text-muted);
+  padding: 12px 4px;
+}
+
+.otd-timetable-empty.is-hidden {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .otd-timetable-body {
+    grid-template-columns: 1fr;
+  }
+
+  .otd-timetable-train-form {
+    grid-template-columns: 1fr;
+  }
+
+  .otd-timetable-grid,
+  .otd-timetable-row {
+    grid-template-columns: 1fr 1fr 80px 80px 70px 1fr 36px;
+  }
+}

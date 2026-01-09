@@ -5,11 +5,11 @@
   left: 32px;
   width: max-content;
   max-width: 90vw;
-  background: #23314f;
-  color: #e7ecf5;
-  border: 2px solid #0f1626;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
-  font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+  background: var(--otd-panel-bg);
+  color: var(--otd-text);
+  border: 2px solid var(--otd-panel-border);
+  box-shadow: 0 12px 30px var(--otd-shadow-strong);
+  font-family: var(--otd-font);
 }
 
 .otd-train-titlebar {
@@ -18,9 +18,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
-  background: linear-gradient(180deg, #0f274f 0%, #0c1f3f 100%);
-  color: #cfe0ff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, var(--otd-titlebar-start) 0%, var(--otd-titlebar-end) 100%);
+  color: var(--otd-titlebar-text);
+  border-bottom: 1px solid var(--otd-panel-border-line);
   cursor: grab;
   user-select: none;
 }
@@ -42,15 +42,15 @@
 }
 
 .otd-train-status {
-  color: #f0e34a;
+  color: var(--otd-highlight);
 }
 
 .otd-train-close {
   width: 24px;
   height: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(10, 18, 34, 0.55);
-  color: #e7ecf5;
+  border: 1px solid var(--otd-panel-border-line);
+  background: var(--otd-panel-muted);
+  color: var(--otd-text);
   line-height: 1;
   display: inline-flex;
   align-items: center;
@@ -60,7 +60,7 @@
 }
 
 .otd-train-close:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--otd-button-hover);
 }
 
 .otd-train-body {
@@ -79,17 +79,17 @@
 }
 
 .otd-train-form input {
-  background: #1b263f;
-  border: 1px solid #0f1626;
-  color: #e7ecf5;
+  background: var(--otd-input-bg);
+  border: 1px solid var(--otd-input-border);
+  color: var(--otd-text);
   padding: 6px 8px;
   font: inherit;
   border-radius: 2px;
 }
 
 .otd-train-overview {
-  border: 1px solid #101826;
-  background: #1f2b45;
+  border: 1px solid var(--otd-panel-border-soft);
+  background: var(--otd-panel-alt);
   margin-bottom: 12px;
 }
 
@@ -98,7 +98,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #101826;
+  border-bottom: 1px solid var(--otd-panel-border-soft);
   font-size: 13px;
 }
 
@@ -113,9 +113,9 @@
 
 .otd-train-overview-item {
   text-align: left;
-  background: #2a3859;
-  border: 1px solid #101826;
-  color: #e7ecf5;
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
   padding: 6px 8px;
   font-size: 12px;
   cursor: pointer;
@@ -123,13 +123,13 @@
 
 .otd-train-overview-item:hover,
 .otd-train-overview-item.is-selected {
-  background: #36466d;
+  background: var(--otd-button-hover);
 }
 
 .otd-train-length {
   font-size: 12px;
   margin: 6px 0 10px;
-  color: #cfe0ff;
+  color: var(--otd-titlebar-text);
 }
 
 .otd-train-speed {
@@ -139,7 +139,7 @@
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  color: #cfe0ff;
+  color: var(--otd-titlebar-text);
 }
 
 .otd-train-speed input {
@@ -147,13 +147,13 @@
 }
 
 .otd-train-speed-hint {
-  color: #a9b6d6;
+  color: var(--otd-text-muted);
 }
 
 .otd-train-dropzone {
-  border: 2px dashed #3c4b6f;
-  background: #1b263f;
-  color: #a9b6d6;
+  border: 2px dashed var(--otd-panel-border-line);
+  background: var(--otd-input-bg);
+  color: var(--otd-text-muted);
   padding: 18px 12px;
   text-align: center;
   font-size: 12px;
@@ -161,9 +161,9 @@
 }
 
 .otd-train-dropzone.is-dragover {
-  border-color: #f0e34a;
-  color: #f0e34a;
-  background: #202c46;
+  border-color: var(--otd-highlight);
+  color: var(--otd-highlight);
+  background: var(--otd-panel-alt);
 }
 
 .otd-train-buttons {
@@ -176,9 +176,9 @@
 .otd-train-list-head button,
 .otd-train-row-remove,
 .otd-train-overview-head button {
-  background: #2a3859;
-  border: 1px solid #101826;
-  color: #e7ecf5;
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
   padding: 6px 10px;
   font-size: 12px;
   cursor: pointer;
@@ -188,12 +188,12 @@
 .otd-train-list-head button:hover,
 .otd-train-row-remove:hover,
 .otd-train-overview-head button:hover {
-  background: #36466d;
+  background: var(--otd-button-hover);
 }
 
 .otd-train-list {
-  border: 1px solid #101826;
-  background: #1f2b45;
+  border: 1px solid var(--otd-panel-border-soft);
+  background: var(--otd-panel-alt);
   display: flex;
   flex-direction: column;
 }
@@ -203,7 +203,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #101826;
+  border-bottom: 1px solid var(--otd-panel-border-soft);
   font-size: 13px;
 }
 
@@ -219,19 +219,19 @@
   align-items: center;
   gap: 8px;
   padding: 6px 8px;
-  border-bottom: 1px solid #23324f;
+  border-bottom: 1px solid var(--otd-panel-border-line);
   font-size: 12px;
 }
 
 .otd-train-row:hover {
-  background: #2a3859;
+  background: var(--otd-button-bg);
 }
 
 .otd-train-row-type {
   width: 28px;
   height: 24px;
   border-radius: 4px;
-  background: #0f274f;
+  background: var(--otd-titlebar-start);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,7 +240,7 @@
 
 .otd-train-row-length {
   text-align: right;
-  color: #cfe0ff;
+  color: var(--otd-titlebar-text);
 }
 
 .otd-train-row-name,
@@ -252,3 +252,6 @@
   padding: 4px 8px;
   font-size: 11px;
 }
+
+
+

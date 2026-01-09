@@ -1,0 +1,456 @@
+﻿<div class="otd-zd-window otd-hidden" id="otd-zd" role="dialog" aria-label="Zug bearbeiten">
+    <div class="otd-zd-titlebar" data-drag-handle="true">
+        <div class="otd-zd-title">
+            <span class="otd-zd-title-icon" aria-hidden="true"></span>
+            <span>Zug bearbeiten</span>
+        </div>
+        <button class="otd-zd-close" type="button" aria-label="Schliessen" onclick="closeZugDatenFenster();">X</button>
+    </div>
+    <div class="otd-zd-body">
+        <div class="otd-zd-row">
+            <label for="zd-number">Zugnummer</label>
+            <input type="text" id="zd-number" maxlength="16" />
+        </div>
+        <div class="otd-zd-options">
+            <label>
+                <input type="radio" name="zd-scope" value="ib" checked />
+                Informationsbereich (IB)
+            </label>
+            <label>
+                <input type="radio" name="zd-scope" value="ib-res" />
+                Reservierte Zellen des IB
+            </label>
+            <label>
+                <input type="radio" name="zd-scope" value="global" />
+                Global
+            </label>
+        </div>
+        <div class="otd-zd-actions">
+            <button type="button" id="zd-ok">OK</button>
+            <button type="button" id="zd-cancel" onclick="closeZugDatenFenster();">Abbrechen</button>
+        </div>
+    </div>
+</div>
+
+<div class="otd-zd-editor otd-hidden" id="otd-zd-editor" role="dialog" aria-label="Operative Zugdaten">
+    <div class="otd-zd-editor-titlebar" data-drag-handle="true">
+        <div class="otd-zd-editor-title">
+            <span class="otd-zd-title-icon" aria-hidden="true"></span>
+            <span>Editor - Operative Zugdaten</span>
+        </div>
+        <div class="otd-zd-editor-window-actions">
+            <span class="otd-zd-editor-status" id="zd-editor-status">Bereit</span>
+            <button type="button" class="otd-zd-editor-window-btn" id="zd-editor-close">X</button>
+        </div>
+    </div>
+    <div class="otd-zd-editor-menubar">
+        <div class="otd-zd-editor-menu" id="zd-menu-dataset">
+            <button type="button" class="otd-zd-editor-menu-trigger" aria-haspopup="true" aria-expanded="false">Zugdatensatz</button>
+            <div class="otd-dropdown otd-zd-editor-menu-panel" role="menu">
+                <button type="button" class="otd-dropdown-button" id="zd-editor-save">Zugdatensatz speichern</button>
+            </div>
+        </div>
+        <button type="button">Bearbeiten</button>
+        <button type="button">Navigation</button>
+    </div>
+    <div class="otd-zd-editor-infobar">
+        <span>Zug: <span id="zd-editor-number">-</span></span>
+        <span>Verkehrsdatum: <span id="zd-editor-date">--.--.----</span></span>
+        <span>Verkehrszeit: <span id="zd-editor-time">--:--</span></span>
+        <span>Fahrwegmakro-Behandlung: erlaubt</span>
+        <span class="otd-zd-editor-scope" id="zd-editor-scope">RESERVIERTE ZELLEN DES IB</span>
+    </div>
+    <div class="otd-zd-editor-body">
+        <div class="otd-zd-editor-section">
+            <div class="otd-zd-editor-section-title">Fahrweg</div>
+            <div class="otd-zd-editor-section-body">
+                <div class="otd-zd-route-row" id="zd-route-row">
+                    <div class="otd-zd-route-field">
+                        <input type="text" id="zd-editor-route" />
+                        <button type="button" class="otd-zd-diskri-trigger"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="otd-zd-diskri-menu otd-hidden" id="zd-diskri-menu" role="menu" aria-label="Diskri">
+            <div class="otd-zd-diskri-grid">
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="A" /><span>A</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="B" /><span>B</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="T" /><span>T</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="K" /><span>K</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="H" /><span>H</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="D" /><span>D</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="V" /><span>V</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="Z" /><span>Z</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="N" /><span>N</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="M" /><span>M</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="W" /><span>W</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="S" /><span>S</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="+" /><span>+</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="-" /><span>-</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="#" /><span>#</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="=" /><span>=</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="%" /><span>%</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="L" /><span>L</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="X" /><span>X</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="F" /><span>F</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="E" /><span>E</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="P" /><span>P</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="G" /><span>G</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="U" /><span>U</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="C" /><span>C</span></label>
+                <label class="otd-zd-diskri-option"><input type="checkbox" value="&amp;" /><span>&amp;</span></label>
+            </div>
+            <div class="otd-zd-diskri-actions">
+                <button type="button">Einfuegen Gleisfeld</button>
+                <button type="button">Loeschen Gleisfeld</button>
+            </div>
+        </div>
+        <div class="otd-zd-editor-section">
+            <div class="otd-zd-editor-section-title">Zusatzdaten</div>
+            <div class="otd-zd-editor-section-body">
+                <textarea id="zd-editor-extra"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function zugDatenWindow() {
+        const panel = document.getElementById('otd-zd');
+        const editor = document.getElementById('otd-zd-editor');
+        if (!panel) return;
+
+        const numberInput = document.getElementById('zd-number');
+        const scopeInputs = panel.querySelectorAll('input[name="zd-scope"]');
+        const diskriMenu = document.getElementById('zd-diskri-menu');
+        const editorNumber = document.getElementById('zd-editor-number');
+        const editorDate = document.getElementById('zd-editor-date');
+        const editorTime = document.getElementById('zd-editor-time');
+        const editorScope = document.getElementById('zd-editor-scope');
+        const editorStatus = document.getElementById('zd-editor-status');
+        let editorRoute = document.getElementById('zd-editor-route');
+        const routeRow = document.getElementById('zd-route-row');
+        const editorExtra = document.getElementById('zd-editor-extra');
+        const editorCloseBtn = document.getElementById('zd-editor-close');
+        const editorSaveBtn = document.getElementById('zd-editor-save');
+        const datasetMenu = document.getElementById('zd-menu-dataset');
+        const datasetMenuTrigger = datasetMenu?.querySelector('.otd-zd-editor-menu-trigger');
+        const diskriInputs = diskriMenu
+            ? Array.from(diskriMenu.querySelectorAll('.otd-zd-diskri-grid input[type="checkbox"]'))
+            : [];
+
+        let activeKey = null;
+        let activePayload = null;
+        let activeDiskriButton = null;
+
+        function setStatus(text) {
+            if (editorStatus) editorStatus.textContent = text;
+        }
+
+        function closeDatasetMenu() {
+            if (!datasetMenu) return;
+            datasetMenu.classList.remove('is-open');
+            datasetMenuTrigger?.setAttribute('aria-expanded', 'false');
+        }
+
+        window.openZugDatenFenster = function () {
+            panel.classList.remove('otd-hidden');
+            if (!panel.style.left || !panel.style.top) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = panel.offsetWidth || 420;
+                const height = panel.offsetHeight || 260;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                panel.style.left = `${left}px`;
+                panel.style.top = `${top}px`;
+            }
+        };
+
+        window.closeZugDatenFenster = function () {
+            panel.classList.add('otd-hidden');
+            diskriMenu?.classList.add('otd-hidden');
+        };
+
+        const okBtn = document.getElementById('zd-ok');
+        function tryOpenEditor() {
+            const number = numberInput?.value.trim() ?? '';
+            if (!number) {
+                numberInput?.focus();
+                return;
+            }
+            const scope = Array.from(scopeInputs).find(input => input.checked)?.value ?? 'ib';
+            const key = number;
+            openZugDatenEditor({ number, scope, key });
+        }
+
+        okBtn?.addEventListener('click', tryOpenEditor);
+        numberInput?.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter') return;
+            event.preventDefault();
+            tryOpenEditor();
+        });
+
+        function createConfig(payload) {
+            return {
+                number: payload.number,
+                scope: payload.scope,
+                route: '',
+                extra: '',
+                diskri: ''
+            };
+        }
+
+        async function loadConfigFromServer(payload) {
+            try {
+                const resp = await fetch('/zd.xml', { cache: 'no-store' });
+                if (!resp.ok) return null;
+                const text = await resp.text();
+                const doc = new DOMParser().parseFromString(text, 'application/xml');
+                const nodes = doc.querySelectorAll('zugdaten > zug');
+                const match = Array.from(nodes).find(node => {
+                    const id = node.getAttribute('id') || '';
+                    const number = node.getAttribute('number') || '';
+                    return id === payload.key || number === payload.number;
+                });
+                if (!match) return null;
+                return {
+                    number: match.getAttribute('number') || payload.number,
+                    scope: match.getAttribute('scope') || payload.scope,
+                    route: match.querySelector('route')?.textContent ?? '',
+                    extra: match.querySelector('extra')?.textContent ?? '',
+                    diskri: match.querySelector('diskri')?.textContent ?? ''
+                };
+            } catch {
+                return null;
+            }
+        }
+
+        async function openZugDatenEditor(payload) {
+            activeKey = payload.key;
+            activePayload = payload;
+            let config = await loadConfigFromServer(payload);
+            if (!config) {
+                config = createConfig(payload);
+            }
+            setStatus('Bereit');
+            if (editorNumber) {
+                editorNumber.textContent = payload.key;
+            }
+            if (editorScope) {
+                editorScope.textContent = config.scope === 'global'
+                    ? 'GLOBAL'
+                    : config.scope === 'ib'
+                        ? 'INFORMATIONSBEREICH (IB)'
+                        : 'RESERVIERTE ZELLEN DES IB';
+            }
+            if (editorDate || editorTime) {
+                const now = new Date();
+                const day = now.getDate().toString().padStart(2, '0');
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const year = now.getFullYear().toString();
+                const hour = now.getHours().toString().padStart(2, '0');
+                const minute = now.getMinutes().toString().padStart(2, '0');
+                if (editorDate) editorDate.textContent = `${day}.${month}.${year}`;
+                if (editorTime) editorTime.textContent = `${hour}:${minute}`;
+            }
+            if (routeRow) {
+                routeRow.innerHTML = '';
+                const parts = (config.route ?? '').split('-').map(p => p.trim()).filter(Boolean);
+                const diskriParts = (config.diskri ?? '').split('-').map(p => p.trim());
+                if (parts.length === 0) {
+                    parts.push('');
+                }
+                parts.forEach((part, index) => {
+                    const diskriValue = diskriParts[index] ?? '';
+                    addRouteField(part, diskriValue, index < parts.length - 1);
+                });
+                const firstInput = routeRow.querySelector('input');
+                if (firstInput) {
+                    firstInput.id = 'zd-editor-route';
+                    editorRoute = firstInput;
+                }
+            } else if (editorRoute) {
+                editorRoute.value = config.route ?? '';
+            }
+            if (editorExtra) editorExtra.value = config.extra ?? '';
+            closeZugDatenFenster();
+            editor?.classList.remove('otd-hidden');
+            if (editor && (!editor.style.left || !editor.style.top)) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = editor.offsetWidth || 900;
+                const height = editor.offsetHeight || 520;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                editor.style.left = `${left}px`;
+                editor.style.top = `${top}px`;
+            }
+        }
+
+        async function persistEditor(announce = false) {
+            if (!activeKey || !activePayload) return;
+            const payload = {
+                id: activeKey,
+                number: activePayload.number,
+                scope: activePayload.scope,
+                route: getRouteValue(),
+                extra: editorExtra?.value ?? '',
+                diskri: getDiskriValue()
+            };
+            try {
+                if (announce) setStatus('Speichere ...');
+                await fetch('/zd/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (announce) setStatus('Zugdaten gespeichert');
+            } catch {
+                if (announce) setStatus('Speichern fehlgeschlagen');
+            }
+        }
+
+        window.closeZugDatenEditor = function () {
+            persistEditor();
+            editor?.classList.add('otd-hidden');
+            diskriMenu?.classList.add('otd-hidden');
+        };
+
+        editorCloseBtn?.addEventListener('click', () => {
+            window.closeZugDatenEditor();
+        });
+
+        editorSaveBtn?.addEventListener('click', () => {
+            persistEditor(true);
+            closeDatasetMenu();
+        });
+
+        datasetMenuTrigger?.addEventListener('click', (event) => {
+            event.stopPropagation();
+            if (!datasetMenu) return;
+            const next = !datasetMenu.classList.contains('is-open');
+            datasetMenu.classList.toggle('is-open', next);
+            datasetMenuTrigger.setAttribute('aria-expanded', next ? 'true' : 'false');
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key !== 'Escape') return;
+            if (!editor || editor.classList.contains('otd-hidden')) return;
+            window.closeZugDatenEditor();
+        });
+
+        editorExtra?.addEventListener('input', persistEditor);
+
+        function getRouteValue() {
+            if (!routeRow) {
+                return editorRoute?.value ?? '';
+            }
+            const inputs = Array.from(routeRow.querySelectorAll('input'));
+            return inputs.map(input => input.value.trim()).filter(Boolean).join('-');
+        }
+
+        function getDiskriValue() {
+            if (!routeRow) {
+                return '';
+            }
+            const buttons = Array.from(routeRow.querySelectorAll('.otd-zd-diskri-trigger'));
+            return buttons.map(btn => (btn.dataset.diskri ?? '').trim()).filter(Boolean).join('-');
+        }
+
+        function syncDiskriMenu(value) {
+            const active = new Set((value ?? '').split(''));
+            diskriInputs.forEach(input => {
+                input.checked = active.has(input.value);
+            });
+        }
+
+        function updateDiskriButtonFromMenu() {
+            if (!activeDiskriButton) return;
+            const value = diskriInputs.filter(input => input.checked).map(input => input.value).join('');
+            activeDiskriButton.dataset.diskri = value;
+            activeDiskriButton.textContent = value;
+        }
+
+        function addRouteField(value = '', diskriValue = '', addSeparator = false) {
+            if (!routeRow) return;
+            const lastField = routeRow.lastElementChild;
+            if (lastField && !lastField.querySelector('span')) {
+                const sep = document.createElement('span');
+                sep.textContent = '-';
+                lastField.appendChild(sep);
+            }
+            const field = document.createElement('div');
+            field.className = 'otd-zd-route-field';
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = value;
+            input.addEventListener('keydown', (event) => {
+                if (event.key !== 'Enter') return;
+                event.preventDefault();
+                if (input.value.trim() !== '') {
+                    addRouteField('');
+                }
+            });
+            input.addEventListener('input', () => persistEditor());
+            const diskriBtn = document.createElement('button');
+            diskriBtn.type = 'button';
+            diskriBtn.className = 'otd-zd-diskri-trigger';
+            diskriBtn.dataset.diskri = diskriValue;
+            diskriBtn.textContent = diskriValue;
+            field.appendChild(input);
+            field.appendChild(diskriBtn);
+            if (addSeparator) {
+                const sep = document.createElement('span');
+                sep.textContent = '-';
+                field.appendChild(sep);
+            }
+            routeRow.appendChild(field);
+            input.focus();
+        }
+
+        routeRow?.addEventListener('click', (event) => {
+            const btn = event.target.closest('.otd-zd-diskri-trigger');
+            if (!btn) return;
+            if (!diskriMenu) return;
+            if (!diskriMenu.classList.contains('otd-hidden') && activeDiskriButton === btn) {
+                diskriMenu.classList.add('otd-hidden');
+                return;
+            }
+            activeDiskriButton = btn;
+            syncDiskriMenu(btn.dataset.diskri ?? btn.textContent ?? '');
+            const rect = btn.getBoundingClientRect();
+            diskriMenu.style.left = `${rect.left}px`;
+            diskriMenu.style.top = `${rect.bottom + 6}px`;
+            diskriMenu.classList.remove('otd-hidden');
+        });
+
+        diskriMenu?.addEventListener('change', (event) => {
+            const input = event.target;
+            if (!(input instanceof HTMLInputElement)) return;
+            if (input.type !== 'checkbox') return;
+            updateDiskriButtonFromMenu();
+            persistEditor();
+        });
+
+        document.addEventListener('click', (event) => {
+            if (diskriMenu?.classList.contains('otd-hidden')) return;
+            if (diskriMenu?.contains(event.target)) return;
+            if (event.target.closest('.otd-zd-diskri-trigger')) return;
+            diskriMenu?.classList.add('otd-hidden');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!datasetMenu?.classList.contains('is-open')) return;
+            if (datasetMenu.contains(event.target)) return;
+            closeDatasetMenu();
+        });
+    })();
+</script>
+
+
+
+
+
+

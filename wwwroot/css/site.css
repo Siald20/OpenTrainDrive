@@ -2,6 +2,127 @@ html {
   font-size: 14px;
 }
 
+:root {
+  --otd-font: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+  --otd-shell-bg: #5a657d;
+  --otd-shell-bg-alt: #566177;
+  --otd-topbar-bg: #1f2b45;
+  --otd-topbar-border: #101826;
+  --otd-panel-bg: #23314f;
+  --otd-panel-alt: #1f2b45;
+  --otd-panel-muted: #1b263f;
+  --otd-panel-border: #0f1626;
+  --otd-panel-border-soft: #101826;
+  --otd-panel-border-line: #23324f;
+  --otd-titlebar-start: #0f274f;
+  --otd-titlebar-end: #0c1f3f;
+  --otd-titlebar-text: #cfe0ff;
+  --otd-text: #e7ecf5;
+  --otd-text-muted: #a9b6d6;
+  --otd-text-bright: #ffffff;
+  --otd-highlight: #f0e34a;
+  --otd-status: #f3d25c;
+  --otd-button-bg: #2a3859;
+  --otd-button-hover: #36466d;
+  --otd-input-bg: #1b263f;
+  --otd-input-border: #0f1626;
+  --otd-dropdown-bg: #2a3859;
+  --otd-dropdown-hover: #36466d;
+  --otd-shadow: rgba(0, 0, 0, 0.35);
+  --otd-shadow-strong: rgba(0, 0, 0, 0.55);
+  --otd-accent: #1e8bff;
+  --otd-grid: rgba(255, 255, 255, 0.08);
+  --otd-success: #1f6e39;
+  --otd-info: #215a9b;
+  --otd-danger: #c41519;
+  --otd-neutral: #5a626e;
+  --otd-canvas-bg: #000000;
+  --otd-symbol-bg: #ffffff;
+  --otd-symbol-fg: #000000;
+  --otd-symbol-accent: #000000;
+  --otd-symbol-border: transparent;
+}
+
+html[data-otd-theme="light"] {
+  --otd-shell-bg: #e6e9ef;
+  --otd-shell-bg-alt: #dfe3eb;
+  --otd-topbar-bg: #f2f4f8;
+  --otd-topbar-border: #c5cfdf;
+  --otd-panel-bg: #f7f9fc;
+  --otd-panel-alt: #eef2f7;
+  --otd-panel-muted: #ffffff;
+  --otd-panel-border: #b7c2d4;
+  --otd-panel-border-soft: #c5cfdf;
+  --otd-panel-border-line: #d4dbe8;
+  --otd-titlebar-start: #d7deea;
+  --otd-titlebar-end: #cfd7e5;
+  --otd-titlebar-text: #1f2b45;
+  --otd-text: #1f2b45;
+  --otd-text-muted: #55627a;
+  --otd-text-bright: #0f1626;
+  --otd-highlight: #f2c200;
+  --otd-status: #b48800;
+  --otd-button-bg: #dfe4ee;
+  --otd-button-hover: #cfd6e4;
+  --otd-input-bg: #ffffff;
+  --otd-input-border: #c5cfdf;
+  --otd-dropdown-bg: #eef2f7;
+  --otd-dropdown-hover: #d7dde9;
+  --otd-shadow: rgba(15, 22, 38, 0.15);
+  --otd-shadow-strong: rgba(15, 22, 38, 0.25);
+  --otd-accent: #1b67c9;
+  --otd-grid: rgba(31, 43, 69, 0.12);
+  --otd-success: #2a7a3d;
+  --otd-info: #2b5ea1;
+  --otd-danger: #b02024;
+  --otd-neutral: #8a94a5;
+  --otd-canvas-bg: #111318;
+  --otd-symbol-bg: #ffffff;
+  --otd-symbol-fg: #1f2b45;
+  --otd-symbol-accent: #1f2b45;
+  --otd-symbol-border: #c5cfdf;
+}
+
+html[data-otd-theme="contrast"] {
+  --otd-shell-bg: #000000;
+  --otd-shell-bg-alt: #0b0b0b;
+  --otd-topbar-bg: #000000;
+  --otd-topbar-border: #ffffff;
+  --otd-panel-bg: #000000;
+  --otd-panel-alt: #0f0f0f;
+  --otd-panel-muted: #000000;
+  --otd-panel-border: #ffffff;
+  --otd-panel-border-soft: #ffffff;
+  --otd-panel-border-line: #bfbfbf;
+  --otd-titlebar-start: #000000;
+  --otd-titlebar-end: #000000;
+  --otd-titlebar-text: #ffffff;
+  --otd-text: #ffffff;
+  --otd-text-muted: #e0e0e0;
+  --otd-text-bright: #ffffff;
+  --otd-highlight: #ffff00;
+  --otd-status: #ffff00;
+  --otd-button-bg: #111111;
+  --otd-button-hover: #1f1f1f;
+  --otd-input-bg: #000000;
+  --otd-input-border: #ffffff;
+  --otd-dropdown-bg: #111111;
+  --otd-dropdown-hover: #1f1f1f;
+  --otd-shadow: rgba(255, 255, 255, 0.2);
+  --otd-shadow-strong: rgba(255, 255, 255, 0.35);
+  --otd-accent: #00ffff;
+  --otd-grid: rgba(255, 255, 255, 0.35);
+  --otd-success: #00ff00;
+  --otd-info: #00aaff;
+  --otd-danger: #ff0000;
+  --otd-neutral: #777777;
+  --otd-canvas-bg: #000000;
+  --otd-symbol-bg: #000000;
+  --otd-symbol-fg: #ffffff;
+  --otd-symbol-accent: #ffffff;
+  --otd-symbol-border: #ffffff;
+}
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -40,26 +161,26 @@ body.full-bleed main {
 
 .otd-shell {
   min-height: 100vh;
-  background: #5a657d;
-  color: #e7ecf5;
-  font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+  background: var(--otd-shell-bg);
+  color: var(--otd-text);
+  font-family: var(--otd-font);
   display: flex;
   flex-direction: column;
 }
 
 .otd-topbar {
-  background: #1f2b45;
+  background: var(--otd-topbar-bg);
   height: 34px;
   display: flex;
   align-items: center;
   gap: 18px;
   padding: 0 10px;
-  border-bottom: 1px solid #101826;
+  border-bottom: 1px solid var(--otd-topbar-border);
 }
 
 .otd-brand-badge {
-  background: #f0e34a;
-  color: #1f2b45;
+  background: var(--otd-highlight);
+  color: var(--otd-topbar-bg);
   font-weight: 700;
   letter-spacing: 0.5px;
   padding: 2px 6px;
@@ -82,7 +203,7 @@ body.full-bleed main {
 
 .otd-brand-trigger:hover,
 .otd-brand-trigger:focus {
-  color: #f6f7fb;
+  color: var(--otd-text-bright);
   outline: none;
 }
 
@@ -111,7 +232,7 @@ body.full-bleed main {
 .otd-nav-trigger {
   background: transparent;
   border: 0;
-  color: #e4ebf7;
+  color: var(--otd-text);
   font: inherit;
   padding: 0;
   cursor: pointer;
@@ -119,7 +240,7 @@ body.full-bleed main {
 
 .otd-nav-trigger:hover,
 .otd-nav-trigger:focus {
-  color: #f6f7fb;
+  color: var(--otd-text-bright);
   outline: none;
 }
 
@@ -128,11 +249,11 @@ body.full-bleed main {
   top: 100%;
   left: 0;
   min-width: 170px;
-  background: #2a3859;
-  border: 1px solid #101826;
+  background: var(--otd-dropdown-bg);
+  border: 1px solid var(--otd-panel-border-soft);
   border-radius: 3px;
   padding: 6px 0;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 8px 18px var(--otd-shadow);
   display: none;
   z-index: 10;
 }
@@ -140,15 +261,15 @@ body.full-bleed main {
 .otd-dropdown a {
   display: block;
   padding: 6px 12px;
-  color: #e4ebf7;
+  color: var(--otd-text);
   text-decoration: none;
   white-space: nowrap;
 }
 
 .otd-dropdown a:hover,
 .otd-dropdown a:focus {
-  background: #36466d;
-  color: #ffffff;
+  background: var(--otd-dropdown-hover);
+  color: var(--otd-text-bright);
   outline: none;
 }
 
@@ -162,15 +283,15 @@ body.full-bleed main {
   background: transparent;
   border: 0;
   padding: 6px 12px;
-  color: #e4ebf7;
+  color: var(--otd-text);
   font: inherit;
   cursor: pointer;
 }
 
 .otd-dropdown-button:hover,
 .otd-dropdown-button:focus {
-  background: #36466d;
-  color: #ffffff;
+  background: var(--otd-dropdown-hover);
+  color: var(--otd-text-bright);
   outline: none;
 }
 
@@ -186,7 +307,7 @@ body.full-bleed main {
 
 .otd-dropdown-separator {
   height: 1px;
-  background: rgba(231, 236, 245, 0.15);
+  background: var(--otd-panel-border-line);
   margin: 6px 0;
 }
 
@@ -202,13 +323,13 @@ body.full-bleed main {
 .otd-status {
   margin-left: auto;
   font-size: 12px;
-  color: #f3d25c;
+  color: var(--otd-status);
 }
 
 .otd-workspace {
   flex: 1;
   position: relative;
-  background: linear-gradient(180deg, #5a657d 0%, #566177 100%);
+  background: linear-gradient(180deg, var(--otd-shell-bg) 0%, var(--otd-shell-bg-alt) 100%);
   overflow: auto;
 }
 
@@ -218,9 +339,9 @@ body.full-bleed main {
   z-index: 50;
   width: 720px;
   height: 340px;
-  background: #2a3a5a;
-  border: 2px solid #0f1626;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+  background: var(--otd-panel-bg);
+  border: 2px solid var(--otd-panel-border);
+  box-shadow: 0 14px 40px var(--otd-shadow-strong);
 }
 
 .otd-lupenbild-titlebar {
@@ -229,9 +350,9 @@ body.full-bleed main {
   align-items: center;
   justify-content: space-between;
   padding: 0 8px;
-  background: linear-gradient(180deg, #0f274f 0%, #0c1f3f 100%);
-  color: #cfe0ff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, var(--otd-titlebar-start) 0%, var(--otd-titlebar-end) 100%);
+  color: var(--otd-titlebar-text);
+  border-bottom: 1px solid var(--otd-panel-border-line);
   cursor: default;
   user-select: none;
 }
@@ -252,9 +373,9 @@ body.full-bleed main {
 .otd-lupenbild-close {
   width: 24px;
   height: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(10, 18, 34, 0.55);
-  color: #e7ecf5;
+  border: 1px solid var(--otd-panel-border-line);
+  background: var(--otd-panel-muted);
+  color: var(--otd-text);
   line-height: 1;
   display: inline-flex;
   align-items: center;
@@ -263,7 +384,7 @@ body.full-bleed main {
 }
 
 .otd-lupenbild-close:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--otd-button-hover);
 }
 
 .otd-lupenbild-menubar {
@@ -272,9 +393,9 @@ body.full-bleed main {
   align-items: center;
   gap: 18px;
   padding: 0 10px;
-  background: #2a3a5a;
-  color: rgba(231, 236, 245, 0.75);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--otd-panel-bg);
+  color: var(--otd-text-muted);
+  border-bottom: 1px solid var(--otd-panel-border-line);
 }
 
 .otd-lupenbild-menuitem {
@@ -288,7 +409,7 @@ body.full-bleed main {
 
 .otd-lupenbild-menuitem:hover {
   opacity: 1;
-  color: #e7ecf5;
+  color: var(--otd-text);
 }
 
 .otd-lupe-frame {
@@ -297,13 +418,13 @@ body.full-bleed main {
 
 .otd-lupe-canvas {
   height: calc(340px - 28px - 36px - 20px);
-  border: 3px solid #1e8bff;
-  background: #000;
+  border: 3px solid var(--otd-accent);
+  background: var(--otd-canvas-bg);
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.7);
 }
 
 .otd-lupenbild--lupe {
-  border-color: #0b1222;
+  border-color: var(--otd-panel-border);
 }
 
 /* Removed unused symbol palette containers */
@@ -319,11 +440,11 @@ body.full-bleed main {
   bottom: 10px;
   height: 300px;
   z-index: 40;
-  background: #40485a;
-  color: #e7ecf5;
-  font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+  background: var(--otd-panel-alt);
+  color: var(--otd-text);
+  font-family: var(--otd-font);
   padding: 10px;
-  border: 1px solid #1b2438;
+  border: 1px solid var(--otd-panel-border-soft);
 }
 
 .otd-melde-left {
@@ -336,15 +457,15 @@ body.full-bleed main {
 
 .otd-melde-shell {
   min-height: 100vh;
-  background: #40485a;
-  color: #e7ecf5;
-  font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+  background: var(--otd-panel-alt);
+  color: var(--otd-text);
+  font-family: var(--otd-font);
   padding: 10px;
 }
 
 .otd-melde-titlebar {
-  background: #1f2b45;
-  border: 1px solid #101826;
+  background: var(--otd-topbar-bg);
+  border: 1px solid var(--otd-panel-border-soft);
   border-bottom: 0;
   padding: 6px 10px;
   display: flex;
@@ -355,17 +476,17 @@ body.full-bleed main {
 
 .otd-melde-close,
 .otd-melde-close-button {
-  background: #2a3859;
-  border: 1px solid #101826;
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
   padding: 2px 8px;
   font-size: 12px;
-  color: #e7ecf5;
+  color: var(--otd-text);
   cursor: pointer;
 }
 
 .otd-melde-close-button:hover,
 .otd-melde-close-button:focus {
-  background: #36466d;
+  background: var(--otd-button-hover);
   outline: none;
 }
 
@@ -373,8 +494,8 @@ body.full-bleed main {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
-  border: 1px solid #101826;
-  background: #1f2b45;
+  border: 1px solid var(--otd-panel-border-soft);
+  background: var(--otd-panel-alt);
   padding: 8px;
 }
 
@@ -388,8 +509,8 @@ body.full-bleed main {
 }
 
 .otd-melde-column {
-  border: 1px solid #293659;
-  background: #223050;
+  border: 1px solid var(--otd-panel-border-line);
+  background: var(--otd-panel-bg);
   display: flex;
   flex-direction: column;
   min-height: 200px;
@@ -397,9 +518,9 @@ body.full-bleed main {
 
 .otd-melde-header {
   padding: 6px 8px;
-  border-bottom: 1px solid #293659;
+  border-bottom: 1px solid var(--otd-panel-border-line);
   font-size: 13px;
-  background: #1c2742;
+  background: var(--otd-panel-alt);
 }
 
 .otd-melde-body {
@@ -409,7 +530,7 @@ body.full-bleed main {
 .otd-melde-item {
   padding: 6px 8px;
   font-size: 12px;
-  border-bottom: 1px solid #23324f;
+  border-bottom: 1px solid var(--otd-panel-border-line);
 }
 
 .otd-melde-item:last-child {
@@ -417,26 +538,27 @@ body.full-bleed main {
 }
 
 .otd-melde-item-green {
-  background: #1f6e39;
-  color: #eaf6ee;
+  background: var(--otd-success);
+  color: var(--otd-text-bright);
 }
 
 .otd-melde-item-blue {
-  background: #215a9b;
-  color: #eaf1fb;
+  background: var(--otd-info);
+  color: var(--otd-text-bright);
 }
 
 .otd-melde-item-red {
-  background: #c41519;
-  color: #fff0f0;
+  background: var(--otd-danger);
+  color: var(--otd-text-bright);
 }
 
 .otd-melde-item-gray {
-  background: #5a626e;
-  color: #f1f1f1;
+  background: var(--otd-neutral);
+  color: var(--otd-text-bright);
 }
 
 .otd-melde-item-ack {
   background: transparent;
-  color: #c9d3e6;
+  color: var(--otd-text-muted);
 }
+

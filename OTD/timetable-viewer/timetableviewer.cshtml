@@ -1,0 +1,233 @@
+<div class="otd-timetableviewer-window otd-hidden" id="otd-timetableviewer" role="dialog" aria-label="Fahrplananzeiger">
+    <div class="otd-timetableviewer-titlebar" data-drag-handle="true">
+        <span class="otd-timetableviewer-title">Fahrplananzeiger</span>
+        <button class="otd-timetableviewer-close" type="button" aria-label="Schliessen" onclick="closeTimetableViewer();">X</button>
+    </div>
+    <div class="otd-timetableviewer-board" aria-live="polite">
+        <div class="otd-timetableviewer-head">
+            <div class="otd-timetableviewer-head-icon" aria-hidden="true">
+                <svg viewBox="0 0 64 64" role="presentation">
+                    <rect x="6" y="10" width="52" height="44" rx="6" ry="6" />
+                    <path d="M20 46h24" />
+                    <path d="M20 32h24" />
+                    <path d="M20 20h24" />
+                </svg>
+            </div>
+            <div class="otd-timetableviewer-head-text">
+                <div class="otd-timetableviewer-head-title">Abfahrt</div>
+                <div class="otd-timetableviewer-head-sub">Depart - Partenza</div>
+            </div>
+            <button class="otd-timetableviewer-fullscreen" type="button" id="timetableviewer-fullscreen">Vollbild</button>
+            <div class="otd-timetableviewer-clock" id="timetableviewer-clock">--:--</div>
+        </div>
+        <div class="otd-timetableviewer-columns">
+            <div>Abfahrt</div>
+            <div>Zug</div>
+            <div>Kategorie</div>
+            <div>Ziel</div>
+            <div>Gleis</div>
+            <div>Hinweis</div>
+        </div>
+        <div class="otd-timetableviewer-rows" id="timetableviewer-rows"></div>
+        <div class="otd-timetableviewer-empty" id="timetableviewer-empty">Keine Fahrplaene verfuegbar.</div>
+    </div>
+</div>
+
+<script>
+    (function timetableViewer() {
+        const panel = document.getElementById('otd-timetableviewer');
+        if (!panel) return;
+
+        const rowsBody = document.getElementById('timetableviewer-rows');
+        const emptyEl = document.getElementById('timetableviewer-empty');
+        const clockEl = document.getElementById('timetableviewer-clock');
+        const fullscreenBtn = document.getElementById('timetableviewer-fullscreen');
+
+        const storageKey = 'otd-timetable';
+        const state = {
+            trains: [],
+            schedules: {},
+            intervalId: null
+        };
+
+        function setClock() {
+            if (!clockEl) return;
+            const now = new Date();
+            const hh = now.getHours().toString().padStart(2, '0');
+            const mm = now.getMinutes().toString().padStart(2, '0');
+            clockEl.textContent = `${hh}:${mm}`;
+        }
+
+        function parseTime(text) {
+            if (!text) return null;
+            const match = text.trim().match(/^(\d{1,2})[:.](\d{2})$/);
+            if (!match) return null;
+            const hours = Number.parseInt(match[1], 10);
+            const minutes = Number.parseInt(match[2], 10);
+            if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return null;
+            if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null;
+            return hours * 60 + minutes;
+        }
+
+        function timeToText(totalMinutes) {
+            const minutes = totalMinutes % 60;
+            const hours = Math.floor(totalMinutes / 60) % 24;
+            const hh = hours.toString().padStart(2, '0');
+            const mm = minutes.toString().padStart(2, '0');
+            return `${hh}:${mm}`;
+        }
+
+        function loadSchedules() {
+            try {
+                const raw = localStorage.getItem(storageKey);
+                state.schedules = raw ? JSON.parse(raw) : {};
+            } catch {
+                state.schedules = {};
+            }
+        }
+
+        async function loadTrains() {
+            try {
+                const resp = await fetch('/train.xml', { cache: 'no-store' });
+                if (!resp.ok) {
+                    state.trains = [];
+                    return;
+                }
+                const xml = await resp.text();
+                const doc = new DOMParser().parseFromString(xml, 'application/xml');
+                const nodes = doc.querySelectorAll('trains > train');
+                const trainNodes = nodes.length > 0 ? nodes : doc.querySelectorAll('train');
+                state.trains = Array.from(trainNodes).map(node => ({
+                    id: node.getAttribute('id') || crypto.randomUUID(),
+                    name: node.querySelector('name')?.textContent ?? '',
+                    category: node.querySelector('category')?.textContent ?? ''
+                }));
+            } catch {
+                state.trains = [];
+            }
+        }
+
+        function getTrainName(trainId) {
+            const train = state.trains.find(t => t.id === trainId);
+            return train?.name?.trim() ? train.name.trim() : 'Unbekannt';
+        }
+
+        function getTrainCategory(trainId) {
+            const train = state.trains.find(t => t.id === trainId);
+            return train?.category?.trim() ? train.category.trim() : '-';
+        }
+
+        function collectDepartures() {
+            const now = new Date();
+            const nowMinutes = now.getHours() * 60 + now.getMinutes();
+            const departures = [];
+
+            for (const [trainId, rows] of Object.entries(state.schedules || {})) {
+                if (!Array.isArray(rows)) continue;
+                for (const row of rows) {
+                    const minutes = parseTime(row.departure);
+                    if (minutes === null) continue;
+                    const delta = minutes >= nowMinutes ? minutes - nowMinutes : minutes + 1440 - nowMinutes;
+                    departures.push({
+                        trainId,
+                        time: minutes,
+                        delta,
+                        station: row.station ?? '',
+                        destination: row.destination ?? '',
+                        platform: row.platform ?? '',
+                        notes: row.notes ?? ''
+                    });
+                }
+            }
+
+            departures.sort((a, b) => a.delta - b.delta);
+            return departures;
+        }
+
+        function render() {
+            if (!rowsBody) return;
+            rowsBody.innerHTML = '';
+            const departures = collectDepartures();
+            if (departures.length === 0) {
+                emptyEl?.classList.remove('is-hidden');
+                return;
+            }
+            emptyEl?.classList.add('is-hidden');
+            const styles = getComputedStyle(rowsBody);
+            const rowHeight = Number.parseFloat(styles.getPropertyValue('--otd-row-height')) || 32;
+            const gap = Number.parseFloat(styles.rowGap) || 4;
+            const maxRows = Math.max(1, Math.floor((rowsBody.clientHeight + gap) / (rowHeight + gap))) || 12;
+            departures.slice(0, maxRows).forEach((entry, index) => {
+                const rowEl = document.createElement('div');
+                rowEl.className = 'otd-timetableviewer-row';
+                if (index === 0) rowEl.classList.add('is-next');
+                rowEl.innerHTML = `
+                    <div class="otd-timetableviewer-time">${timeToText(entry.time)}</div>
+                    <div class="otd-timetableviewer-train">${getTrainName(entry.trainId)}</div>
+                    <div class="otd-timetableviewer-category">${getTrainCategory(entry.trainId)}</div>
+                    <div class="otd-timetableviewer-destination">${entry.destination || entry.station}</div>
+                    <div class="otd-timetableviewer-platform">${entry.platform}</div>
+                    <div class="otd-timetableviewer-notes">${entry.notes}</div>
+                `;
+                rowsBody.appendChild(rowEl);
+            });
+        }
+
+        async function refresh() {
+            setClock();
+            loadSchedules();
+            await loadTrains();
+            render();
+        }
+
+        function startTimer() {
+            if (state.intervalId) return;
+            state.intervalId = window.setInterval(() => {
+                refresh();
+            }, 30000);
+        }
+
+        function stopTimer() {
+            if (!state.intervalId) return;
+            window.clearInterval(state.intervalId);
+            state.intervalId = null;
+        }
+
+        window.openTimetableViewer = function () {
+            panel.classList.remove('otd-hidden');
+            if (!panel.style.left || !panel.style.top) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = panel.offsetWidth || 860;
+                const height = panel.offsetHeight || 520;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                panel.style.left = `${left}px`;
+                panel.style.top = `${top}px`;
+            }
+            refresh();
+            startTimer();
+        };
+
+        window.closeTimetableViewer = function () {
+            panel.classList.add('otd-hidden');
+            stopTimer();
+        };
+
+        function updateFullscreenButton() {
+            if (!fullscreenBtn) return;
+            fullscreenBtn.textContent = document.fullscreenElement ? 'Zurueck' : 'Vollbild';
+        }
+
+        fullscreenBtn?.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                panel.requestFullscreen?.().catch(() => { });
+            } else {
+                document.exitFullscreen?.().catch(() => { });
+            }
+        });
+
+        document.addEventListener('fullscreenchange', updateFullscreenButton);
+        updateFullscreenButton();
+    })();
+</script>

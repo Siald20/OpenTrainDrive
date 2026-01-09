@@ -1,0 +1,110 @@
+<div class="otd-exit-window otd-hidden" id="otd-exit" role="dialog" aria-label="Beenden">
+    <div class="otd-exit-titlebar" data-drag-handle="true">
+        <div class="otd-exit-title">
+            <span class="otd-exit-title-icon" aria-hidden="true"></span>
+            <span>Beenden</span>
+        </div>
+        <button class="otd-exit-close" type="button" aria-label="Schliessen" onclick="closeExitFenster();">X</button>
+    </div>
+    <div class="otd-exit-body">
+        <div class="otd-exit-hint">Bitte waehlen Sie eine der folgenden Optionen:</div>
+        <div class="otd-exit-options">
+            <label><input type="radio" name="exit-action" value="app-exit" checked /> Programm beenden</label>
+            <label><input type="radio" name="exit-action" value="switch" /> Benutzerwechsel</label>
+            <label><input type="radio" name="exit-action" value="logout" /> Abmelden</label>
+            <label><input type="radio" name="exit-action" value="reload" /> Bedienoberflaeche neu starten</label>
+            <label><input type="radio" name="exit-action" value="restart" /> Rechner neu starten</label>
+            <label><input type="radio" name="exit-action" value="shutdown" /> Rechner herunterfahren</label>
+        </div>
+        <label class="otd-exit-save">
+            <input type="checkbox" id="exit-save-state" />
+            Zustand speichern
+        </label>
+        <div class="otd-exit-footer">
+            <select id="exit-scope">
+                <option value="">--</option>
+                <option value="all">Alle Zustaende</option>
+                <option value="plan">Gleisplan</option>
+                <option value="timetable">Fahrplaene</option>
+            </select>
+            <div class="otd-exit-actions">
+                <button type="button" id="exit-ok">OK</button>
+                <button type="button" id="exit-cancel" onclick="closeExitFenster();">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="exit-stop-form" class="otd-hidden" action="/system/exit" method="post"></form>
+<iframe id="exit-stop-target" name="exit-stop-target" class="otd-hidden" title="exit-stop"></iframe>
+
+<script>
+    (function exitWindow() {
+        const panel = document.getElementById('otd-exit');
+        if (!panel) return;
+
+        const okBtn = document.getElementById('exit-ok');
+        const saveCheck = document.getElementById('exit-save-state');
+        const stopForm = document.getElementById('exit-stop-form');
+        const stopTarget = document.getElementById('exit-stop-target');
+
+        window.openExitFenster = function () {
+            panel.classList.remove('otd-hidden');
+            if (!panel.style.left || !panel.style.top) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = panel.offsetWidth || 520;
+                const height = panel.offsetHeight || 360;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                panel.style.left = `${left}px`;
+                panel.style.top = `${top}px`;
+            }
+        };
+
+        window.closeExitFenster = function () {
+            panel.classList.add('otd-hidden');
+        };
+
+        okBtn?.addEventListener('click', async () => {
+            const action = panel.querySelector('input[name="exit-action"]:checked')?.value ?? 'app-exit';
+            if (saveCheck?.checked) {
+                // Placeholder for future state save actions
+            }
+            if (action === 'app-exit') {
+                try {
+                    await fetch(stopForm?.getAttribute('action') || '/system/exit', {
+                        method: 'POST',
+                        credentials: 'same-origin'
+                    });
+                } catch {
+                    if (stopForm && stopTarget) {
+                        stopForm.setAttribute('target', stopTarget.name);
+                        stopForm.submit();
+                    }
+                }
+                return;
+            }
+            if (action === 'switch' || action === 'logout') {
+                if (typeof window.otdLogout === 'function') {
+                    await window.otdLogout();
+                }
+                closeExitFenster();
+                return;
+            }
+            if (action === 'reload') {
+                location.reload();
+                return;
+            }
+            if (action === 'restart') {
+                await fetch('/system/restart', { method: 'POST' });
+                closeExitFenster();
+                return;
+            }
+            if (action === 'shutdown') {
+                await fetch('/system/shutdown', { method: 'POST' });
+                closeExitFenster();
+            }
+        });
+    })();
+</script>

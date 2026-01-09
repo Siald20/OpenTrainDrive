@@ -1,0 +1,233 @@
+.otd-drive-window {
+  position: absolute;
+  z-index: 46;
+  top: 60px;
+  left: 40px;
+  width: 360px;
+  background: var(--otd-panel-bg);
+  color: var(--otd-text);
+  border: 2px solid var(--otd-panel-border);
+  box-shadow: 0 12px 30px var(--otd-shadow-strong);
+  font-family: var(--otd-font);
+}
+
+.otd-drive-titlebar {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background: linear-gradient(180deg, var(--otd-titlebar-start) 0%, var(--otd-titlebar-end) 100%);
+  color: var(--otd-titlebar-text);
+  border-bottom: 1px solid var(--otd-panel-border-line);
+  cursor: grab;
+  user-select: none;
+}
+
+.otd-drive-titlebar:active {
+  cursor: grabbing;
+}
+
+.otd-drive-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.otd-drive-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.otd-drive-status {
+  color: var(--otd-status);
+}
+
+.otd-drive-close {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--otd-panel-border-line);
+  background: var(--otd-panel-muted);
+  color: var(--otd-text);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.otd-drive-close:hover {
+  background: var(--otd-button-hover);
+}
+
+.otd-drive-body {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.otd-drive-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.otd-drive-field select {
+  background: var(--otd-input-bg);
+  border: 1px solid var(--otd-input-border);
+  color: var(--otd-text);
+  padding: 6px 8px;
+  font: inherit;
+}
+
+.otd-drive-controls {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 10px;
+}
+
+.otd-drive-direction-block,
+.otd-drive-speed-block {
+  border: 1px solid var(--otd-panel-border-soft);
+  background: var(--otd-panel-alt);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.otd-drive-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.otd-drive-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--otd-text-muted);
+}
+
+.otd-drive-direction {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.otd-drive-direction button,
+.otd-drive-functions button {
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
+  padding: 6px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.otd-drive-direction button:hover,
+.otd-drive-functions button:hover {
+  background: var(--otd-button-hover);
+}
+
+.otd-drive-direction button.is-active,
+.otd-drive-functions button.is-active {
+  background: var(--otd-highlight);
+  color: #000000;
+}
+
+.otd-drive-speed-display {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--otd-text-bright);
+  text-align: center;
+}
+
+.otd-drive-speed-max {
+  font-size: 12px;
+  color: var(--otd-text-muted);
+  margin-left: 6px;
+}
+
+.otd-drive-speed-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--otd-text-muted);
+  text-align: center;
+}
+
+.otd-drive-gauge {
+  position: relative;
+  height: 120px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  --otd-needle-rotation: -120deg;
+}
+
+.otd-drive-gauge-arc {
+  width: 220px;
+  height: 110px;
+  border: 6px solid var(--otd-panel-border-soft);
+  border-bottom: none;
+  border-radius: 220px 220px 0 0;
+  background: var(--otd-panel-muted);
+  box-sizing: border-box;
+}
+
+.otd-drive-gauge-needle {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  width: 3px;
+  height: 70px;
+  background: var(--otd-accent);
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(var(--otd-needle-rotation));
+  transition: transform 120ms linear;
+}
+
+.otd-drive-gauge-center {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--otd-highlight);
+  border: 2px solid var(--otd-panel-border-line);
+  transform: translateX(-50%);
+}
+
+.otd-drive-gauge-readout {
+  position: absolute;
+  bottom: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--otd-text-bright);
+}
+
+.otd-drive-gauge-max {
+  position: absolute;
+  bottom: -14px;
+  font-size: 11px;
+  color: var(--otd-text-muted);
+}
+
+.otd-drive-functions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.otd-drive-section input[type="range"] {
+  width: 100%;
+}

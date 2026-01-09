@@ -1,0 +1,410 @@
+<div class="otd-timetable-window otd-hidden" id="otd-timetable" role="dialog" aria-label="Fahrplan">
+    <div class="otd-timetable-titlebar" data-drag-handle="true">
+        <span class="otd-timetable-title">Fahrplan</span>
+        <div class="otd-timetable-title-actions">
+            <span class="otd-timetable-status" id="otd-timetable-status">Bereit</span>
+            <button class="otd-timetable-close" type="button" aria-label="Schliessen" onclick="closeTimetableFenster();">X</button>
+        </div>
+    </div>
+    <div class="otd-timetable-body">
+        <div class="otd-timetable-list">
+            <div class="otd-timetable-list-head">
+                <span>Zuege</span>
+                <button type="button" id="timetable-refresh">Aktualisieren</button>
+            </div>
+            <div class="otd-timetable-list-body" id="timetable-train-list"></div>
+        </div>
+        <div class="otd-timetable-editor">
+            <div class="otd-timetable-editor-head">
+                <div class="otd-timetable-train-name" id="timetable-train-name">Kein Zug ausgewaehlt</div>
+                <div class="otd-timetable-editor-actions">
+                    <button type="button" id="timetable-open-train">Zugdaten</button>
+                    <button type="button" id="timetable-add-row">Halt +</button>
+                    <button type="button" id="timetable-save">Speichern</button>
+                </div>
+            </div>
+            <div class="otd-timetable-train-form" id="timetable-train-form">
+                <label>
+                    Zugname
+                    <input type="text" id="timetable-train-name-input" maxlength="24" />
+                </label>
+                <label>
+                    Vmax (km/h)
+                    <input type="number" id="timetable-train-vmax" min="0" step="0.1" />
+                </label>
+                <div class="otd-timetable-train-length">
+                    Gesamtlaenge: <span id="timetable-train-length">0 cm</span>
+                </div>
+                <button type="button" id="timetable-train-save">Zugdaten speichern</button>
+            </div>
+            <div class="otd-timetable-grid otd-timetable-grid-head">
+                <div>Bahnhof</div>
+                <div>Ziel</div>
+                <div>Ankunft</div>
+                <div>Abfahrt</div>
+                <div>Gleis</div>
+                <div>Hinweis</div>
+                <div></div>
+            </div>
+            <div class="otd-timetable-grid-body" id="timetable-rows"></div>
+            <div class="otd-timetable-empty" id="timetable-empty">Bitte einen Zug waehlen.</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function timetableEditor() {
+        const panel = document.getElementById('otd-timetable');
+        if (!panel) return;
+
+        const statusEl = document.getElementById('otd-timetable-status');
+        const trainList = document.getElementById('timetable-train-list');
+        const trainNameEl = document.getElementById('timetable-train-name');
+        const rowsBody = document.getElementById('timetable-rows');
+        const emptyEl = document.getElementById('timetable-empty');
+        const addRowBtn = document.getElementById('timetable-add-row');
+        const saveBtn = document.getElementById('timetable-save');
+        const refreshBtn = document.getElementById('timetable-refresh');
+        const openTrainBtn = document.getElementById('timetable-open-train');
+        const trainNameInput = document.getElementById('timetable-train-name-input');
+        const trainVmaxInput = document.getElementById('timetable-train-vmax');
+        const trainLengthEl = document.getElementById('timetable-train-length');
+        const trainSaveBtn = document.getElementById('timetable-train-save');
+
+        const storageKey = 'otd-timetable';
+        const state = {
+            trains: [],
+            selectedTrainId: null,
+            schedules: {},
+            loadedOnce: false
+        };
+
+        function setStatus(text) {
+            if (statusEl) statusEl.textContent = text;
+        }
+
+        function formatLength(value) {
+            const text = (value ?? '').toString().trim();
+            if (!text) return '0 cm';
+            const num = Number.parseFloat(text.replace(',', '.'));
+            if (Number.isFinite(num) && !/[a-zA-Z]/.test(text)) {
+                return `${text} cm`;
+            }
+            return text;
+        }
+
+        function loadFromStorage() {
+            try {
+                const raw = localStorage.getItem(storageKey);
+                if (!raw) return;
+                const parsed = JSON.parse(raw);
+                if (parsed && typeof parsed === 'object') {
+                    state.schedules = parsed;
+                }
+            } catch {
+                state.schedules = {};
+            }
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(state.schedules));
+            } catch {
+                // ignore storage errors
+            }
+        }
+
+        function renderTrainList() {
+            if (!trainList) return;
+            trainList.innerHTML = '';
+            for (const train of state.trains) {
+                const entry = document.createElement('button');
+                entry.type = 'button';
+                entry.className = 'otd-timetable-list-item';
+                if (train.id === state.selectedTrainId) {
+                    entry.classList.add('is-selected');
+                }
+                entry.textContent = train.name?.trim() ? train.name.trim() : '(Ohne Name)';
+                entry.dataset.id = train.id;
+                trainList.appendChild(entry);
+            }
+        }
+
+        function ensureSchedule(trainId) {
+            if (!state.schedules[trainId]) {
+                state.schedules[trainId] = [];
+            }
+            return state.schedules[trainId];
+        }
+
+        function renderRows() {
+            rowsBody.innerHTML = '';
+            if (!state.selectedTrainId) {
+                if (emptyEl) emptyEl.classList.remove('is-hidden');
+                return;
+            }
+            if (emptyEl) emptyEl.classList.add('is-hidden');
+            const rows = ensureSchedule(state.selectedTrainId);
+            for (const row of rows) {
+                const rowEl = document.createElement('div');
+                rowEl.className = 'otd-timetable-row';
+                rowEl.dataset.id = row.id;
+                rowEl.innerHTML = `
+                    <input class="otd-timetable-cell" data-field="station" type="text" placeholder="Bahnhof" value="${row.station ?? ''}" />
+                    <input class="otd-timetable-cell" data-field="destination" type="text" placeholder="Ziel" value="${row.destination ?? ''}" />
+                    <input class="otd-timetable-cell" data-field="arrival" type="text" placeholder="HH:MM" value="${row.arrival ?? ''}" />
+                    <input class="otd-timetable-cell" data-field="departure" type="text" placeholder="HH:MM" value="${row.departure ?? ''}" />
+                    <input class="otd-timetable-cell" data-field="platform" type="text" placeholder="Gleis" value="${row.platform ?? ''}" />
+                    <input class="otd-timetable-cell otd-timetable-notes" data-field="notes" type="text" placeholder="Hinweis" value="${row.notes ?? ''}" />
+                    <button class="otd-timetable-row-remove" type="button" data-id="${row.id}">X</button>
+                `;
+                rowsBody.appendChild(rowEl);
+            }
+        }
+
+        function selectTrain(trainId) {
+            state.selectedTrainId = trainId;
+            const selected = state.trains.find(t => t.id === trainId);
+            trainNameEl.textContent = selected ? selected.name ?? '(Ohne Name)' : 'Kein Zug ausgewaehlt';
+            if (trainNameInput) {
+                trainNameInput.value = selected?.name ?? '';
+            }
+            if (trainVmaxInput) {
+                trainVmaxInput.value = selected?.vmax ?? '';
+            }
+            if (trainLengthEl) {
+                trainLengthEl.textContent = formatLength(selected?.length ?? '');
+            }
+            renderTrainList();
+            renderRows();
+        }
+
+        function addRow() {
+            if (!state.selectedTrainId) {
+                setStatus('Bitte zuerst einen Zug waehlen');
+                return;
+            }
+            const rows = ensureSchedule(state.selectedTrainId);
+            rows.push({
+                id: crypto.randomUUID(),
+                station: '',
+                destination: '',
+                arrival: '',
+                departure: '',
+                platform: '',
+                notes: ''
+            });
+            renderRows();
+            setStatus('Halt hinzugefuegt');
+        }
+
+        async function loadTrains() {
+            try {
+                setStatus('Lade Zuege ...');
+                const resp = await fetch('/train.xml', { cache: 'no-store' });
+                if (!resp.ok) {
+                    state.trains = [];
+                    state.selectedTrainId = null;
+                    renderTrainList();
+                    renderRows();
+                    setStatus('Keine train.xml gefunden');
+                    return;
+                }
+                const xml = await resp.text();
+                const doc = new DOMParser().parseFromString(xml, 'application/xml');
+                const nodes = doc.querySelectorAll('trains > train');
+                const trainNodes = nodes.length > 0 ? nodes : doc.querySelectorAll('train');
+                const trains = [];
+                trainNodes.forEach(node => {
+                    const cars = [];
+                    node.querySelectorAll('cars > car').forEach(carNode => {
+                        cars.push({
+                            id: carNode.getAttribute('id') || crypto.randomUUID(),
+                            type: carNode.getAttribute('type') || 'waggon',
+                            name: carNode.querySelector('name')?.textContent ?? '',
+                            length: carNode.getAttribute('length') || '0',
+                            vmax: carNode.getAttribute('vmax') || ''
+                        });
+                    });
+                    trains.push({
+                        id: node.getAttribute('id') || crypto.randomUUID(),
+                        name: node.querySelector('name')?.textContent ?? '',
+                        number: node.querySelector('number')?.textContent ?? '',
+                        category: node.querySelector('category')?.textContent ?? '',
+                        vmax: node.querySelector('vmax')?.textContent ?? '',
+                        length: node.querySelector('length')?.textContent ?? '',
+                        items: cars
+                    });
+                });
+                state.trains = trains;
+                if (state.selectedTrainId && !state.trains.find(t => t.id === state.selectedTrainId)) {
+                    state.selectedTrainId = null;
+                }
+                if (!state.selectedTrainId && state.trains.length > 0) {
+                    state.selectedTrainId = state.trains[0].id;
+                }
+                renderTrainList();
+                renderRows();
+                if (state.selectedTrainId) {
+                    const selected = state.trains.find(t => t.id === state.selectedTrainId);
+                    trainNameEl.textContent = selected ? selected.name ?? '(Ohne Name)' : 'Kein Zug ausgewaehlt';
+                    if (trainNameInput) {
+                        trainNameInput.value = selected?.name ?? '';
+                    }
+                    if (trainVmaxInput) {
+                        trainVmaxInput.value = selected?.vmax ?? '';
+                    }
+                    if (trainLengthEl) {
+                        trainLengthEl.textContent = formatLength(selected?.length ?? '');
+                    }
+                } else {
+                    trainNameEl.textContent = 'Kein Zug ausgewaehlt';
+                    if (trainNameInput) {
+                        trainNameInput.value = '';
+                    }
+                    if (trainVmaxInput) {
+                        trainVmaxInput.value = '';
+                    }
+                    if (trainLengthEl) {
+                        trainLengthEl.textContent = '0 cm';
+                    }
+                }
+                setStatus(`Geladen (${state.trains.length} Zuege)`);
+                state.loadedOnce = true;
+            } catch {
+                setStatus('Laden fehlgeschlagen');
+            }
+        }
+
+        trainList?.addEventListener('click', (event) => {
+            const btn = event.target.closest('.otd-timetable-list-item');
+            if (!btn) return;
+            selectTrain(btn.dataset.id);
+        });
+
+        trainNameInput?.addEventListener('input', () => {
+            if (!state.selectedTrainId) return;
+            const train = state.trains.find(t => t.id === state.selectedTrainId);
+            if (!train) return;
+            train.name = trainNameInput.value.trim();
+            trainNameEl.textContent = train.name || '(Ohne Name)';
+            renderTrainList();
+        });
+
+        trainVmaxInput?.addEventListener('input', () => {
+            if (!state.selectedTrainId) return;
+            const train = state.trains.find(t => t.id === state.selectedTrainId);
+            if (!train) return;
+            train.vmax = trainVmaxInput.value.trim();
+        });
+
+        rowsBody?.addEventListener('input', (event) => {
+            const input = event.target.closest('input');
+            if (!input) return;
+            const rowEl = input.closest('.otd-timetable-row');
+            if (!rowEl) return;
+            const rowId = rowEl.dataset.id;
+            const field = input.dataset.field;
+            if (!rowId || !field || !state.selectedTrainId) return;
+            const rows = ensureSchedule(state.selectedTrainId);
+            const row = rows.find(r => r.id === rowId);
+            if (!row) return;
+            row[field] = input.value;
+        });
+
+        rowsBody?.addEventListener('click', (event) => {
+            const removeBtn = event.target.closest('.otd-timetable-row-remove');
+            if (!removeBtn || !state.selectedTrainId) return;
+            const rows = ensureSchedule(state.selectedTrainId);
+            const rowId = removeBtn.dataset.id;
+            state.schedules[state.selectedTrainId] = rows.filter(r => r.id !== rowId);
+            renderRows();
+            setStatus('Halt entfernt');
+        });
+
+        addRowBtn?.addEventListener('click', addRow);
+        saveBtn?.addEventListener('click', () => {
+            if (!state.selectedTrainId) {
+                setStatus('Bitte zuerst einen Zug waehlen');
+                return;
+            }
+            saveToStorage();
+            setStatus('Fahrplan gespeichert');
+        });
+        refreshBtn?.addEventListener('click', loadTrains);
+        trainSaveBtn?.addEventListener('click', async () => {
+            if (!state.selectedTrainId) {
+                setStatus('Bitte zuerst einen Zug waehlen');
+                return;
+            }
+            const train = state.trains.find(t => t.id === state.selectedTrainId);
+            if (!train) return;
+            const payload = {
+                id: train.id,
+                name: train.name ?? '',
+                number: train.number ?? '',
+                category: train.category ?? '',
+                vmax: train.vmax ?? '',
+                items: train.items ?? []
+            };
+            try {
+                setStatus('Zugdaten speichern ...');
+                const resp = await fetch('/train/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                try {
+                    const data = await resp.json();
+                    if (data && typeof data === 'object') {
+                        if (data.length !== undefined) {
+                            train.length = data.length.toString();
+                        }
+                        if (data.vmax !== undefined) {
+                            train.vmax = data.vmax.toString();
+                            if (trainVmaxInput) {
+                                trainVmaxInput.value = train.vmax;
+                            }
+                        }
+                        if (trainLengthEl) {
+                            trainLengthEl.textContent = formatLength(train.length ?? '');
+                        }
+                    }
+                } catch {
+                    // ignore json parse errors
+                }
+                setStatus('Zugdaten gespeichert');
+            } catch {
+                setStatus('Zugdaten speichern fehlgeschlagen');
+            }
+        });
+        openTrainBtn?.addEventListener('click', () => {
+            if (typeof window.openTrainFenster === 'function') {
+                window.openTrainFenster();
+            }
+        });
+
+        window.openTimetableFenster = function () {
+            panel.classList.remove('otd-hidden');
+            if (!panel.style.left || !panel.style.top) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = panel.offsetWidth || 780;
+                const height = panel.offsetHeight || 380;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                panel.style.left = `${left}px`;
+                panel.style.top = `${top}px`;
+            }
+            if (!state.loadedOnce) {
+                loadFromStorage();
+                loadTrains();
+            }
+        };
+
+        window.closeTimetableFenster = function () {
+            panel.classList.add('otd-hidden');
+        };
+    })();
+</script>

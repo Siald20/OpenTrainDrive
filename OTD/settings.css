@@ -1,0 +1,282 @@
+.otd-settings-window {
+  position: absolute;
+  z-index: 46;
+  top: 48px;
+  left: 32px;
+  width: 860px;
+  max-width: 92vw;
+  background: var(--otd-panel-bg);
+  color: var(--otd-text);
+  border: 2px solid var(--otd-panel-border);
+  box-shadow: 0 12px 30px var(--otd-shadow-strong);
+  font-family: var(--otd-font);
+}
+
+.otd-settings-titlebar {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background: linear-gradient(180deg, var(--otd-titlebar-start) 0%, var(--otd-titlebar-end) 100%);
+  color: var(--otd-titlebar-text);
+  border-bottom: 1px solid var(--otd-panel-border-line);
+  cursor: grab;
+  user-select: none;
+}
+
+.otd-settings-titlebar:active {
+  cursor: grabbing;
+}
+
+.otd-settings-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.otd-settings-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.otd-settings-status {
+  color: var(--otd-highlight);
+}
+
+.otd-settings-close {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--otd-panel-border-line);
+  background: var(--otd-panel-muted);
+  color: var(--otd-text);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.otd-settings-close:hover {
+  background: var(--otd-button-hover);
+}
+
+.otd-settings-body {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  min-height: 420px;
+}
+
+.otd-settings-sidebar {
+  background: var(--otd-input-bg);
+  border-right: 1px solid var(--otd-panel-border-soft);
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 6px;
+}
+
+.otd-settings-nav {
+  background: var(--otd-panel-alt);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
+  padding: 8px 10px;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.otd-settings-nav:hover,
+.otd-settings-nav.is-active {
+  background: var(--otd-button-hover);
+}
+
+.otd-settings-content {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.otd-settings-section {
+  display: none;
+  border: 1px solid var(--otd-panel-border-soft);
+  background: var(--otd-panel-alt);
+}
+
+.otd-settings-section.is-active {
+  display: block;
+}
+
+.otd-settings-section-head {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--otd-panel-border-soft);
+  font-size: 13px;
+  color: var(--otd-titlebar-text);
+}
+
+.otd-settings-fields {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px 14px;
+}
+
+.otd-settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.otd-settings-field input,
+.otd-settings-field select {
+  background: var(--otd-input-bg);
+  border: 1px solid var(--otd-input-border);
+  color: var(--otd-text);
+  padding: 6px 8px;
+  font: inherit;
+  border-radius: 2px;
+}
+
+.otd-settings-check {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.otd-settings-check input {
+  width: auto;
+  align-self: center;
+}
+
+.otd-settings-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--otd-panel-border-soft);
+  padding: 8px 4px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--otd-text-muted);
+}
+
+.otd-settings-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.otd-settings-actions button {
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.otd-settings-actions button:hover {
+  background: var(--otd-button-hover);
+}
+
+.otd-settings-users {
+  margin-top: 12px;
+  border: 1px solid var(--otd-panel-border-soft);
+  background: var(--otd-panel-alt);
+}
+
+.otd-settings-users-head {
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--otd-panel-border-soft);
+  font-size: 13px;
+}
+
+.otd-settings-users-head button {
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.otd-settings-users-head button:hover {
+  background: var(--otd-button-hover);
+}
+
+.otd-settings-users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.otd-settings-user-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px auto 32px;
+  gap: 8px;
+  align-items: center;
+}
+
+.otd-settings-user-row input,
+.otd-settings-user-row select {
+  background: var(--otd-input-bg);
+  border: 1px solid var(--otd-input-border);
+  color: var(--otd-text);
+  padding: 6px 8px;
+  font: inherit;
+  border-radius: 2px;
+  font-size: 12px;
+}
+
+.otd-settings-user-enabled {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.otd-settings-user-remove {
+  width: 28px;
+  height: 28px;
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
+  cursor: pointer;
+}
+
+.otd-settings-user-remove:hover {
+  background: var(--otd-button-hover);
+}
+
+@media (max-width: 860px) {
+  .otd-settings-window {
+    width: 94vw;
+  }
+
+  .otd-settings-body {
+    grid-template-columns: 1fr;
+  }
+
+  .otd-settings-sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .otd-settings-nav {
+    flex: 1 1 140px;
+  }
+}
+
+
+

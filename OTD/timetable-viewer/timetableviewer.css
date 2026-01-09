@@ -1,0 +1,223 @@
+.otd-timetableviewer-window {
+  position: absolute;
+  z-index: 47;
+  top: 80px;
+  left: 60px;
+  width: min(900px, 94vw);
+  background: #0a0b1b;
+  border: 2px solid #1b1f3d;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  color: #f7f7f7;
+}
+
+.otd-timetableviewer-titlebar {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background: linear-gradient(180deg, #3f3f46 0%, #2b2b32 100%);
+  color: #f1f1f1;
+  border-bottom: 1px solid #1f1f26;
+  cursor: grab;
+  user-select: none;
+}
+
+.otd-timetableviewer-titlebar:active {
+  cursor: grabbing;
+}
+
+.otd-timetableviewer-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.otd-timetableviewer-close {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #42424d;
+  background: #2b2b32;
+  color: #f1f1f1;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.otd-timetableviewer-close:hover {
+  background: #3a3a44;
+}
+
+.otd-timetableviewer-board {
+  background: #0e3fb4;
+  border-top: 1px solid #0a2f86;
+  padding: 10px 12px 14px;
+}
+
+.otd-timetableviewer-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(90deg, #f0c42d, #d7a417);
+  color: #1a1a1a;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.otd-timetableviewer-head-icon {
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.otd-timetableviewer-head-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: rgba(0, 0, 0, 0.65);
+  fill: none;
+  stroke-width: 4;
+}
+
+.otd-timetableviewer-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.otd-timetableviewer-head-title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.otd-timetableviewer-head-sub {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.otd-timetableviewer-clock {
+  margin-left: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.otd-timetableviewer-fullscreen {
+  margin-left: auto;
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.otd-timetableviewer-fullscreen:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.otd-timetableviewer-columns {
+  display: grid;
+  grid-template-columns: 80px 130px 110px 1fr 80px 1fr;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #d9e4ff;
+  padding: 0 6px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.otd-timetableviewer-rows {
+  display: grid;
+  --otd-row-height: 32px;
+  gap: 4px;
+  padding-top: 8px;
+  max-height: 360px;
+  overflow: hidden;
+}
+
+.otd-timetableviewer-row {
+  display: grid;
+  grid-template-columns: 80px 130px 110px 1fr 80px 1fr;
+  align-items: center;
+  height: var(--otd-row-height);
+  background: rgba(6, 48, 131, 0.9);
+  color: #f2f6ff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+.otd-timetableviewer-row.is-next {
+  background: #e73b2f;
+  color: #fff;
+  font-weight: 700;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.otd-timetableviewer-time {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.otd-timetableviewer-platform {
+  text-align: center;
+  font-weight: 700;
+}
+
+.otd-timetableviewer-category {
+  text-transform: uppercase;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.otd-timetableviewer-notes {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.otd-timetableviewer-empty {
+  font-size: 13px;
+  color: #f5f5f5;
+  opacity: 0.8;
+  padding: 16px 6px 4px;
+}
+
+.otd-timetableviewer-empty.is-hidden {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .otd-timetableviewer-window {
+    width: min(760px, 96vw);
+  }
+
+  .otd-timetableviewer-columns,
+  .otd-timetableviewer-row {
+    grid-template-columns: 70px 110px 90px 1fr 60px 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .otd-timetableviewer-head-title {
+    font-size: 20px;
+  }
+
+  .otd-timetableviewer-clock {
+    font-size: 18px;
+  }
+}

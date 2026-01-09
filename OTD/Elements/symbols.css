@@ -55,7 +55,11 @@
 .otd-symbol--track-curve-se,
 .otd-symbol--track-curve-sw,
 .otd-symbol--switch-left,
-.otd-symbol--switch-right {
+.otd-symbol--switch-right
+.otd-symbol--signal-down
+.otd-symbol--signal-left
+.otd-symbol--signal-right
+.otd-symbol--signal-up {
   background-color: transparent;
 }
 

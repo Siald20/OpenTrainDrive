@@ -70,6 +70,10 @@
   }
 
   function setEditMode(enabled) {
+    if (!canEditPlan()) {
+      setStatus('Nur Admin darf den Gleisplan bearbeiten');
+      return;
+    }
     state.editMode = enabled;
     canvas.classList.toggle('is-editing', enabled);
     if (editor) {
@@ -623,4 +627,31 @@
 
   loadSymbolPalette();
   loadPlan();
+
+  function canEditPlan() {
+    const enabled = document.body?.dataset.authEnabled === 'true';
+    const role = document.body?.dataset.authRole || '';
+    return !enabled || role === 'admin';
+  }
+
+  function applyAuthState() {
+    if (!menuEdit && !menuSave) return;
+    const allowed = canEditPlan();
+    if (menuEdit) {
+      menuEdit.disabled = !allowed;
+      menuEdit.classList.toggle('is-disabled', !allowed);
+      menuEdit.title = allowed ? '' : 'Nur Admin';
+    }
+    if (menuSave) {
+      menuSave.disabled = !allowed;
+      menuSave.classList.toggle('is-disabled', !allowed);
+      menuSave.title = allowed ? '' : 'Nur Admin';
+    }
+    if (!allowed && state.editMode) {
+      setEditMode(false);
+    }
+  }
+
+  document.addEventListener('otd-auth-change', applyAuthState);
+  applyAuthState();
 })();

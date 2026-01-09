@@ -7,6 +7,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.StaticFiles;
 using System.Xml.Linq;
 using System.Globalization;
+using OpenTrainDrive.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,12 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "OTD", "drive")),
+    RequestPath = "/drive"
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "waggon")),
     RequestPath = "/waggon"
 });
@@ -50,8 +57,125 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "OTD", "timetable")),
+    RequestPath = "/timetable"
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "OTD", "timetable-viewer")),
+    RequestPath = "/timetable-viewer"
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "OTD", "ZD")),
+    RequestPath = "/zd"
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "OTD", "auth")),
+    RequestPath = "/auth"
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "OTD", "exit")),
+    RequestPath = "/exit"
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "Symbols")),
     RequestPath = "/symbols"
+});
+
+bool IsUsersEnabled(IWebHostEnvironment env)
+{
+    var path = Path.Combine(env.ContentRootPath, "settings.xml");
+    if (!File.Exists(path))
+    {
+        return false;
+    }
+    try
+    {
+        var doc = XDocument.Load(path);
+        var general = doc.Root?.Element("general");
+        var attr = general?.Attribute("usersEnabled")?.Value ?? "false";
+        if (!string.Equals(attr, "true", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+        var usersPath = Path.Combine(env.ContentRootPath, "users.xml");
+        if (!File.Exists(usersPath))
+        {
+            return false;
+        }
+        var usersDoc = XDocument.Load(usersPath);
+        return usersDoc.Root?.Elements("user").Any() == true;
+    }
+    catch
+    {
+        return false;
+    }
+}
+
+async Task<List<UserDto>> LoadUsers(IWebHostEnvironment env)
+{
+    var path = Path.Combine(env.ContentRootPath, "users.xml");
+    if (!File.Exists(path))
+    {
+        return new List<UserDto>();
+    }
+    try
+    {
+        var doc = await Task.Run(() => XDocument.Load(path));
+        var users = doc.Root?.Elements("user") ?? Enumerable.Empty<XElement>();
+        return users.Select(user => new UserDto(
+            user.Attribute("name")?.Value,
+            user.Attribute("password")?.Value,
+            user.Attribute("role")?.Value ?? "user",
+            string.Equals(user.Attribute("enabled")?.Value, "true", StringComparison.OrdinalIgnoreCase)
+        )).ToList();
+    }
+    catch
+    {
+        return new List<UserDto>();
+    }
+}
+
+(string user, string role) GetUserFromCookie(HttpContext context)
+{
+    if (!context.Request.Cookies.TryGetValue("otd-user", out var value) || string.IsNullOrWhiteSpace(value))
+    {
+        return (string.Empty, string.Empty);
+    }
+    var parts = value.Split('|');
+    if (parts.Length < 2)
+    {
+        return (string.Empty, string.Empty);
+    }
+    return (parts[0], parts[1]);
+}
+
+bool IsAdminUser(HttpContext context)
+{
+    if (!IsUsersEnabled(app.Environment))
+    {
+        return true;
+    }
+    var (_, role) = GetUserFromCookie(context);
+    return string.Equals(role, "admin", StringComparison.OrdinalIgnoreCase);
+}
+app.MapGet("/settings/settings.css", () =>
+{
+    var path = Path.Combine(app.Environment.ContentRootPath, "OTD", "settings.css");
+    if (!File.Exists(path))
+    {
+        return Results.NotFound();
+    }
+    return Results.File(path, "text/css");
 });
 
 // Serve generated plan.xml explicitly without exposing entire content root
@@ -66,8 +190,12 @@ app.MapGet("/plan.xml", () =>
 });
 
 // Plan speichern
-app.MapPost("/plan/save", async (PlanSaveDto plan) =>
+app.MapPost("/plan/save", async (PlanSaveDto plan, HttpContext context) =>
 {
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
     var path = Path.Combine(app.Environment.ContentRootPath, "plan.xml");
     var gridSize = plan.GridSize <= 0 ? 48 : plan.GridSize;
     var doc = new XDocument(
@@ -103,6 +231,178 @@ app.MapPost("/plan/save", async (PlanSaveDto plan) =>
     await using var stream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None);
     await doc.SaveAsync(stream, SaveOptions.None, default);
     return Results.Ok(new { saved = plan.Symbols?.Count ?? 0 });
+});
+
+// Einstellungen lesen
+app.MapGet("/settings.xml", () =>
+{
+    var path = Path.Combine(app.Environment.ContentRootPath, "settings.xml");
+    if (!File.Exists(path))
+    {
+        return Results.NotFound();
+    }
+    return Results.File(path, "application/xml");
+});
+
+// Einstellungen speichern
+app.MapPost("/settings/save", async (SettingsDto settings, HttpContext context) =>
+{
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
+    var path = Path.Combine(app.Environment.ContentRootPath, "settings.xml");
+    static string Bool(bool value) => value ? "true" : "false";
+    static string Int(int value) => value.ToString(CultureInfo.InvariantCulture);
+    static string Num(double value) => value.ToString(CultureInfo.InvariantCulture);
+
+    var doc = new XDocument(
+        new XElement("settings",
+            new XElement("general",
+                new XAttribute("project", settings.ProjectName ?? string.Empty),
+                new XAttribute("language", settings.Language ?? "de"),
+                new XAttribute("autosave", Bool(settings.AutoSave)),
+                new XAttribute("autosaveInterval", Int(settings.AutoSaveInterval)),
+                new XAttribute("autoOpen", Bool(settings.AutoOpen)),
+                new XAttribute("usersEnabled", Bool(settings.UsersEnabled))
+            ),
+            new XElement("ui",
+                new XAttribute("theme", settings.Theme ?? "classic"),
+                new XAttribute("density", settings.Density ?? "compact"),
+                new XAttribute("tooltips", Bool(settings.ShowTooltips)),
+                new XAttribute("clock", Bool(settings.ShowClock)),
+                new XAttribute("statusbar", Bool(settings.ShowStatusbar))
+            ),
+            new XElement("connection",
+                new XAttribute("system", settings.System ?? "dcc"),
+                new XAttribute("host", settings.Host ?? "localhost"),
+                new XAttribute("port", Int(settings.Port)),
+                new XAttribute("baud", Int(settings.Baud)),
+                new XAttribute("autoconnect", Bool(settings.AutoConnect)),
+                new XAttribute("heartbeat", Int(settings.Heartbeat))
+            ),
+            new XElement("operation",
+                new XAttribute("maxSpeed", Num(settings.MaxSpeed)),
+                new XAttribute("accelFactor", Num(settings.AccelFactor)),
+                new XAttribute("brakeFactor", Num(settings.BrakeFactor)),
+                new XAttribute("stopOnSignal", Bool(settings.StopOnSignal)),
+                new XAttribute("emergencyStop", Bool(settings.EmergencyStop))
+            ),
+            new XElement("editor",
+                new XAttribute("grid", Int(settings.GridSize)),
+                new XAttribute("snap", Bool(settings.Snap)),
+                new XAttribute("showLabels", Bool(settings.ShowLabels)),
+                new XAttribute("showIds", Bool(settings.ShowIds)),
+                new XAttribute("confirmDelete", Bool(settings.ConfirmDelete))
+            ),
+            new XElement("logging",
+                new XAttribute("level", settings.LogLevel ?? "info"),
+                new XAttribute("keepDays", Int(settings.KeepDays)),
+                new XAttribute("path", settings.LogPath ?? "logs")
+            )
+        )
+    );
+    await using var stream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None);
+    await doc.SaveAsync(stream, SaveOptions.None, default);
+    return Results.Ok(new { saved = true });
+});
+
+// Benutzer lesen
+app.MapGet("/users.xml", (HttpContext context) =>
+{
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
+    var path = Path.Combine(app.Environment.ContentRootPath, "users.xml");
+    if (!File.Exists(path))
+    {
+        return Results.NotFound();
+    }
+    return Results.File(path, "application/xml");
+});
+
+// Benutzer speichern
+app.MapPost("/users/save", async (List<UserDto> users, HttpContext context) =>
+{
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
+    var path = Path.Combine(app.Environment.ContentRootPath, "users.xml");
+    var doc = new XDocument(
+        new XElement("users",
+            (users ?? new List<UserDto>()).Select(user => new XElement("user",
+                new XAttribute("name", user.Name ?? string.Empty),
+                new XAttribute("password", user.Password ?? string.Empty),
+                new XAttribute("role", user.Role ?? "user"),
+                new XAttribute("enabled", user.Enabled ? "true" : "false")
+            ))
+        )
+    );
+    await using var stream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None);
+    await doc.SaveAsync(stream, SaveOptions.None, default);
+    return Results.Ok(new { saved = users?.Count ?? 0 });
+});
+
+// Auth Status
+app.MapGet("/auth/status", (HttpContext context) =>
+{
+    var enabled = IsUsersEnabled(app.Environment);
+    if (!enabled)
+    {
+        return Results.Ok(new { enabled = false, user = string.Empty, role = "admin", isAdmin = true });
+    }
+    var (user, role) = GetUserFromCookie(context);
+    return Results.Ok(new { enabled = true, user, role, isAdmin = string.Equals(role, "admin", StringComparison.OrdinalIgnoreCase) });
+});
+
+// Auth Login
+app.MapPost("/auth/login", async (AuthLoginDto login, HttpContext context) =>
+{
+    if (!IsUsersEnabled(app.Environment))
+    {
+        return Results.Ok(new { enabled = false });
+    }
+    var users = await LoadUsers(app.Environment);
+    if (users.Count == 0 &&
+        string.Equals(login.Username, "admin", StringComparison.OrdinalIgnoreCase) &&
+        string.Equals(login.Password, "admin", StringComparison.Ordinal))
+    {
+        var cookieValue = "admin|admin";
+        context.Response.Cookies.Append("otd-user", cookieValue, new CookieOptions
+        {
+            HttpOnly = false,
+            SameSite = SameSiteMode.Lax,
+            Secure = false,
+            IsEssential = true
+        });
+        return Results.Ok(new { enabled = true, user = "admin", role = "admin" });
+    }
+    var match = users.FirstOrDefault(user =>
+        user.Enabled &&
+        string.Equals(user.Name, login.Username, StringComparison.OrdinalIgnoreCase) &&
+        string.Equals(user.Password, login.Password, StringComparison.Ordinal));
+    if (match == null)
+    {
+        return Results.Unauthorized();
+    }
+    var authCookieValue = $"{match.Name}|{match.Role}";
+    context.Response.Cookies.Append("otd-user", authCookieValue, new CookieOptions
+    {
+        HttpOnly = false,
+        SameSite = SameSiteMode.Lax,
+        Secure = false,
+        IsEssential = true
+    });
+    return Results.Ok(new { enabled = true, user = match.Name, role = match.Role });
+});
+
+// Auth Logout
+app.MapPost("/auth/logout", (HttpContext context) =>
+{
+    context.Response.Cookies.Delete("otd-user");
+    return Results.Ok(new { ok = true });
 });
 
 // Lokomotiven lesen
@@ -181,8 +481,12 @@ app.MapGet("/train.xml", () =>
 });
 
 // Zug speichern
-app.MapPost("/train/save", async (TrainSaveDto train) =>
+app.MapPost("/train/save", async (TrainSaveDto train, HttpContext context) =>
 {
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
     var path = Path.Combine(app.Environment.ContentRootPath, "train.xml");
     var items = train.Items ?? new List<TrainItemDto>();
     double ParseNumber(string? text)
@@ -216,6 +520,8 @@ app.MapPost("/train/save", async (TrainSaveDto train) =>
     var trainElement = new XElement("train",
         new XAttribute("id", trainId),
         new XElement("name", train.Name ?? string.Empty),
+        new XElement("number", train.Number ?? string.Empty),
+        new XElement("category", train.Category ?? string.Empty),
         new XElement("length", totalLength.ToString(CultureInfo.InvariantCulture)),
         new XElement("vmax", finalVmax.ToString(CultureInfo.InvariantCulture)),
         new XElement("cars",
@@ -272,8 +578,12 @@ app.MapPost("/train/save", async (TrainSaveDto train) =>
 });
 
 // Zug loeschen
-app.MapPost("/train/delete", async (TrainDeleteDto request) =>
+app.MapPost("/train/delete", async (TrainDeleteDto request, HttpContext context) =>
 {
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
     var path = Path.Combine(app.Environment.ContentRootPath, "train.xml");
     if (!File.Exists(path))
     {
@@ -317,6 +627,119 @@ app.MapPost("/train/delete", async (TrainDeleteDto request) =>
     return Results.Ok(new { deleted = id });
 });
 
+// System Aktionen
+app.MapPost("/system/restart", (HttpContext context) =>
+{
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
+    try
+    {
+        Process.Start(new ProcessStartInfo("shutdown", "/r /t 0") { CreateNoWindow = true, UseShellExecute = false });
+    }
+    catch
+    {
+        return Results.Problem("Neustart fehlgeschlagen.");
+    }
+    return Results.Ok(new { ok = true });
+});
+
+app.MapPost("/system/shutdown", (HttpContext context) =>
+{
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
+    try
+    {
+        Process.Start(new ProcessStartInfo("shutdown", "/s /t 0") { CreateNoWindow = true, UseShellExecute = false });
+    }
+    catch
+    {
+        return Results.Problem("Herunterfahren fehlgeschlagen.");
+    }
+    return Results.Ok(new { ok = true });
+});
+
+app.MapPost("/system/exit", (HttpContext context) =>
+{
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
+    Task.Run(() =>
+    {
+        app.Lifetime.StopApplication();
+        System.Threading.Thread.Sleep(500);
+        Environment.Exit(0);
+    });
+    return Results.Ok(new { ok = true });
+});
+
+// Zugdaten lesen
+app.MapGet("/zd.xml", () =>
+{
+    var path = Path.Combine(app.Environment.ContentRootPath, "zd.xml");
+    if (!File.Exists(path))
+    {
+        return Results.NotFound();
+    }
+    return Results.File(path, "application/xml");
+});
+
+// Zugdaten speichern
+app.MapPost("/zd/save", async (ZdSaveDto payload) =>
+{
+    var path = Path.Combine(app.Environment.ContentRootPath, "zd.xml");
+    XDocument doc;
+    XElement root;
+    if (File.Exists(path))
+    {
+        doc = XDocument.Load(path);
+        root = doc.Root ?? new XElement("zugdaten");
+        if (root.Name != "zugdaten")
+        {
+            root = new XElement("zugdaten");
+            doc = new XDocument(root);
+        }
+    }
+    else
+    {
+        root = new XElement("zugdaten");
+        doc = new XDocument(root);
+    }
+
+    var id = string.IsNullOrWhiteSpace(payload.Id)
+        ? $"{payload.Number}{(string.IsNullOrWhiteSpace(payload.Suffix) ? string.Empty : "-" + payload.Suffix)}"
+        : payload.Id;
+    var target = root.Elements("zug")
+        .FirstOrDefault(e => string.Equals((string?)e.Attribute("id"), id, StringComparison.OrdinalIgnoreCase));
+
+    var element = new XElement("zug",
+        new XAttribute("id", id),
+        new XAttribute("number", payload.Number ?? string.Empty),
+        new XAttribute("suffix", payload.Suffix ?? string.Empty),
+        new XAttribute("scope", payload.Scope ?? string.Empty),
+        new XElement("route", payload.Route ?? string.Empty),
+        new XElement("extra", payload.Extra ?? string.Empty),
+        new XElement("diskri", payload.Diskri ?? string.Empty)
+    );
+
+    if (target != null)
+    {
+        target.ReplaceWith(element);
+    }
+    else
+    {
+        root.Add(element);
+    }
+
+    await using var stream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None);
+    await doc.SaveAsync(stream, SaveOptions.None, default);
+    return Results.Ok(new { saved = true, id });
+});
+
 app.UseRouting();
 
 app.UseAuthorization();
@@ -357,8 +780,11 @@ app.Run();
 public record LokoDto(string? Id, string? Name, string? Adress, string? Length, string? VMax, string? VMin, string? Notes);
 public record WaggonDto(string? Id, string? Name, string? Length, string? VMax, string? Notes);
 public record TrainItemDto(string? Id, string? Type, string? Name, string? Length, string? VMax);
-public record TrainSaveDto(string? Id, string? Name, string? VMax, List<TrainItemDto>? Items);
+public record TrainSaveDto(string? Id, string? Name, string? Number, string? Category, string? VMax, List<TrainItemDto>? Items);
 public record TrainDeleteDto(string? Id);
 public record PlanConfigFieldDto(string? Key, string? Value);
 public record PlanSymbolDto(string? Id, string? Type, string? Classes, int X, int Y, List<PlanConfigFieldDto>? Config);
 public record PlanSaveDto(int GridSize, List<PlanSymbolDto>? Symbols);
+public record ZdSaveDto(string? Id, string? Number, string? Suffix, string? Scope, string? Route, string? Extra, string? Diskri);
+public record UserDto(string? Name, string? Password, string? Role, bool Enabled);
+public record AuthLoginDto(string? Username, string? Password);

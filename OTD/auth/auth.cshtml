@@ -1,0 +1,115 @@
+<div class="otd-auth-screen otd-hidden" id="otd-auth-screen" role="dialog" aria-label="Anmeldung">
+    <div class="otd-auth-panel">
+        <div class="otd-auth-title">Anmeldung</div>
+        <div class="otd-auth-body">
+            <label>
+                Benutzername
+                <input type="text" id="auth-username" />
+            </label>
+            <label>
+                Passwort
+                <input type="password" id="auth-password" />
+            </label>
+            <div class="otd-auth-status" id="auth-status"></div>
+            <div class="otd-auth-actions">
+                <button type="button" id="auth-login">Anmelden</button>
+                <form class="otd-auth-exit" asp-controller="Home" asp-action="Stop" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" id="auth-exit" onclick="return confirm('Moechten Sie die Anwendung wirklich beenden?');">Beenden</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function authGate() {
+        const screen = document.getElementById('otd-auth-screen');
+        const usernameInput = document.getElementById('auth-username');
+        const passwordInput = document.getElementById('auth-password');
+        const statusEl = document.getElementById('auth-status');
+        const loginBtn = document.getElementById('auth-login');
+
+        function setStatus(text) {
+            if (statusEl) statusEl.textContent = text;
+        }
+
+        function broadcastAuth(state) {
+            document.body.dataset.authEnabled = state.enabled ? 'true' : 'false';
+            document.body.dataset.authRole = state.role ?? '';
+            document.body.dataset.authUser = state.user ?? '';
+            document.dispatchEvent(new Event('otd-auth-change'));
+        }
+
+        async function loadStatus() {
+            try {
+                const resp = await fetch('/auth/status', { cache: 'no-store' });
+                if (!resp.ok) throw new Error('status');
+                const data = await resp.json();
+                broadcastAuth(data);
+                if (!data.enabled) {
+                    screen?.classList.add('otd-hidden');
+                    return;
+                }
+                if (data.user) {
+                    screen?.classList.add('otd-hidden');
+                } else {
+                    screen?.classList.remove('otd-hidden');
+                    usernameInput?.focus();
+                }
+            } catch {
+                broadcastAuth({ enabled: false, user: '', role: 'admin' });
+                screen?.classList.add('otd-hidden');
+            }
+        }
+
+        async function login() {
+            const username = usernameInput?.value.trim() ?? '';
+            const password = passwordInput?.value ?? '';
+            if (!username || !password) {
+                setStatus('Bitte anmelden');
+                return;
+            }
+            try {
+                const resp = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                if (!resp.ok) throw new Error('login');
+                const data = await resp.json();
+                broadcastAuth(data);
+                screen?.classList.add('otd-hidden');
+                setStatus('');
+                passwordInput.value = '';
+            } catch {
+                setStatus('Anmeldung fehlgeschlagen');
+            }
+        }
+
+        loginBtn?.addEventListener('click', login);
+        passwordInput?.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter') return;
+            event.preventDefault();
+            login();
+        });
+        usernameInput?.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter') return;
+            event.preventDefault();
+            login();
+        });
+
+        window.otdLogout = async function () {
+            try {
+                await fetch('/auth/logout', { method: 'POST' });
+            } catch {
+                // ignore
+            }
+            broadcastAuth({ enabled: true, user: '', role: '' });
+            screen?.classList.remove('otd-hidden');
+        };
+
+        window.refreshAuthStatus = loadStatus;
+        loadStatus();
+    })();
+</script>

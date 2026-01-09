@@ -1,0 +1,647 @@
+<div class="otd-settings-window otd-hidden" id="otd-settings" role="dialog" aria-label="Einstellungen">
+    <div class="otd-settings-titlebar" data-drag-handle="true">
+        <span class="otd-settings-title">Einstellungen</span>
+        <div class="otd-settings-title-actions">
+            <span class="otd-settings-status" id="otd-settings-status">Bereit</span>
+            <button class="otd-settings-close" type="button" aria-label="Schliessen" onclick="closeSettingsFenster();">X</button>
+        </div>
+    </div>
+    <div class="otd-settings-body">
+        <div class="otd-settings-sidebar">
+            <button type="button" class="otd-settings-nav is-active" data-section="general">Allgemein</button>
+            <button type="button" class="otd-settings-nav" data-section="display">Anzeige</button>
+            <button type="button" class="otd-settings-nav" data-section="connection">Verbindung</button>
+            <button type="button" class="otd-settings-nav" data-section="operation">Fahrbetrieb</button>
+            <button type="button" class="otd-settings-nav" data-section="editor">Editor</button>
+            <button type="button" class="otd-settings-nav" data-section="users">Benutzer</button>
+            <button type="button" class="otd-settings-nav" data-section="diagnostics">Diagnose</button>
+        </div>
+        <div class="otd-settings-content">
+            <section class="otd-settings-section is-active" data-section="general">
+                <div class="otd-settings-section-head">Allgemein</div>
+                <div class="otd-settings-fields">
+                    <label class="otd-settings-field">
+                        Projektname
+                        <input type="text" id="settings-project" maxlength="40" />
+                    </label>
+                    <label class="otd-settings-field">
+                        Sprache
+                        <select id="settings-language">
+                            <option value="de">Deutsch</option>
+                            <option value="en">English</option>
+                            <option value="fr">Francais</option>
+                        </select>
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        Autospeichern
+                        <input type="checkbox" id="settings-autosave" />
+                    </label>
+                    <label class="otd-settings-field">
+                        Intervall (s)
+                        <input type="number" id="settings-autosave-interval" min="10" max="3600" step="10" />
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        Beim Start oeffnen
+                        <input type="checkbox" id="settings-auto-open" />
+                    </label>
+                </div>
+            </section>
+
+            <section class="otd-settings-section" data-section="display">
+                <div class="otd-settings-section-head">Anzeige</div>
+                <div class="otd-settings-fields">
+                    <label class="otd-settings-field">
+                        Thema
+                        <select id="settings-theme">
+                            <option value="classic">Classic Blue</option>
+                            <option value="light">Light</option>
+                            <option value="contrast">High Contrast</option>
+                            <option value="night">Night Shift</option>
+                        </select>
+                    </label>
+                    <label class="otd-settings-field">
+                        Dichte
+                        <select id="settings-density">
+                            <option value="compact">Kompakt</option>
+                            <option value="normal">Normal</option>
+                            <option value="relaxed">Locker</option>
+                        </select>
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        Tooltips anzeigen
+                        <input type="checkbox" id="settings-tooltips" />
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        Uhr anzeigen
+                        <input type="checkbox" id="settings-clock" />
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        Statusleiste anzeigen
+                        <input type="checkbox" id="settings-statusbar" />
+                    </label>
+                </div>
+            </section>
+
+            <section class="otd-settings-section" data-section="connection">
+                <div class="otd-settings-section-head">Verbindung</div>
+                <div class="otd-settings-fields">
+                    <label class="otd-settings-field">
+                        Zentrale
+                        <select id="settings-system">
+                            <option value="dcc">DCC</option>
+                            <option value="mfx">MFX</option>
+                            <option value="sx">Selectrix</option>
+                            <option value="loconet">LocoNet</option>
+                            <option value="z21">Z21</option>
+                        </select>
+                    </label>
+                    <label class="otd-settings-field">
+                        Host
+                        <input type="text" id="settings-host" maxlength="64" />
+                    </label>
+                    <label class="otd-settings-field">
+                        Port
+                        <input type="number" id="settings-port" min="1" max="65535" />
+                    </label>
+                    <label class="otd-settings-field">
+                        Baudrate
+                        <input type="number" id="settings-baud" min="1200" max="1000000" step="100" />
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        Automatisch verbinden
+                        <input type="checkbox" id="settings-autoconnect" />
+                    </label>
+                    <label class="otd-settings-field">
+                        Heartbeat (s)
+                        <input type="number" id="settings-heartbeat" min="1" max="120" />
+                    </label>
+                </div>
+            </section>
+
+            <section class="otd-settings-section" data-section="operation">
+                <div class="otd-settings-section-head">Fahrbetrieb</div>
+                <div class="otd-settings-fields">
+                    <label class="otd-settings-field">
+                        Standard Vmax (km/h)
+                        <input type="number" id="settings-maxspeed" min="0" max="500" step="1" />
+                    </label>
+                    <label class="otd-settings-field">
+                        Beschleunigung
+                        <input type="number" id="settings-accel" min="0.1" max="3" step="0.1" />
+                    </label>
+                    <label class="otd-settings-field">
+                        Bremsfaktor
+                        <input type="number" id="settings-brake" min="0.1" max="3" step="0.1" />
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        Halt bei Halt-Signal
+                        <input type="checkbox" id="settings-stop-signal" />
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        Notstopp bei Fehler
+                        <input type="checkbox" id="settings-emergency-stop" />
+                    </label>
+                </div>
+            </section>
+
+            <section class="otd-settings-section" data-section="editor">
+                <div class="otd-settings-section-head">Editor</div>
+                <div class="otd-settings-fields">
+                    <label class="otd-settings-field">
+                        Rastergroesse (px)
+                        <input type="number" id="settings-grid" min="16" max="96" step="4" />
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        Einrasten aktiv
+                        <input type="checkbox" id="settings-snap" />
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        Beschriftungen anzeigen
+                        <input type="checkbox" id="settings-show-labels" />
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        IDs anzeigen
+                        <input type="checkbox" id="settings-show-ids" />
+                    </label>
+                    <label class="otd-settings-field otd-settings-check">
+                        Loeschen bestaetigen
+                        <input type="checkbox" id="settings-confirm-delete" />
+                    </label>
+                </div>
+            </section>
+
+            <section class="otd-settings-section" data-section="users">
+                <div class="otd-settings-section-head">Benutzerverwaltung</div>
+                <div class="otd-settings-fields">
+                    <label class="otd-settings-field otd-settings-check">
+                        Benutzerverwaltung aktivieren
+                        <input type="checkbox" id="settings-users-enabled" />
+                    </label>
+                </div>
+                <div class="otd-settings-users">
+                    <div class="otd-settings-users-head">
+                        <span>Benutzer</span>
+                        <button type="button" id="settings-user-add">Neu</button>
+                    </div>
+                    <div class="otd-settings-users-list" id="settings-user-list"></div>
+                </div>
+                <div class="otd-settings-actions">
+                    <button type="button" id="settings-users-save">Benutzer speichern</button>
+                </div>
+            </section>
+
+            <section class="otd-settings-section" data-section="diagnostics">
+                <div class="otd-settings-section-head">Diagnose</div>
+                <div class="otd-settings-fields">
+                    <label class="otd-settings-field">
+                        Log-Level
+                        <select id="settings-log-level">
+                            <option value="debug">Debug</option>
+                            <option value="info">Info</option>
+                            <option value="warn">Warn</option>
+                            <option value="error">Error</option>
+                        </select>
+                    </label>
+                    <label class="otd-settings-field">
+                        Aufbewahrung (Tage)
+                        <input type="number" id="settings-log-keep" min="1" max="365" />
+                    </label>
+                    <label class="otd-settings-field">
+                        Log-Pfad
+                        <input type="text" id="settings-log-path" maxlength="120" />
+                    </label>
+                </div>
+            </section>
+
+            <div class="otd-settings-footer">
+                <div class="otd-settings-hint">Aenderungen gelten nach dem Speichern.</div>
+                <div class="otd-settings-actions">
+                    <button type="button" id="settings-defaults">Standard</button>
+                    <button type="button" id="settings-reload">Aktualisieren</button>
+                    <button type="button" id="settings-save">Speichern</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- Einstellungen Fenster ---
+    (function settingsEditor() {
+        const panel = document.getElementById('otd-settings');
+        if (!panel) return;
+
+        const statusEl = document.getElementById('otd-settings-status');
+        const navButtons = Array.from(panel.querySelectorAll('.otd-settings-nav'));
+        const sections = Array.from(panel.querySelectorAll('.otd-settings-section'));
+
+        const inputs = {
+            project: document.getElementById('settings-project'),
+            language: document.getElementById('settings-language'),
+            autosave: document.getElementById('settings-autosave'),
+            autosaveInterval: document.getElementById('settings-autosave-interval'),
+            autoOpen: document.getElementById('settings-auto-open'),
+            usersEnabled: document.getElementById('settings-users-enabled'),
+            theme: document.getElementById('settings-theme'),
+            density: document.getElementById('settings-density'),
+            tooltips: document.getElementById('settings-tooltips'),
+            clock: document.getElementById('settings-clock'),
+            statusbar: document.getElementById('settings-statusbar'),
+            system: document.getElementById('settings-system'),
+            host: document.getElementById('settings-host'),
+            port: document.getElementById('settings-port'),
+            baud: document.getElementById('settings-baud'),
+            autoconnect: document.getElementById('settings-autoconnect'),
+            heartbeat: document.getElementById('settings-heartbeat'),
+            maxSpeed: document.getElementById('settings-maxspeed'),
+            accel: document.getElementById('settings-accel'),
+            brake: document.getElementById('settings-brake'),
+            stopSignal: document.getElementById('settings-stop-signal'),
+            emergencyStop: document.getElementById('settings-emergency-stop'),
+            grid: document.getElementById('settings-grid'),
+            snap: document.getElementById('settings-snap'),
+            showLabels: document.getElementById('settings-show-labels'),
+            showIds: document.getElementById('settings-show-ids'),
+            confirmDelete: document.getElementById('settings-confirm-delete'),
+            logLevel: document.getElementById('settings-log-level'),
+            logKeep: document.getElementById('settings-log-keep'),
+            logPath: document.getElementById('settings-log-path')
+        };
+
+        const userList = document.getElementById('settings-user-list');
+        const userAddBtn = document.getElementById('settings-user-add');
+        const userSaveBtn = document.getElementById('settings-users-save');
+
+        const defaults = {
+            projectName: 'OpenTrainDrive',
+            language: 'de',
+            autosave: true,
+            autosaveInterval: 120,
+            autoOpen: true,
+            usersEnabled: false,
+            theme: 'classic',
+            density: 'compact',
+            tooltips: true,
+            clock: true,
+            statusbar: true,
+            system: 'dcc',
+            host: 'localhost',
+            port: 5550,
+            baud: 115200,
+            autoconnect: true,
+            heartbeat: 15,
+            maxSpeed: 120,
+            accelFactor: 1.0,
+            brakeFactor: 1.0,
+            stopOnSignal: true,
+            emergencyStop: true,
+            gridSize: 48,
+            snap: true,
+            showLabels: true,
+            showIds: false,
+            confirmDelete: true,
+            logLevel: 'info',
+            keepDays: 7,
+            logPath: 'logs'
+        };
+
+        const state = {
+            data: { ...defaults },
+            users: [],
+            loadedOnce: false
+        };
+
+        function setStatus(text) {
+            if (statusEl) statusEl.textContent = text;
+        }
+
+        function applyTheme(theme) {
+            const value = theme || defaults.theme;
+            document.documentElement.setAttribute('data-otd-theme', value);
+        }
+
+        function setSection(name) {
+            navButtons.forEach(btn => btn.classList.toggle('is-active', btn.dataset.section === name));
+            sections.forEach(section => section.classList.toggle('is-active', section.dataset.section === name));
+        }
+
+        function toNumber(value, fallback) {
+            if (value === null || value === undefined || value === '') return fallback;
+            const num = Number.parseFloat(value.toString().replace(',', '.'));
+            return Number.isFinite(num) ? num : fallback;
+        }
+
+        function applySettings(data) {
+            inputs.project.value = data.projectName ?? '';
+            inputs.language.value = data.language ?? 'de';
+            inputs.autosave.checked = !!data.autosave;
+            inputs.autosaveInterval.value = data.autosaveInterval?.toString() ?? '120';
+            inputs.autoOpen.checked = !!data.autoOpen;
+            inputs.usersEnabled.checked = !!data.usersEnabled;
+            inputs.theme.value = data.theme ?? 'classic';
+            applyTheme(inputs.theme.value);
+            inputs.density.value = data.density ?? 'compact';
+            inputs.tooltips.checked = !!data.tooltips;
+            inputs.clock.checked = !!data.clock;
+            inputs.statusbar.checked = !!data.statusbar;
+            inputs.system.value = data.system ?? 'dcc';
+            inputs.host.value = data.host ?? '';
+            inputs.port.value = data.port?.toString() ?? '0';
+            inputs.baud.value = data.baud?.toString() ?? '0';
+            inputs.autoconnect.checked = !!data.autoconnect;
+            inputs.heartbeat.value = data.heartbeat?.toString() ?? '0';
+            inputs.maxSpeed.value = data.maxSpeed?.toString() ?? '0';
+            inputs.accel.value = data.accelFactor?.toString() ?? '1.0';
+            inputs.brake.value = data.brakeFactor?.toString() ?? '1.0';
+            inputs.stopSignal.checked = !!data.stopOnSignal;
+            inputs.emergencyStop.checked = !!data.emergencyStop;
+            inputs.grid.value = data.gridSize?.toString() ?? '48';
+            inputs.snap.checked = !!data.snap;
+            inputs.showLabels.checked = !!data.showLabels;
+            inputs.showIds.checked = !!data.showIds;
+            inputs.confirmDelete.checked = !!data.confirmDelete;
+            inputs.logLevel.value = data.logLevel ?? 'info';
+            inputs.logKeep.value = data.keepDays?.toString() ?? '7';
+            inputs.logPath.value = data.logPath ?? '';
+        }
+
+        function readSettings() {
+            return {
+                projectName: inputs.project.value.trim(),
+                language: inputs.language.value,
+                autosave: inputs.autosave.checked,
+                autosaveInterval: Math.round(toNumber(inputs.autosaveInterval.value, defaults.autosaveInterval)),
+                autoOpen: inputs.autoOpen.checked,
+                usersEnabled: inputs.usersEnabled.checked,
+                theme: inputs.theme.value,
+                density: inputs.density.value,
+                tooltips: inputs.tooltips.checked,
+                clock: inputs.clock.checked,
+                statusbar: inputs.statusbar.checked,
+                system: inputs.system.value,
+                host: inputs.host.value.trim(),
+                port: Math.round(toNumber(inputs.port.value, defaults.port)),
+                baud: Math.round(toNumber(inputs.baud.value, defaults.baud)),
+                autoconnect: inputs.autoconnect.checked,
+                heartbeat: Math.round(toNumber(inputs.heartbeat.value, defaults.heartbeat)),
+                maxSpeed: toNumber(inputs.maxSpeed.value, defaults.maxSpeed),
+                accelFactor: toNumber(inputs.accel.value, defaults.accelFactor),
+                brakeFactor: toNumber(inputs.brake.value, defaults.brakeFactor),
+                stopOnSignal: inputs.stopSignal.checked,
+                emergencyStop: inputs.emergencyStop.checked,
+                gridSize: Math.round(toNumber(inputs.grid.value, defaults.gridSize)),
+                snap: inputs.snap.checked,
+                showLabels: inputs.showLabels.checked,
+                showIds: inputs.showIds.checked,
+                confirmDelete: inputs.confirmDelete.checked,
+                logLevel: inputs.logLevel.value,
+                keepDays: Math.round(toNumber(inputs.logKeep.value, defaults.keepDays)),
+                logPath: inputs.logPath.value.trim()
+            };
+        }
+
+        function parseBool(value, fallback) {
+            if (value === null || value === undefined) return fallback;
+            const text = value.toString().trim().toLowerCase();
+            if (text === 'true' || text === '1' || text === 'yes') return true;
+            if (text === 'false' || text === '0' || text === 'no') return false;
+            return fallback;
+        }
+
+        function parseSettingsXml(xml) {
+            const doc = new DOMParser().parseFromString(xml, 'application/xml');
+            const root = doc.querySelector('settings');
+            if (!root) return { ...defaults };
+            const getAttr = (node, name, fallback) => node?.getAttribute(name) ?? fallback;
+            const general = root.querySelector('general');
+            const ui = root.querySelector('ui');
+            const connection = root.querySelector('connection');
+            const operation = root.querySelector('operation');
+            const editor = root.querySelector('editor');
+            const logging = root.querySelector('logging');
+
+            return {
+                projectName: getAttr(general, 'project', defaults.projectName),
+                language: getAttr(general, 'language', defaults.language),
+                autosave: parseBool(getAttr(general, 'autosave', null), defaults.autosave),
+                autosaveInterval: toNumber(getAttr(general, 'autosaveInterval', defaults.autosaveInterval), defaults.autosaveInterval),
+                autoOpen: parseBool(getAttr(general, 'autoOpen', null), defaults.autoOpen),
+                usersEnabled: parseBool(getAttr(general, 'usersEnabled', null), defaults.usersEnabled),
+                theme: getAttr(ui, 'theme', defaults.theme),
+                density: getAttr(ui, 'density', defaults.density),
+                tooltips: parseBool(getAttr(ui, 'tooltips', null), defaults.tooltips),
+                clock: parseBool(getAttr(ui, 'clock', null), defaults.clock),
+                statusbar: parseBool(getAttr(ui, 'statusbar', null), defaults.statusbar),
+                system: getAttr(connection, 'system', defaults.system),
+                host: getAttr(connection, 'host', defaults.host),
+                port: toNumber(getAttr(connection, 'port', defaults.port), defaults.port),
+                baud: toNumber(getAttr(connection, 'baud', defaults.baud), defaults.baud),
+                autoconnect: parseBool(getAttr(connection, 'autoconnect', null), defaults.autoconnect),
+                heartbeat: toNumber(getAttr(connection, 'heartbeat', defaults.heartbeat), defaults.heartbeat),
+                maxSpeed: toNumber(getAttr(operation, 'maxSpeed', defaults.maxSpeed), defaults.maxSpeed),
+                accelFactor: toNumber(getAttr(operation, 'accelFactor', defaults.accelFactor), defaults.accelFactor),
+                brakeFactor: toNumber(getAttr(operation, 'brakeFactor', defaults.brakeFactor), defaults.brakeFactor),
+                stopOnSignal: parseBool(getAttr(operation, 'stopOnSignal', null), defaults.stopOnSignal),
+                emergencyStop: parseBool(getAttr(operation, 'emergencyStop', null), defaults.emergencyStop),
+                gridSize: toNumber(getAttr(editor, 'grid', defaults.gridSize), defaults.gridSize),
+                snap: parseBool(getAttr(editor, 'snap', null), defaults.snap),
+                showLabels: parseBool(getAttr(editor, 'showLabels', null), defaults.showLabels),
+                showIds: parseBool(getAttr(editor, 'showIds', null), defaults.showIds),
+                confirmDelete: parseBool(getAttr(editor, 'confirmDelete', null), defaults.confirmDelete),
+                logLevel: getAttr(logging, 'level', defaults.logLevel),
+                keepDays: toNumber(getAttr(logging, 'keepDays', defaults.keepDays), defaults.keepDays),
+                logPath: getAttr(logging, 'path', defaults.logPath)
+            };
+        }
+
+        function parseUsersXml(xml) {
+            const doc = new DOMParser().parseFromString(xml, 'application/xml');
+            const nodes = doc.querySelectorAll('users > user');
+            return Array.from(nodes).map(node => ({
+                name: node.getAttribute('name') ?? '',
+                password: node.getAttribute('password') ?? '',
+                role: node.getAttribute('role') ?? 'user',
+                enabled: (node.getAttribute('enabled') ?? 'true') === 'true'
+            }));
+        }
+
+        function ensureDefaultUsers() {
+            if (state.users.length === 0) {
+                state.users = [{
+                    name: 'admin',
+                    password: 'admin',
+                    role: 'admin',
+                    enabled: true
+                }];
+            }
+        }
+
+        function renderUsers() {
+            if (!userList) return;
+            userList.innerHTML = '';
+            state.users.forEach((user, index) => {
+                const row = document.createElement('div');
+                row.className = 'otd-settings-user-row';
+                row.innerHTML = `
+                    <input type="text" class="otd-settings-user-name" placeholder="Benutzername" value="${user.name ?? ''}" />
+                    <input type="text" class="otd-settings-user-pass" placeholder="Passwort" value="${user.password ?? ''}" />
+                    <select class="otd-settings-user-role">
+                        <option value="admin">Admin</option>
+                        <option value="user">Benutzer</option>
+                    </select>
+                    <label class="otd-settings-user-enabled">
+                        Aktiv
+                        <input type="checkbox" />
+                    </label>
+                    <button type="button" class="otd-settings-user-remove">X</button>
+                `;
+                const roleSelect = row.querySelector('.otd-settings-user-role');
+                const enabledInput = row.querySelector('.otd-settings-user-enabled input');
+                if (roleSelect) roleSelect.value = user.role ?? 'user';
+                if (enabledInput) enabledInput.checked = user.enabled !== false;
+                row.querySelector('.otd-settings-user-name')?.addEventListener('input', (event) => {
+                    state.users[index].name = event.target.value.trim();
+                });
+                row.querySelector('.otd-settings-user-pass')?.addEventListener('input', (event) => {
+                    state.users[index].password = event.target.value;
+                });
+                roleSelect?.addEventListener('change', (event) => {
+                    state.users[index].role = event.target.value;
+                });
+                enabledInput?.addEventListener('change', (event) => {
+                    state.users[index].enabled = event.target.checked;
+                });
+                row.querySelector('.otd-settings-user-remove')?.addEventListener('click', () => {
+                    state.users.splice(index, 1);
+                    renderUsers();
+                });
+                userList.appendChild(row);
+            });
+        }
+
+        async function loadFromServer() {
+            try {
+                setStatus('Laden ...');
+                const resp = await fetch('/settings.xml', { cache: 'no-store' });
+                if (!resp.ok) {
+                    state.data = { ...defaults };
+                    applySettings(state.data);
+                    setStatus('Keine settings.xml gefunden - Standardwerte geladen');
+                    state.loadedOnce = true;
+                    return;
+                }
+                const xml = await resp.text();
+                state.data = parseSettingsXml(xml);
+                applySettings(state.data);
+                setStatus('Einstellungen geladen');
+                state.loadedOnce = true;
+            } catch (err) {
+                setStatus('Laden fehlgeschlagen');
+            }
+        }
+
+        async function loadUsersFromServer() {
+            try {
+                const resp = await fetch('/users.xml', { cache: 'no-store' });
+                if (!resp.ok) {
+                    state.users = [];
+                    ensureDefaultUsers();
+                    renderUsers();
+                    return;
+                }
+                const xml = await resp.text();
+                state.users = parseUsersXml(xml);
+                ensureDefaultUsers();
+                renderUsers();
+            } catch {
+                state.users = [];
+                ensureDefaultUsers();
+                renderUsers();
+            }
+        }
+
+        async function saveUsersToServer() {
+            try {
+                const payload = state.users.filter(user => user.name && user.password);
+                const resp = await fetch('/users/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                setStatus('Benutzer gespeichert');
+            } catch {
+                setStatus('Benutzer speichern fehlgeschlagen');
+            }
+        }
+
+        async function saveToServer() {
+            try {
+                setStatus('Speichere ...');
+                const payload = readSettings();
+                const resp = await fetch('/settings/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                state.data = { ...payload };
+                applyTheme(payload.theme);
+                setStatus('Gespeichert');
+                if (typeof window.refreshAuthStatus === 'function') {
+                    window.refreshAuthStatus();
+                }
+            } catch (err) {
+                setStatus('Speichern fehlgeschlagen');
+            }
+        }
+
+        navButtons.forEach(btn => btn.addEventListener('click', () => {
+            setSection(btn.dataset.section);
+        }));
+
+        inputs.theme?.addEventListener('change', () => {
+            applyTheme(inputs.theme.value);
+        });
+
+        document.getElementById('settings-defaults')?.addEventListener('click', () => {
+            state.data = { ...defaults };
+            applySettings(state.data);
+            setStatus('Standardwerte geladen');
+        });
+
+        document.getElementById('settings-reload')?.addEventListener('click', loadFromServer);
+        document.getElementById('settings-save')?.addEventListener('click', saveToServer);
+        userAddBtn?.addEventListener('click', () => {
+            state.users.push({ name: '', password: '', role: 'user', enabled: true });
+            renderUsers();
+        });
+        userSaveBtn?.addEventListener('click', saveUsersToServer);
+
+        window.openSettingsFenster = function () {
+            panel.classList.remove('otd-hidden');
+            if (!panel.style.left || !panel.style.top) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = panel.offsetWidth || 820;
+                const height = panel.offsetHeight || 520;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                panel.style.left = `${left}px`;
+                panel.style.top = `${top}px`;
+            }
+            if (!state.loadedOnce) {
+                loadFromServer();
+                loadUsersFromServer();
+            }
+        };
+
+        window.closeSettingsFenster = function () {
+            panel.classList.add('otd-hidden');
+        };
+
+        applyTheme(defaults.theme);
+        loadFromServer();
+        loadUsersFromServer();
+    })();
+</script>

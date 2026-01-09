@@ -41,4 +41,17 @@
       </car>
     </cars>
   </train>
+  <train id="8e767134-aea6-45e7-84c4-4778fe475682">
+    <name>Selina</name>
+    <length>400</length>
+    <vmax>0</vmax>
+    <cars>
+      <car id="01f477a0-580b-4c4d-a50e-2ac05e7dfd76" type="loco" length="300" vmax="">
+        <name>Selina</name>
+      </car>
+      <car id="4866680d-1046-4123-867b-1613c9e47f3a" type="waggon" length="100" vmax="">
+        <name>Selina</name>
+      </car>
+    </cars>
+  </train>
 </trains>

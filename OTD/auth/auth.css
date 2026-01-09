@@ -1,0 +1,83 @@
+.otd-auth-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+
+.otd-auth-screen.otd-hidden {
+  display: none;
+}
+
+.otd-auth-panel {
+  width: 360px;
+  background: var(--otd-panel-bg);
+  border: 2px solid var(--otd-panel-border);
+  box-shadow: 0 18px 26px var(--otd-shadow-strong);
+  font-family: var(--otd-font);
+  color: var(--otd-text);
+}
+
+.otd-auth-title {
+  padding: 10px 14px;
+  background: linear-gradient(180deg, var(--otd-titlebar-start) 0%, var(--otd-titlebar-end) 100%);
+  border-bottom: 1px solid var(--otd-panel-border-line);
+  font-weight: 700;
+  color: var(--otd-titlebar-text);
+}
+
+.otd-auth-body {
+  padding: 12px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.otd-auth-body label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.otd-auth-body input {
+  background: var(--otd-input-bg);
+  border: 2px solid var(--otd-input-border);
+  color: var(--otd-text);
+  padding: 6px 8px;
+  font: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.otd-auth-status {
+  min-height: 16px;
+  color: var(--otd-status);
+  font-size: 12px;
+}
+
+.otd-auth-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.otd-auth-actions button {
+  min-width: 90px;
+  padding: 6px 12px;
+  background: var(--otd-button-bg);
+  border: 2px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.otd-auth-actions button:hover {
+  background: var(--otd-button-hover);
+}
+
+.otd-auth-actions form {
+  margin: 0;
+}

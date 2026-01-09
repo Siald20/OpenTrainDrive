@@ -1,15 +1,15 @@
-﻿.otd-loko-window {
+.otd-loko-window {
   position: absolute;
   z-index: 45;
   top: 48px;
   left: 32px;
   width: max-content;
   max-width: 90vw;
-  background: #23314f;
-  color: #e7ecf5;
-  border: 2px solid #0f1626;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
-  font-family: "Trebuchet MS", "Lucida Grande", "Verdana", sans-serif;
+  background: var(--otd-panel-bg);
+  color: var(--otd-text);
+  border: 2px solid var(--otd-panel-border);
+  box-shadow: 0 12px 30px var(--otd-shadow-strong);
+  font-family: var(--otd-font);
 }
 
 .otd-loko-titlebar {
@@ -18,9 +18,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
-  background: linear-gradient(180deg, #0f274f 0%, #0c1f3f 100%);
-  color: #cfe0ff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, var(--otd-titlebar-start) 0%, var(--otd-titlebar-end) 100%);
+  color: var(--otd-titlebar-text);
+  border-bottom: 1px solid var(--otd-panel-border-line);
   cursor: grab;
   user-select: none;
 }
@@ -42,15 +42,15 @@
 }
 
 .otd-loko-status {
-  color: #f0e34a;
+  color: var(--otd-highlight);
 }
 
 .otd-loko-close {
   width: 24px;
   height: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(10, 18, 34, 0.55);
-  color: #e7ecf5;
+  border: 1px solid var(--otd-panel-border-line);
+  background: var(--otd-panel-muted);
+  color: var(--otd-text);
   line-height: 1;
   display: inline-flex;
   align-items: center;
@@ -60,7 +60,7 @@
 }
 
 .otd-loko-close:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--otd-button-hover);
 }
 
 .otd-loko-body {
@@ -80,9 +80,9 @@
 
 .otd-loko-form input,
 .otd-loko-form textarea {
-  background: #1b263f;
-  border: 1px solid #0f1626;
-  color: #e7ecf5;
+  background: var(--otd-input-bg);
+  border: 1px solid var(--otd-input-border);
+  color: var(--otd-text);
   padding: 6px 8px;
   font: inherit;
   border-radius: 2px;
@@ -100,9 +100,9 @@
 
 .otd-loko-buttons button,
 .otd-loko-list-head button {
-  background: #2a3859;
-  border: 1px solid #101826;
-  color: #e7ecf5;
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
   padding: 6px 10px;
   font-size: 12px;
   cursor: pointer;
@@ -110,22 +110,23 @@
 
 .otd-loko-buttons button:hover,
 .otd-loko-list-head button:hover {
-  background: #36466d;
+  background: var(--otd-button-hover);
 }
 
 .otd-loko-list {
-  border: 1px solid #101826;
-  background: #1f2b45;
+  border: 1px solid var(--otd-panel-border-soft);
+  background: var(--otd-panel-alt);
   display: flex;
   flex-direction: column;
 }
+
 
 .otd-loko-list-head {
   padding: 6px 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #101826;
+  border-bottom: 1px solid var(--otd-panel-border-soft);
   font-size: 13px;
 }
 
@@ -141,7 +142,7 @@
 
 .otd-loko-list th,
 .otd-loko-list td {
-  border-bottom: 1px solid #23324f;
+  border-bottom: 1px solid var(--otd-panel-border-line);
   padding: 6px 8px;
   white-space: nowrap;
 }
@@ -153,18 +154,20 @@
 }
 
 .otd-loko-actions-cell button {
-  background: #2a3859;
-  border: 1px solid #101826;
-  color: #e7ecf5;
+  background: var(--otd-button-bg);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
   padding: 4px 8px;
   font-size: 11px;
   cursor: pointer;
 }
 
 .otd-loko-actions-cell button:hover {
-  background: #36466d;
+  background: var(--otd-button-hover);
 }
 
 .otd-loko-list tbody tr:hover {
-  background: #2a3859;
+  background: var(--otd-button-bg);
 }
+
+
