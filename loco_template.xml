@@ -22,20 +22,20 @@
         <function no="3" description="Horn tief" actuation="impulse" type="sound" visible="true" image="horn.svg" />
         <function no="4" description="Schaffnerpfiff" actuation="impulse" type="sound" visible="true" image="whistle.svg" />
         <function no="6" description="Rangiergang" actuation="toggle" type="driving" visible="false" />
-        <function no="7" description="Führerstandsbeleuchtung" actuation="toggle" type="interiorlight" visible="false" image="light.svg" />        
+        <function no="7" description="Führerstandsbeleuchtung" actuation="toggle" type="interiorlight" visible="false" image="light.svg" />
         <function no="8" description="Fernlicht" actuation="toggle" type="headlight" visible="true" image="beam.svg"/>
-        <function no="9" description="Kompressor" actuation="toggle" type="sound" visible="true"  image="speaker.svg" />
+        <function no="9" description="Kompressor" actuation="toggle" type="sound" visible="true" image="speaker.svg" />
         <function no="10" description="Ansage während der Fahrt" actuation="impulse" type="sound" visible="true" image="speaker.svg" />
         <function no="11" description="Horn Zweiklang" actuation="impulse" type="sound" visible="true" image="horn.svg" />
         <function no="12" description="Warnlicht rot" actuation="toggle" type="headlight" visible="true" image="headlight-warning.svg" />
-        <function no="13" description="starker Lüfter" actuation="toggle" type="sound" visible="true" image="speaker.svg" />        
-        <function no="14" description="Lautlos" actuation="toggle" type="sound" visible="true" image="mute.svg"/>     
+        <function no="13" description="starker Lüfter" actuation="toggle" type="sound" visible="true" image="speaker.svg" />
+        <function no="14" description="Lautlos" actuation="toggle" type="sound" visible="true" image="mute.svg"/>
         <function no="15" description="Parklicht" actuation="toggle" type="headlight" visible="true" image="headlight-parking.svg" />
         <function no="16" description="3x weiss/2x rot <> 2x rot/3x weiss" actuation="toggle" type="headlight" visible="false"/>
         <function no="17" description="3x weiss/gelöscht <> 2x rot/gelöscht" actuation="toggle" type="headlight" visible="false" />
         <function no="18" description="gelöscht/2x rot <> gelöscht/3x weiss" actuation="toggle" type="headlight" visible="false" />
         <function no="19" description="gelöscht/1x weiss <> 1x weiss/gelöscht" actuation="toggle" type="headlight" visible="false" />
-        <function no="20" description="gelöscht/2x rot <> 2x rot/gelöscht" actuation="toggle" type="headlight" visible="false" />  
+        <function no="20" description="gelöscht/2x rot <> 2x rot/gelöscht" actuation="toggle" type="headlight" visible="false" />
       </functiontable>
       <speedtable>
         <speed step="1" v="1" />
@@ -72,8 +72,11 @@
       <operatingtime>20</operatingtime>
       <traveldistance>1500</traveldistance>
       <serviceinterval>40</serviceinterval>
-      <lastservice>2024-06-01</lastservice>
-      <servicecomment>Radsätze gereinigt</servicecomment>
+      <servicetable>
+        <service date="2024-06-01">
+          <item>Radkontakte gereinigt</item>
+        </service>
+      </servicetable>
     </operation>
   </loco>
 </locos>
