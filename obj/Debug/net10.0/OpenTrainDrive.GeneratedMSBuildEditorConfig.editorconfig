@@ -38,6 +38,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = T1REL0xvY28vbG9jby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/workspaces/OpenTrainDrive/OTD/railcar/railcar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL3JhaWxjYXIvcmFpbGNhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/workspaces/OpenTrainDrive/OTD/settings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T1REL3NldHRpbmdzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -52,10 +56,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/workspaces/OpenTrainDrive/OTD/Train/train.cshtml]
 build_metadata.AdditionalFiles.TargetPath = T1REL1RyYWluL3RyYWluLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[/workspaces/OpenTrainDrive/OTD/railcar/railcar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REL3dhZ2dvbi93YWdnb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [/workspaces/OpenTrainDrive/OTD/ZD/zd.cshtml]
