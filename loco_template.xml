@@ -1,22 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <locos>
-  <loco id="Re460" name="Re 460" index="1">
-    <description>SBB Re 460 023 (rot)</description>
-    <length>20</length>
-    <weight>80</weight>
-    <tractiontype>electric</tractiontype>
-    <vmax>200</vmax>
-    <image>locoimages/re460_023_rot.png</image>
-    <notes>meine Bemerkungen</notes>
+  <loco uid="f47ac10b-58cc-4372-a567-0e02b2c3d479" id="Re460Z" name="Re 460 rot" length="20" index="1">
+    <model manufacturer="Roco" scale="H0" catalognumber="43757">
+      <operator>SBB</operator>
+      <class>Re 460</class>
+      <serialnumber>460 023-5</serialnumber>
+      <tractiontype>electric</tractiontype>
+      <weight>80</weight>
+      <vmax>200</vmax>
+      <image>locoimages/re460_023_rot.png</image>
+      <notes>Werbelok Zürich Relax</notes>
+    </model>
     <decoder>
-      <protocol>DCC</protocol>
+      <protocol>DCC128</protocol>
       <address>3</address>
-      <addresstype>long</addresstype>
-      <speedsteps>128</speedsteps>
+      <addresstype>short</addresstype>
       <functiontable>
-        <function index="0" name="Licht" type="light" />
-        <function index="1" name="Funktion 1" type="momentary" />
-        <function index="2" name="Funktion 2" type="toggle" />
+        <function no="0" description="3x weiss/1x weiss <> 1x weiss/3x weiss" actuation="toggle" category="headlight" visible="true" />
+        <function no="1" description="Fahrgeräusch" actuation="toggle" type="sound" visible="true" />
+        <function no="2" description="Horn hoch" actuation="impulse" type="sound" visible="true" />
+        <function no="3" description="Horn tief" actuation="impulse" type="sound" visible="true" />
+        <function no="4" description="Schaffnerpfiff" actuation="impulse" type="sound" visible="true" />
+        <function no="6" description="Rangiergang" actuation="toggle" type="driving" visible="false" />
+        <function no="7" description="Führerstandsbeleuchtung" actuation="toggle" type="interiorlight" visible="false" />        
+        <function no="8" description="Fernlicht" actuation="toggle" type="headlight" visible="true"/>
+        <function no="9" description="Kompressor" actuation="toggle" type="sound" visible="true" />
+        <function no="10" description="Ansage während der Fahrt" actuation="impulse" type="sound" visible="true" />
+        <function no="11" description="Horn Zweiklang" actuation="impulse" type="sound" visible="true"/>
+        <function no="12" description="Warnlicht rot" actuation="toggle" type="headlight" visible="true" />
+        <function no="13" description="starker Lüfter" actuation="toggle" type="sound" visible="true" />        
+        <function no="14" description="Lautlos" actuation="toggle" type="sound" visible="true" />     
+        <function no="15" description="Parklicht" actuation="toggle" type="headlight" visible="false"/>
+        <function no="16" description="3x weiss/2x rot <> 2x rot/3x weiss" actuation="toggle" type="headlight" visible="false"/>
+        <function no="17" description="3x weiss/gelöscht <> 2x rot/gelöscht" actuation="toggle" type="headlight" visible="false" />
+        <function no="18" description="gelöscht/2x rot <> gelöscht/3x weiss" actuation="toggle" type="headlight" visible="false" />
+        <function no="19" description="gelöscht/1x weiss <> 1x weiss/gelöscht" actuation="toggle" type="headlight" visible="false" />
+        <function no="20" description="gelöscht/2x rot <> 2x rot/gelöscht" actuation="toggle" type="headlight" visible="false" />  
       </functiontable>
       <speedtable>
         <speed step="1" v="1" />
@@ -50,9 +69,10 @@
     </decoder>
     <operation>
       <purchasedate>2022-05-01</purchasedate>
-      <operatinghours>20</operatinghours>
+      <operatingtime>20</operatingtime>
       <serviceinterval>40</serviceinterval>
       <lastservice>2024-06-01</lastservice>
+      <servicecomment>Radsätze gereinigt</servicecomment>
     </operation>
   </loco>
 </locos>

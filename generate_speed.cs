@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 /* rein KI generierter Code, hat aber nicht zum richtigen Ergebnis geführt: An sich war der Auftrag, den
 gesamten Geschwindigkeitbereich linear von 1 bis 255 auf die 128 Geschwindigkeitsstufen abzubilden. P.S.: das Auto-Ergänzen
-hier im Code-Editor hat geschnallt was ich wollte, nachdem ich den halben Test geschrieben hatte ;-). */
+hier im Code-Editor hat geschnallt was ich wollte, nachdem ich den halben Text geschrieben hatte ;-). */
 
 class LocoSpeedtools
 {
