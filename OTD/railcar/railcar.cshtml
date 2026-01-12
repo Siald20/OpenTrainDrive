@@ -1,44 +1,44 @@
-<div class="otd-waggon-window otd-hidden" id="otd-waggon" role="dialog" aria-label="Waggon">
-    <div class="otd-waggon-titlebar" data-drag-handle="true">
-        <span class="otd-waggon-title">Waggon</span>
-        <div class="otd-waggon-title-actions">
-            <span class="otd-waggon-status" id="otd-waggon-status">Bereit</span>
-            <button class="otd-waggon-close" type="button" aria-label="Schliessen" onclick="closeWaggonFenster();">X</button>
+<div class="otd-railcar-window otd-hidden" id="otd-railcar" role="dialog" aria-label="Waggon">
+    <div class="otd-railcar-titlebar" data-drag-handle="true">
+        <span class="otd-railcar-title">Waggon</span>
+        <div class="otd-railcar-title-actions">
+            <span class="otd-railcar-status" id="otd-railcar-status">Bereit</span>
+            <button class="otd-railcar-close" type="button" aria-label="Schliessen" onclick="closeWaggonFenster();">X</button>
         </div>
     </div>
-    <div class="otd-waggon-body">
-        <div class="otd-waggon-form">
+    <div class="otd-railcar-body">
+        <div class="otd-railcar-form">
             <label>
                 Name
-                <input type="text" id="waggon-name" maxlength="10" />
+                <input type="text" id="railcar-name" maxlength="10" />
             </label>
         
             <label>
                 Length (cm)
-                <input type="number" id="waggon-length" min="0" max="50" />
+                <input type="number" id="railcar-length" min="0" max="50" />
             </label>
             <label>
                 Vmax (km/h)
-                <input type="number" id="waggon-vmax" min="1" max="500" />
+                <input type="number" id="railcar-vmax" min="1" max="500" />
             </label>
           
-            <label class="otd-waggon-notes">
+            <label class="otd-railcar-notes">
                 Notes
-                <textarea id="waggon-notes" rows="2" maxlength="240"></textarea>
+                <textarea id="railcar-notes" rows="2" maxlength="240"></textarea>
             </label>
-            <div class="otd-waggon-buttons">
-                <button type="button" id="waggon-new">Neu</button>
-                <button type="button" id="waggon-add">Hinzufuegen / Aktualisieren</button>
-                <button type="button" id="waggon-delete">Loeschen</button>
-                <button type="button" id="waggon-save">Speichern</button>
+            <div class="otd-railcar-buttons">
+                <button type="button" id="railcar-new">Neu</button>
+                <button type="button" id="railcar-add">Hinzufuegen / Aktualisieren</button>
+                <button type="button" id="railcar-delete">Loeschen</button>
+                <button type="button" id="railcar-save">Speichern</button>
             </div>
         </div>
-        <div class="otd-waggon-list">
-            <div class="otd-waggon-list-head">
+        <div class="otd-railcar-list">
+            <div class="otd-railcar-list-head">
                 <span>Vorhandene Waggons</span>
-                <button type="button" id="waggon-reload">Aktualisieren</button>
+                <button type="button" id="railcar-reload">Aktualisieren</button>
             </div>
-            <div class="otd-waggon-list-table">
+            <div class="otd-railcar-list-table">
                 <table>
                     <thead>
                         <tr>
@@ -49,7 +49,7 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody id="waggon-rows"></tbody>
+                    <tbody id="railcar-rows"></tbody>
                 </table>
             </div>
         </div>
@@ -58,21 +58,21 @@
 
 <script>
     // --- Waggon Fenster ---
-    (function waggonEditor() {
-        const panel = document.getElementById('otd-waggon');
+    (function railcarEditor() {
+        const panel = document.getElementById('otd-railcar');
         if (!panel) return;
 
-        const statusEl = document.getElementById('otd-waggon-status');
-        const nameInput = document.getElementById('waggon-name');
-        const lengthInput = document.getElementById('waggon-length');
-        const vmaxInput = document.getElementById('waggon-vmax');
-        const notesInput = document.getElementById('waggon-notes');
-        const rowsBody = document.getElementById('waggon-rows');
-        const addBtn = document.getElementById('waggon-add');
-        const newBtn = document.getElementById('waggon-new');
-        const deleteBtn = document.getElementById('waggon-delete');
-        const saveBtn = document.getElementById('waggon-save');
-        const reloadBtn = document.getElementById('waggon-reload');
+        const statusEl = document.getElementById('otd-railcar-status');
+        const nameInput = document.getElementById('railcar-name');
+        const lengthInput = document.getElementById('railcar-length');
+        const vmaxInput = document.getElementById('railcar-vmax');
+        const notesInput = document.getElementById('railcar-notes');
+        const rowsBody = document.getElementById('railcar-rows');
+        const addBtn = document.getElementById('railcar-add');
+        const newBtn = document.getElementById('railcar-new');
+        const deleteBtn = document.getElementById('railcar-delete');
+        const saveBtn = document.getElementById('railcar-save');
+        const reloadBtn = document.getElementById('railcar-reload');
 
         const state = {
             items: [],
@@ -102,9 +102,9 @@
                     <td>${item.length ?? ''}</td>
                     <td>${item.vmax ?? ''}</td>
                     <td>${item.notes ?? ''}</td>
-                    <td class="otd-waggon-actions-cell">
-                        <button type="button" data-id="${item.id}" class="otd-waggon-row-edit">Bearbeiten</button>
-                        <button type="button" data-id="${item.id}" class="otd-waggon-row-delete">Entfernen</button>
+                    <td class="otd-railcar-actions-cell">
+                        <button type="button" data-id="${item.id}" class="otd-railcar-row-edit">Bearbeiten</button>
+                        <button type="button" data-id="${item.id}" class="otd-railcar-row-delete">Entfernen</button>
                     </td>
                 `;
                 tr.dataset.id = item.id ?? '';
@@ -125,18 +125,18 @@
         async function loadFromServer() {
             try {
                 setStatus('Laden ...');
-                const resp = await fetch('/waggon.xml', { cache: 'no-store' });
+                const resp = await fetch('/railcar.xml', { cache: 'no-store' });
                 if (!resp.ok) {
                     state.items = [];
                     renderList();
-                    setStatus('Keine waggon.xml gefunden - neue Datei anlegen');
+                    setStatus('Keine railcar.xml gefunden - neue Datei anlegen');
                     state.loadedOnce = true;
                     return;
                 }
                 const xml = await resp.text();
                 const doc = new DOMParser().parseFromString(xml, 'application/xml');
                 const list = [];
-                doc.querySelectorAll('waggons > waggon').forEach(node => {
+                doc.querySelectorAll('railcars > railcar').forEach(node => {
                     list.push({
                         id: node.getAttribute('id') || crypto.randomUUID(),
                         name: node.querySelector('name')?.textContent ?? '',
@@ -157,7 +157,7 @@
         async function saveToServer() {
             try {
                 setStatus('Speichere ...');
-                const resp = await fetch('/waggon/save', {
+                const resp = await fetch('/railcar/save', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(state.items)
@@ -196,8 +196,8 @@
         }
 
         rowsBody.addEventListener('click', (evt) => {
-            const editBtn = evt.target.closest('.otd-waggon-row-edit');
-            const delBtn = evt.target.closest('.otd-waggon-row-delete');
+            const editBtn = evt.target.closest('.otd-railcar-row-edit');
+            const delBtn = evt.target.closest('.otd-railcar-row-delete');
             if (editBtn) {
                 const item = state.items.find(i => i.id === editBtn.dataset.id);
                 if (item) fillForm(item);
@@ -218,7 +218,7 @@
             const item = state.items.find(i => i.id === row.dataset.id);
             if (!item) return;
             const payload = {
-                type: 'waggon',
+                type: 'railcar',
                 id: item.id,
                 name: item.name,
                 length: item.length,

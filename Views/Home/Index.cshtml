@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="~/elements/symbols.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/loco/loco.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/drive/drive.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/waggon/waggon.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/railcar/railcar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/train/trains.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/timetable/timetable.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/timetable-viewer/timetableviewer.css" asp-append-version="true" />
@@ -314,7 +314,7 @@
 
 @await Html.PartialAsync("~/OTD/Loco/loco.cshtml")
 @await Html.PartialAsync("~/OTD/drive/drive.cshtml")
-@await Html.PartialAsync("~/OTD/waggon/waggon.cshtml")
+@await Html.PartialAsync("~/OTD/railcar/railcar.cshtml")
 @await Html.PartialAsync("~/OTD/Train/train.cshtml")
 @await Html.PartialAsync("~/OTD/timetable/timetable.cshtml")
 @await Html.PartialAsync("~/OTD/timetable-viewer/timetableviewer.cshtml")
@@ -482,9 +482,9 @@
     }
 
     enablePanelDragging('otd-melde-panel');
-    enablePanelDragging('otd-loko');
+    enablePanelDragging('otd-loco');
     enablePanelDragging('otd-drive');
-    enablePanelDragging('otd-waggon');
+    enablePanelDragging('otd-railcar');
     enablePanelDragging('otd-train');
     enablePanelDragging('otd-timetable');
     enablePanelDragging('otd-timetableviewer');

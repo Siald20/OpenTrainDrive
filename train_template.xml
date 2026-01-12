@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<trains>
+  <train uid="d8487146-7006-4f48-b26c-7e01ac243b03" name="Güterzug 1" length="110" index="1">
+    <description>Güterzug mit Kieswagen</description>
+    <weight>1200</weight>
+    <vmax>80</vmax>
+    <image>trainimages/gueterzug1.png</image>
+    <notes>Wagen Weihacher Kies</notes>
+    <vehicles>
+      <loco f_uid="f47ac10b-58cc-4372-a567-0e02b2c3d479" position="1" />
+      <loco f_uid="f1a2b3c4-d5e6-7890-abcd-ef0123456789" position="2" />
+      <railcar f_uid="g2b3c4d5-e6f7-8901-bcde-f01234567890" position="3" />
+      <railcar f_uid="h3c4d5e6-f7g8-9012-cdef-012345678901" position="4" />
+      <railcar f_uid="i4d5e6f7-g8h9-0123-def0-123456789012" position="5" />
+      <railcar f_uid="j5e6f7g8-h9i0-1234-ef01-234567890123" position="6" />
+      <railcar f_uid="k6f7g8h9-i0j1-2345-f012-345678901234" position="7" />
+      <railcar f_uid="l7g8h9i0-j1k2-3456-0123-456789012345" position="8" />
+      <railcar f_uid="m8h9i0j1-k2l3-4567-1234-567890123456" position="9" />
+      <railcar f_uid="n9i0j1k2-l3m4-5678-2345-678901234567" position="10" />    
+      <railcar f_uid="o0j1k2l3-m4n5-6789-3456-789012345678" position="11" />
+      <railcar f_uid="p1k2l3m4-n5o6-7890-4567-890123456789" position="12" />
+    </vehicles>
+  </train>

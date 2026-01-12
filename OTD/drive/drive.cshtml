@@ -176,18 +176,18 @@
         async function loadFromServer() {
             try {
                 setStatus('Laden ...');
-                const resp = await fetch('/loko.xml', { cache: 'no-store' });
+                const resp = await fetch('/loco.xml', { cache: 'no-store' });
                 if (!resp.ok) {
                     state.items = [];
                     renderLocos();
-                    setStatus('Keine loko.xml gefunden');
+                    setStatus('Keine loco.xml gefunden');
                     state.loadedOnce = true;
                     return;
                 }
                 const xml = await resp.text();
                 const doc = new DOMParser().parseFromString(xml, 'application/xml');
                 const list = [];
-                doc.querySelectorAll('locomotives > locomotive').forEach(node => {
+                doc.querySelectorAll('locos > loco').forEach(node => {
                     list.push({
                         id: node.getAttribute('id') || crypto.randomUUID(),
                         name: node.querySelector('name')?.textContent ?? '',

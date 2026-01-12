@@ -1,28 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<locomotives>
-  <locomotive id="695238b8-3b17-4a27-86e9-18f650ac808d">
+<locos>
+  <loco id="695238b8-3b17-4a27-86e9-18f650ac808d">
     <name>re460</name>
-    <adress></adress>
+    <address></address>
     <length>20</length>
     <vmax>200</vmax>
     <vmin>1</vmin>
     <notes>nichts</notes>
-  </locomotive>
+  </loco>
 <<<<<<< HEAD
-  <locomotive id="adc45874-fbf5-4b71-9b02-92c30955f6e2">
+  <loco id="adc45874-fbf5-4b71-9b02-92c30955f6e2">
     <name>test</name>
-    <adress></adress>
+    <address></address>
     <length>20</length>
     <vmax>200</vmax>
     <vmin></vmin>
 =======
-  <locomotive id="a9a5ed61-7d28-46ca-950d-9cc3929a62e0">
+  <loco id="a9a5ed61-7d28-46ca-950d-9cc3929a62e0">
     <name>Re475</name>
-    <adress>3</adress>
+    <address>3</address>
     <length>20</length>
     <vmax>200</vmax>
     <vmin>1</vmin>
 >>>>>>> 94669d19dbc4e8ae036456ec1841780e66e5717d
     <notes></notes>
-  </locomotive>
-</locomotives>
+  </loco>
+</locos>

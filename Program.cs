@@ -45,8 +45,8 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
-        Path.Combine(app.Environment.ContentRootPath, "OTD", "waggon")),
-    RequestPath = "/waggon"
+        Path.Combine(app.Environment.ContentRootPath, "OTD", "railcar")),
+    RequestPath = "/railcar"
 });
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -406,9 +406,9 @@ app.MapPost("/auth/logout", (HttpContext context) =>
 });
 
 // Lokomotiven lesen
-app.MapGet("/loko.xml", () =>
+app.MapGet("/loco.xml", () =>
 {
-    var path = Path.Combine(app.Environment.ContentRootPath, "loko.xml");
+    var path = Path.Combine(app.Environment.ContentRootPath, "loco.xml");
     if (!File.Exists(path))
     {
         return Results.NotFound();
@@ -417,15 +417,15 @@ app.MapGet("/loko.xml", () =>
 });
 
 // Lokomotiven speichern
-app.MapPost("/loko/save", async (List<LokoDto> locos) =>
+app.MapPost("/loco/save", async (List<LokoDto> locos) =>
 {
-    var path = Path.Combine(app.Environment.ContentRootPath, "loko.xml");
+    var path = Path.Combine(app.Environment.ContentRootPath, "loco.xml");
     var doc = new XDocument(
-        new XElement("locomotives",
-            locos.Select(l => new XElement("locomotive",
+        new XElement("locos",
+            locos.Select(l => new XElement("loco",
                 new XAttribute("id", string.IsNullOrWhiteSpace(l.Id) ? Guid.NewGuid().ToString() : l.Id),
                 new XElement("name", l.Name ?? string.Empty),
-                new XElement("adress", l.Adress ?? string.Empty),
+                new XElement("address", l.address ?? string.Empty),
                 new XElement("length", l.Length ?? string.Empty),
                 new XElement("vmax", l.VMax ?? string.Empty),
                 new XElement("vmin", l.VMin ?? string.Empty),
@@ -439,9 +439,9 @@ app.MapPost("/loko/save", async (List<LokoDto> locos) =>
 });
 
 // Waggon lesen
-app.MapGet("/waggon.xml", () =>
+app.MapGet("/railcar.xml", () =>
 {
-    var path = Path.Combine(app.Environment.ContentRootPath, "waggon.xml");
+    var path = Path.Combine(app.Environment.ContentRootPath, "railcar.xml");
     if (!File.Exists(path))
     {
         return Results.NotFound();
@@ -450,12 +450,12 @@ app.MapGet("/waggon.xml", () =>
 });
 
 // Waggon speichern
-app.MapPost("/waggon/save", async (List<WaggonDto> waggons) =>
+app.MapPost("/railcar/save", async (List<WaggonDto> railcars) =>
 {
-    var path = Path.Combine(app.Environment.ContentRootPath, "waggon.xml");
+    var path = Path.Combine(app.Environment.ContentRootPath, "railcar.xml");
     var doc = new XDocument(
-        new XElement("waggons",
-            waggons.Select(w => new XElement("waggon",
+        new XElement("railcars",
+            railcars.Select(w => new XElement("railcar",
                 new XAttribute("id", string.IsNullOrWhiteSpace(w.Id) ? Guid.NewGuid().ToString() : w.Id),
                 new XElement("name", w.Name ?? string.Empty),
                 new XElement("length", w.Length ?? string.Empty),
@@ -466,7 +466,7 @@ app.MapPost("/waggon/save", async (List<WaggonDto> waggons) =>
     );
     await using var stream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None);
     await doc.SaveAsync(stream, SaveOptions.None, default);
-    return Results.Ok(new { saved = waggons.Count });
+    return Results.Ok(new { saved = railcars.Count });
 });
 
 // Zug lesen
@@ -777,7 +777,7 @@ if (autoOpen)
 
 app.Run();
 
-public record LokoDto(string? Id, string? Name, string? Adress, string? Length, string? VMax, string? VMin, string? Notes);
+public record LokoDto(string? Id, string? Name, string? address, string? Length, string? VMax, string? VMin, string? Notes);
 public record WaggonDto(string? Id, string? Name, string? Length, string? VMax, string? Notes);
 public record TrainItemDto(string? Id, string? Type, string? Name, string? Length, string? VMax);
 public record TrainSaveDto(string? Id, string? Name, string? Number, string? Category, string? VMax, List<TrainItemDto>? Items);

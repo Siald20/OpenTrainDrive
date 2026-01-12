@@ -1,4 +1,4 @@
-.otd-loko-window {
+.otd-loco-window {
   position: absolute;
   z-index: 45;
   top: 48px;
@@ -12,7 +12,7 @@
   font-family: var(--otd-font);
 }
 
-.otd-loko-titlebar {
+.otd-loco-titlebar {
   height: 30px;
   display: flex;
   align-items: center;
@@ -25,27 +25,27 @@
   user-select: none;
 }
 
-.otd-loko-titlebar:active {
+.otd-loco-titlebar:active {
   cursor: grabbing;
 }
 
-.otd-loko-title {
+.otd-loco-title {
   font-weight: 700;
   font-size: 14px;
 }
 
-.otd-loko-title-actions {
+.otd-loco-title-actions {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 12px;
 }
 
-.otd-loko-status {
+.otd-loco-status {
   color: var(--otd-highlight);
 }
 
-.otd-loko-close {
+.otd-loco-close {
   width: 24px;
   height: 24px;
   border: 1px solid var(--otd-panel-border-line);
@@ -59,18 +59,18 @@
   cursor: pointer;
 }
 
-.otd-loko-close:hover {
+.otd-loco-close:hover {
   background: var(--otd-button-hover);
 }
 
-.otd-loko-body {
+.otd-loco-body {
   display: grid;
   grid-template-columns: max-content max-content;
   gap: 10px;
   padding: 10px;
 }
 
-.otd-loko-form label {
+.otd-loco-form label {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -78,8 +78,8 @@
   margin-bottom: 8px;
 }
 
-.otd-loko-form input,
-.otd-loko-form textarea {
+.otd-loco-form input,
+.otd-loco-form textarea {
   background: var(--otd-input-bg);
   border: 1px solid var(--otd-input-border);
   color: var(--otd-text);
@@ -88,18 +88,18 @@
   border-radius: 2px;
 }
 
-.otd-loko-notes textarea {
+.otd-loco-notes textarea {
   resize: vertical;
 }
 
-.otd-loko-buttons {
+.otd-loco-buttons {
   display: flex;
   gap: 8px;
   margin-top: 6px;
 }
 
-.otd-loko-buttons button,
-.otd-loko-list-head button {
+.otd-loco-buttons button,
+.otd-loco-list-head button {
   background: var(--otd-button-bg);
   border: 1px solid var(--otd-panel-border-soft);
   color: var(--otd-text);
@@ -108,12 +108,12 @@
   cursor: pointer;
 }
 
-.otd-loko-buttons button:hover,
-.otd-loko-list-head button:hover {
+.otd-loco-buttons button:hover,
+.otd-loco-list-head button:hover {
   background: var(--otd-button-hover);
 }
 
-.otd-loko-list {
+.otd-loco-list {
   border: 1px solid var(--otd-panel-border-soft);
   background: var(--otd-panel-alt);
   display: flex;
@@ -121,7 +121,7 @@
 }
 
 
-.otd-loko-list-head {
+.otd-loco-list-head {
   padding: 6px 8px;
   display: flex;
   align-items: center;
@@ -130,30 +130,30 @@
   font-size: 13px;
 }
 
-.otd-loko-list-table {
+.otd-loco-list-table {
   overflow: auto;
 }
 
-.otd-loko-list table {
+.otd-loco-list table {
   width: max-content;
   border-collapse: collapse;
   font-size: 12px;
 }
 
-.otd-loko-list th,
-.otd-loko-list td {
+.otd-loco-list th,
+.otd-loco-list td {
   border-bottom: 1px solid var(--otd-panel-border-line);
   padding: 6px 8px;
   white-space: nowrap;
 }
 
-.otd-loko-actions-cell {
+.otd-loco-actions-cell {
   display: flex;
   gap: 6px;
   justify-content: flex-end;
 }
 
-.otd-loko-actions-cell button {
+.otd-loco-actions-cell button {
   background: var(--otd-button-bg);
   border: 1px solid var(--otd-panel-border-soft);
   color: var(--otd-text);
@@ -162,11 +162,11 @@
   cursor: pointer;
 }
 
-.otd-loko-actions-cell button:hover {
+.otd-loco-actions-cell button:hover {
   background: var(--otd-button-hover);
 }
 
-.otd-loko-list tbody tr:hover {
+.otd-loco-list tbody tr:hover {
   background: var(--otd-button-bg);
 }
 

@@ -252,7 +252,7 @@
             } catch {
                 return;
             }
-            if (!payload || (payload.type !== 'loco' && payload.type !== 'waggon')) return;
+            if (!payload || (payload.type !== 'loco' && payload.type !== 'railcar')) return;
             addItem(payload);
         }
 
@@ -418,7 +418,7 @@
                     node.querySelectorAll('cars > car').forEach(carNode => {
                         cars.push({
                             id: carNode.getAttribute('id') || crypto.randomUUID(),
-                            type: carNode.getAttribute('type') || 'waggon',
+                            type: carNode.getAttribute('type') || 'railcar',
                             name: carNode.querySelector('name')?.textContent ?? '',
                             length: carNode.getAttribute('length') || '0',
                             vmax: carNode.getAttribute('vmax') || ''
