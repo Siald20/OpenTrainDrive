@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Definition of Locomotives -->
 <locos>
   <loco uid="f47ac10b-58cc-4372-a567-0e02b2c3d479" name="Re460 rot" length="20" index="1">
     <model manufacturer="Roco" scale="H0" catalognumber="43757">
@@ -9,7 +10,7 @@
       <tractiontype>electric</tractiontype>
       <weight>80</weight>
       <vmax>200</vmax>
-      <image>locoimages/re460_023_rot.png</image>
+      <icon>locoimages/re460_023_rot.png</icon>
       <notes></notes>
     </model>
     <decoder>
@@ -74,8 +75,9 @@
       <traveldistance>1500</traveldistance>
       <serviceinterval>40</serviceinterval>
       <servicetable>
-        <service date="2024-06-01">
-          <item>Radkontakte gereinigt, Getriebe geölt</item>
+        <issue date="2024-06-01">
+          <item>Radkontakte gereinigt</item>
+          <item>Getriebe geölt</item>
         </service>
       </servicetable>
     </operation>
