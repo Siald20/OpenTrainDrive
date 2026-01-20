@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Definition of Switching Devices like Turnouts and Signals -->
+<switchingdevices>
+  <switchingdevice uid="f47ac10b-58cc-4372-a567-0e02b2c3d479" name="W1" type="turnout" index="1">
+    <decoder>
+      <commandstation>1</commandstation>
+      <protocol>DCC Accessory</protocol>
+    </decoder>
+    <state>
+      <state name="gerade" description="Weiche gerade gestellt">
+        <decoder address="10" output="0" />
+      </state>
+      <state name="abzweigend" description="Weiche abzweigend gestellt">
+        <decoder address="10" output="1" />
+      </state>
+    </states>
+  </switchingdevice>
+  <switchingdevice uid="f47ac10b-58cc-4372-a567-0e02b2c3d479" name="S1" type="signal" index="1">
+    <model>
+      <signalsystem>SBB-L</signalsystem>
+      <notes>Hauptsignal SBB Typ L</notes>
+    </model>
+    <decoder>
+      <commandstation>1</commandstation>
+      <protocol>DCC Accessory</protocol>
+    </decoder>
+    <state>
+      <state name="Halt" description="Halt">
+        <decoder address="50" output="0" />
+        <decoder address="51" output="0" />
+        <decoder address="52" output="0" />
+      </state>
+      <state name="1" description="Freie Fahrt">
+        <decoder address="50" output="1" />
+        <decoder address="51" output="0" />
+        <decoder address="52" output="0" />
+      </state>
+      <state name="2" description="Fahrbegriff 2 (40 km/h)">
+        <decoder address="50" output="1" />
+        <decoder address="51" output="1" />
+        <decoder address="52" output="0" />
+      </state>
+      <state name="HS" description="Hilfssignal">
+        <decoder address="53" output="1" />
+      </state>
+      <state name="BS" description="besetzte Einfahrt">
+        <decoder address="54" output="1" />
+      </state>
+    </state>
+  </switchingdevice>
+</switchingdevices>
