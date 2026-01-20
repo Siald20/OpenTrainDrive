@@ -16,10 +16,10 @@
     </positions>
   </switchingdevice>
   <switchingdevice uid="f47ac10b-58cc-4372-a567-0e02b2c3d479" name="S1" type="signal" index="1">
-  <model>
-    <signalsystem>SBB-L</signalsystem>
-    <notes>Hauptsignal SBB Typ L</notes>
-  </model>
+    <model>
+      <signalsystem>SBB-L</signalsystem>
+      <notes>Hauptsignal SBB Typ L</notes>
+    </model>
     <decoder>
       <commandstation>DCC Accessory</commandstation>
       <protocol>DCC Accessory</protocol>
