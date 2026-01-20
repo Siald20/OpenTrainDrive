@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="~/exit/exit.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/settings/settings.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/symbols/plan-editor.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/iltis.css" asp-append-version="true" />
 }
 
      
@@ -140,7 +141,7 @@
             </div>
         </nav>
         <div class="otd-toolbar" aria-label="Schnellaktionen">
-            <button class="otd-toolbar-button otd-toolbar-button--run" type="button" onclick="runToolbarAction();">
+            <button class="otd-toolbar-button otd-toolbar-button--run is-active" type="button" onclick="runToolbarAction();">
                 <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                     <path d="M3 2 L14 8 L3 14 Z"></path>
                 </svg>
@@ -341,6 +342,7 @@
 @await Html.PartialAsync("~/OTD/drive/drive.cshtml")
 @await Html.PartialAsync("~/OTD/railcar/railcar.cshtml")
 @await Html.PartialAsync("~/OTD/Train/train.cshtml")
+@await Html.PartialAsync("~/OTD/iltis.cshtml")
 @await Html.PartialAsync("~/OTD/timetable/timetable.cshtml")
 @await Html.PartialAsync("~/OTD/timetable-viewer/timetableviewer.cshtml")
 @await Html.PartialAsync("~/OTD/wegzeit/wegzeit.cshtml")
@@ -368,6 +370,11 @@
                 next ? 'otd-melde-item-red' : 'otd-melde-item-green'
             );
         }
+    }
+
+    function setEditToolbarActive(enabled) {
+        const editButton = document.querySelector('.otd-toolbar-button--edit');
+        editButton?.classList.toggle('is-active', !!enabled);
     }
 
     function runToolbarAction() {
@@ -427,6 +434,10 @@
         const text = `${tag}.${monat}.${jahr} ${stunden}:${minuten}:${sekunden}`;
         document.getElementById('otd-zeit').textContent = text;
     }
+
+    document.addEventListener('otd-plan-edit-mode', (event) => {
+        setEditToolbarActive(event.detail?.enabled);
+    });
 
     requestFullscreenOnFirstInteraction();
     updateZeit();

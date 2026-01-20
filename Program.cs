@@ -15,6 +15,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+Action<StaticFileResponseContext> applyNoCache = ctx =>
+{
+    if (!app.Environment.IsDevelopment())
+    {
+        return;
+    }
+    ctx.Context.Response.Headers["Cache-Control"] = "no-store, no-cache, must-revalidate";
+    ctx.Context.Response.Headers["Pragma"] = "no-cache";
+    ctx.Context.Response.Headers["Expires"] = "0";
+};
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -23,90 +33,107 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = applyNoCache
+});
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "Elements")),
-    RequestPath = "/elements"
+    RequestPath = "/elements",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "Loco")),
-    RequestPath = "/loco"
+    RequestPath = "/loco",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "drive")),
-    RequestPath = "/drive"
+    RequestPath = "/drive",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "railcar")),
-    RequestPath = "/railcar"
+    RequestPath = "/railcar",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "Train")),
-    RequestPath = "/train"
+    RequestPath = "/train",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "timetable")),
-    RequestPath = "/timetable"
+    RequestPath = "/timetable",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "timetable-viewer")),
-    RequestPath = "/timetable-viewer"
+    RequestPath = "/timetable-viewer",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "wegzeit")),
-    RequestPath = "/wegzeit"
+    RequestPath = "/wegzeit",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "station")),
-    RequestPath = "/station"
+    RequestPath = "/station",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "ZD")),
-    RequestPath = "/zd"
+    RequestPath = "/zd",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "auth")),
-    RequestPath = "/auth"
+    RequestPath = "/auth",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "exit")),
-    RequestPath = "/exit"
+    RequestPath = "/exit",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "Symbols")),
-    RequestPath = "/symbols"
+    RequestPath = "/symbols",
+    OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "SVG")),
-    RequestPath = "/svg"
+    RequestPath = "/svg",
+    OnPrepareResponse = applyNoCache
 });
 
 bool IsUsersEnabled(IWebHostEnvironment env)
@@ -189,6 +216,16 @@ bool IsAdminUser(HttpContext context)
 app.MapGet("/settings/settings.css", () =>
 {
     var path = Path.Combine(app.Environment.ContentRootPath, "OTD", "settings.css");
+    if (!File.Exists(path))
+    {
+        return Results.NotFound();
+    }
+    return Results.File(path, "text/css");
+});
+
+app.MapGet("/iltis.css", () =>
+{
+    var path = Path.Combine(app.Environment.ContentRootPath, "OTD", "iltis.css");
     if (!File.Exists(path))
     {
         return Results.NotFound();

@@ -103,6 +103,7 @@
       palette.parentElement?.classList.toggle('is-disabled', !enabled);
     }
     renderPalette();
+    document.dispatchEvent(new CustomEvent('otd-plan-edit-mode', { detail: { enabled } }));
   }
 
   function getSelectedSymbol() {
@@ -170,6 +171,9 @@
         }
       }
       el.style.transform = rotationTransform;
+      if (isSignalSymbol(sym)) {
+        el.dataset.iltisSignal = 'true';
+      }
       if (sym.id === state.selectedId) {
         el.classList.add('is-selected');
       }
@@ -1167,6 +1171,7 @@
   });
 
   canvas.addEventListener('contextmenu', (evt) => {
+    if (!state.editMode) return;
     const target = evt.target.closest('.otd-plan-symbol');
     if (!target) return;
     evt.preventDefault();

@@ -7,16 +7,16 @@
         </div>
     </div>
     <div class="otd-settings-body">
-        <div class="otd-settings-sidebar">
-            <button type="button" class="otd-settings-nav is-active" data-section="general">Allgemein</button>
-            <button type="button" class="otd-settings-nav" data-section="display">Anzeige</button>
-            <button type="button" class="otd-settings-nav" data-section="connection">Verbindung</button>
-            <button type="button" class="otd-settings-nav" data-section="operation">Fahrbetrieb</button>
-            <button type="button" class="otd-settings-nav" data-section="editor">Editor</button>
-            <button type="button" class="otd-settings-nav" data-section="users">Benutzer</button>
-            <button type="button" class="otd-settings-nav" data-section="diagnostics">Diagnose</button>
-        </div>
         <div class="otd-settings-content">
+            <div class="otd-settings-tabs" role="tablist" aria-label="Einstellungen Bereiche">
+                <button type="button" class="otd-settings-tab is-active" data-section="general">Allgemein</button>
+                <button type="button" class="otd-settings-tab" data-section="display">Anzeige</button>
+                <button type="button" class="otd-settings-tab" data-section="connection">Verbindung</button>
+                <button type="button" class="otd-settings-tab" data-section="operation">Fahrbetrieb</button>
+                <button type="button" class="otd-settings-tab" data-section="editor">Editor</button>
+                <button type="button" class="otd-settings-tab" data-section="users">Benutzer</button>
+                <button type="button" class="otd-settings-tab" data-section="diagnostics">Diagnose</button>
+            </div>
             <section class="otd-settings-section is-active" data-section="general">
                 <div class="otd-settings-section-head">Allgemein</div>
                 <div class="otd-settings-fields">
@@ -232,7 +232,7 @@
         if (!panel) return;
 
         const statusEl = document.getElementById('otd-settings-status');
-        const navButtons = Array.from(panel.querySelectorAll('.otd-settings-nav'));
+        const navButtons = Array.from(panel.querySelectorAll('.otd-settings-tab'));
         const sections = Array.from(panel.querySelectorAll('.otd-settings-section'));
 
         const inputs = {

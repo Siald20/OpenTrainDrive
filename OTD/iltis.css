@@ -1,0 +1,71 @@
+.otd-iltis-context {
+  position: fixed;
+  z-index: 90;
+  min-width: 140px;
+  background: #26355c;
+  border: 1px solid #1a2745;
+  color: #e8ecf7;
+  font-family: var(--otd-font);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+.otd-iltis-menu {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.otd-iltis-menu > li {
+  position: relative;
+}
+
+.otd-iltis-menu button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  padding: 6px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.otd-iltis-header {
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8ecf7;
+  background: #1a2745;
+}
+
+.otd-iltis-menu button:hover {
+  background: #33446f;
+}
+
+.otd-iltis-separator {
+  height: 1px;
+  margin: 4px 6px;
+  background: #1a2745;
+}
+
+.otd-iltis-submenu > button::after {
+  content: '>';
+  position: absolute;
+  right: 8px;
+  color: #aeb8d9;
+}
+
+.otd-iltis-menu-child {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  display: none;
+  min-width: 120px;
+  background: #26355c;
+  border: 1px solid #1a2745;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+.otd-iltis-submenu:hover > .otd-iltis-menu-child {
+  display: block;
+}

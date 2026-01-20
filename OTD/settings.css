@@ -64,33 +64,8 @@
 }
 
 .otd-settings-body {
-  display: grid;
-  grid-template-columns: 190px 1fr;
+  display: block;
   min-height: 420px;
-}
-
-.otd-settings-sidebar {
-  background: var(--otd-input-bg);
-  border-right: 1px solid var(--otd-panel-border-soft);
-  display: flex;
-  flex-direction: column;
-  padding: 8px;
-  gap: 6px;
-}
-
-.otd-settings-nav {
-  background: var(--otd-panel-alt);
-  border: 1px solid var(--otd-panel-border-soft);
-  color: var(--otd-text);
-  padding: 8px 10px;
-  font-size: 12px;
-  text-align: left;
-  cursor: pointer;
-}
-
-.otd-settings-nav:hover,
-.otd-settings-nav.is-active {
-  background: var(--otd-button-hover);
 }
 
 .otd-settings-content {
@@ -99,6 +74,30 @@
   flex-direction: column;
   gap: 12px;
   min-width: 0;
+}
+
+.otd-settings-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  border-bottom: 1px solid var(--otd-panel-border-line);
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.otd-settings-tab {
+  background: var(--otd-panel-muted);
+  border: 1px solid var(--otd-panel-border-soft);
+  color: var(--otd-text);
+  padding: 6px 10px;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.otd-settings-tab:hover,
+.otd-settings-tab.is-active {
+  background: var(--otd-button-hover);
 }
 
 .otd-settings-section {
@@ -264,16 +263,7 @@
     width: 94vw;
   }
 
-  .otd-settings-body {
-    grid-template-columns: 1fr;
-  }
-
-  .otd-settings-sidebar {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .otd-settings-nav {
+  .otd-settings-tab {
     flex: 1 1 140px;
   }
 }

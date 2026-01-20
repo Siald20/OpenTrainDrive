@@ -1,0 +1,89 @@
+<div class="otd-iltis-context otd-hidden" id="otd-iltis-context" role="menu" aria-label="Signalmenue">
+    <ul class="otd-iltis-menu">
+        <li class="otd-iltis-header"><span>HS E</span></li>
+        <li><button type="button" data-action="z">Z</button></li>
+        <li><button type="button" data-action="zsu">ZSU</button></li>
+        <li><button type="button" data-action="sbl">SBL</button></li>
+        <li><button type="button" data-action="sal">SAL</button></li>
+        <li class="otd-iltis-separator"></li>
+        <li><button type="button" data-action="avzf">AVZF</button></li>
+        <li class="otd-iltis-separator"></li>
+        <li class="otd-iltis-submenu">
+            <button type="button" data-action="kritisch">kritisch</button>
+            <ul class="otd-iltis-menu otd-iltis-menu-child">
+                <li><button type="button" data-action="kritisch-a">BAR</button></li>
+                <li><button type="button" data-action="kritisch-b">SAUF</button></li>
+            </ul>
+        </li>
+        <li class="otd-iltis-submenu">
+            <button type="button" data-action="notbed">Notbed.</button>
+            <ul class="otd-iltis-menu otd-iltis-menu-child">
+                <li><button type="button" data-action="notbed-1">ZU</button></li>
+                <li><button type="button" data-action="notbed-2">BSU</button></li>
+                <li><button type="button" data-action="notbed-3">SU</button></li>
+                <li><button type="button" data-action="notbed-4">HIS</button></li>
+                <li><button type="button" data-action="notbed-5">NAZ</button></li>
+            </ul>
+        </li>
+        <li><button type="button" data-action="nhz">NHZ</button></li>
+    </ul>
+</div>
+
+<script>
+    (function iltisContextMenu() {
+        const menu = document.getElementById('otd-iltis-context');
+        if (!menu) return;
+        let currentTarget = null;
+
+        function showMenu(x, y, target) {
+            currentTarget = target || null;
+            menu.style.left = `${x}px`;
+            menu.style.top = `${y}px`;
+            menu.classList.remove('otd-hidden');
+        }
+
+        function hideMenu() {
+            currentTarget = null;
+            menu.classList.add('otd-hidden');
+        }
+
+        function handleAction(action) {
+            if (!action) return;
+            const evt = new CustomEvent('iltis:signal-action', {
+                detail: { action, target: currentTarget }
+            });
+            window.dispatchEvent(evt);
+        }
+
+        menu.addEventListener('click', (event) => {
+            const btn = event.target.closest('button');
+            if (!btn) return;
+            const action = btn.dataset.action;
+            handleAction(action);
+            hideMenu();
+        });
+
+        document.addEventListener('contextmenu', (event) => {
+            const canvas = document.getElementById('otd-plan-canvas');
+            if (canvas?.classList.contains('is-editing')) return;
+            const target = event.target.closest('[data-iltis-signal]');
+            if (!target) return;
+            event.preventDefault();
+            showMenu(event.clientX, event.clientY, target);
+        });
+
+        document.addEventListener('click', (event) => {
+            if (menu.classList.contains('otd-hidden')) return;
+            if (menu.contains(event.target)) return;
+            hideMenu();
+        });
+
+        window.openIltisMenu = function (x, y, target) {
+            showMenu(x, y, target);
+        };
+
+        window.closeIltisMenu = function () {
+            hideMenu();
+        };
+    })();
+</script>
