@@ -50,6 +50,7 @@
             <div class="otd-timetable-empty" id="timetable-empty">Bitte einen Zug waehlen.</div>
         </div>
     </div>
+    <datalist id="station-options"></datalist>
 </div>
 
 <script>
@@ -76,6 +77,7 @@
             trains: [],
             selectedTrainId: null,
             schedules: {},
+            stations: [],
             loadedOnce: false
         };
 
@@ -150,15 +152,84 @@
                 rowEl.className = 'otd-timetable-row';
                 rowEl.dataset.id = row.id;
                 rowEl.innerHTML = `
-                    <input class="otd-timetable-cell" data-field="station" type="text" placeholder="Bahnhof" value="${row.station ?? ''}" />
-                    <input class="otd-timetable-cell" data-field="destination" type="text" placeholder="Ziel" value="${row.destination ?? ''}" />
+                    <input class="otd-timetable-cell" data-field="destination" type="text" list="station-options" placeholder="Ziel" value="${row.destination ?? ''}" />
                     <input class="otd-timetable-cell" data-field="arrival" type="text" placeholder="HH:MM" value="${row.arrival ?? ''}" />
                     <input class="otd-timetable-cell" data-field="departure" type="text" placeholder="HH:MM" value="${row.departure ?? ''}" />
                     <input class="otd-timetable-cell" data-field="platform" type="text" placeholder="Gleis" value="${row.platform ?? ''}" />
                     <input class="otd-timetable-cell otd-timetable-notes" data-field="notes" type="text" placeholder="Hinweis" value="${row.notes ?? ''}" />
                     <button class="otd-timetable-row-remove" type="button" data-id="${row.id}">X</button>
                 `;
+                const stationSelect = renderStationSelect('station', row.station ?? '');
+                const destinationInput = rowEl.querySelector('input[data-field="destination"]');
+                if (destinationInput && destinationInput.parentNode) {
+                    destinationInput.parentNode.insertBefore(stationSelect, destinationInput);
+                } else {
+                    rowEl.appendChild(stationSelect);
+                }
                 rowsBody.appendChild(rowEl);
+            }
+        }
+
+        function renderStationOptions() {
+            const list = document.getElementById('station-options');
+            if (!list) return;
+            list.innerHTML = '';
+            state.stations.forEach(station => {
+                const option = document.createElement('option');
+                option.value = station.name ?? '';
+                list.appendChild(option);
+            });
+        }
+
+        function renderStationSelect(field, selectedValue) {
+            const select = document.createElement('select');
+            select.className = 'otd-timetable-cell';
+            select.dataset.field = field;
+            const emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            emptyOption.textContent = '-';
+            select.appendChild(emptyOption);
+            state.stations.forEach(station => {
+                const option = document.createElement('option');
+                option.value = station.name ?? '';
+                option.textContent = station.name ?? '';
+                if (option.value && option.value === selectedValue) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+            if (!select.value && selectedValue) {
+                const custom = document.createElement('option');
+                custom.value = selectedValue;
+                custom.textContent = selectedValue;
+                custom.selected = true;
+                select.appendChild(custom);
+            }
+            return select;
+        }
+
+        async function loadStations() {
+            try {
+                const resp = await fetch('/station.xml', { cache: 'no-store' });
+                if (!resp.ok) {
+                    state.stations = [];
+                    renderStationOptions();
+                    renderRows();
+                    return;
+                }
+                const xml = await resp.text();
+                const doc = new DOMParser().parseFromString(xml, 'application/xml');
+                const nodes = doc.querySelectorAll('stations > station');
+                state.stations = Array.from(nodes).map(node => ({
+                    id: node.getAttribute('id') || crypto.randomUUID(),
+                    name: node.getAttribute('name') ?? ''
+                })).filter(station => station.name.trim());
+                renderStationOptions();
+                renderRows();
+            } catch {
+                state.stations = [];
+                renderStationOptions();
+                renderRows();
             }
         }
 
@@ -312,6 +383,20 @@
             row[field] = input.value;
         });
 
+        rowsBody?.addEventListener('change', (event) => {
+            const select = event.target.closest('select');
+            if (!select) return;
+            const rowEl = select.closest('.otd-timetable-row');
+            if (!rowEl) return;
+            const rowId = rowEl.dataset.id;
+            const field = select.dataset.field;
+            if (!rowId || !field || !state.selectedTrainId) return;
+            const rows = ensureSchedule(state.selectedTrainId);
+            const row = rows.find(r => r.id === rowId);
+            if (!row) return;
+            row[field] = select.value;
+        });
+
         rowsBody?.addEventListener('click', (event) => {
             const removeBtn = event.target.closest('.otd-timetable-row-remove');
             if (!removeBtn || !state.selectedTrainId) return;
@@ -331,7 +416,10 @@
             saveToStorage();
             setStatus('Fahrplan gespeichert');
         });
-        refreshBtn?.addEventListener('click', loadTrains);
+        refreshBtn?.addEventListener('click', () => {
+            loadTrains();
+            loadStations();
+        });
         trainSaveBtn?.addEventListener('click', async () => {
             if (!state.selectedTrainId) {
                 setStatus('Bitte zuerst einen Zug waehlen');
@@ -400,6 +488,7 @@
             if (!state.loadedOnce) {
                 loadFromStorage();
                 loadTrains();
+                loadStations();
             }
         };
 

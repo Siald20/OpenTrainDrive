@@ -1,22 +1,168 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <plan grid="48">
   <symbols>
-    <symbol id="0247acbc-ca8f-49a5-ab3f-4d84ca8cbd05" type="signal-left" classes="otd-symbol--signal-left" x="22" y="7">
+    <symbol id="467fb12e-e63a-4c18-adfa-bc700a185819" type="Iltis_Straight_White" classes="otd-symbol--svg" x="26" y="3">
       <config>
-        <field key="type" value="signal-left" />
-        <field key="classes" value="otd-symbol--signal-left" />
+        <field key="type" value="Iltis_Straight_White" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Straight_White.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
       </config>
     </symbol>
-    <symbol id="f1727f21-e04a-46c2-8951-25f9b3824aee" type="track-straight-h" classes="otd-symbol--track-straight-h" x="23" y="7">
+    <symbol id="36371b17-f820-4395-bd9a-3f4caa7b68e4" type="Iltis_Straight_White" classes="otd-symbol--svg" x="27" y="3">
       <config>
-        <field key="type" value="track-straight-h" />
-        <field key="classes" value="otd-symbol--track-straight-h" />
+        <field key="type" value="Iltis_Straight_White" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Straight_White.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
       </config>
     </symbol>
-    <symbol id="689c44b0-3953-482c-8681-d9624c070265" type="switch-right" classes="otd-symbol--switch-right" x="24" y="7">
+    <symbol id="61c134d0-4f4d-429e-9585-0f3fc9b0546b" type="Iltis_Straight_White" classes="otd-symbol--svg" x="28" y="3">
       <config>
-        <field key="type" value="switch-right" />
-        <field key="classes" value="otd-symbol--switch-right" />
+        <field key="type" value="Iltis_Straight_White" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Straight_White.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+      </config>
+    </symbol>
+    <symbol id="0c1b38e7-8ad9-45d7-a1e7-245ba2241b8b" type="Iltis_Signal_Red" classes="otd-symbol--svg" x="14" y="10">
+      <config>
+        <field key="type" value="Iltis_Signal_Red" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Signal_Red.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+      </config>
+    </symbol>
+    <symbol id="e70a5a94-79db-42c7-bb46-60a205dcb43f" type="Iltis_Track_Straight_White" classes="otd-symbol--svg" x="15" y="10">
+      <config>
+        <field key="type" value="Iltis_Track_Straight_White" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Track_Straight_White.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+      </config>
+    </symbol>
+    <symbol id="9d325947-fd09-443e-804c-54b5bf4f1ff6" type="Iltis_Zugnummernanzeiger_White" classes="otd-symbol--svg" x="16" y="10">
+      <config>
+        <field key="type" value="Iltis_Zugnummernanzeiger_White" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Zugnummernanzeiger_White.svg" />
+        <field key="trainNumber" value="8888" />
+        <field key="sizeX" value="3" />
+        <field key="sizeY" value="1" />
+      </config>
+    </symbol>
+    <symbol id="a5957c45-cf3c-4265-9ee6-be8510cc7c29" type="Iltis_Switch_Turnout_White" classes="otd-symbol--svg" x="20" y="10">
+      <config>
+        <field key="type" value="Iltis_Switch_Turnout_White" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Switch_Turnout_White.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+        <field key="testTurnout" value="straight" />
+      </config>
+    </symbol>
+    <symbol id="7d8bfba9-b7d8-458d-9fd3-3ecbf4d0e823" type="Iltis_Switch_Turnout_White" classes="otd-symbol--svg" x="20" y="9">
+      <config>
+        <field key="type" value="Iltis_Switch_Turnout_White" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Switch_Turnout_White.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+        <field key="rotation" value="180" />
+        <field key="testTurnout" value="straight" />
+      </config>
+    </symbol>
+    <symbol id="8e2f9cc5-6e0f-4224-b20a-1a58975ad554" type="Iltis_Zugnummernanzeiger_White" classes="otd-symbol--svg" x="16" y="9">
+      <config>
+        <field key="type" value="Iltis_Zugnummernanzeiger_White" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Zugnummernanzeiger_White.svg" />
+        <field key="trainNumber" value="8888" />
+        <field key="sizeX" value="3" />
+        <field key="sizeY" value="1" />
+      </config>
+    </symbol>
+    <symbol id="27f1ff6c-a5d8-4348-8b74-61777bbb61e7" type="Iltis_Track_Straight_White" classes="otd-symbol--svg" x="15" y="9">
+      <config>
+        <field key="type" value="Iltis_Track_Straight_White" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Track_Straight_White.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+      </config>
+    </symbol>
+    <symbol id="867fe37e-24dd-4745-a9c3-83daf9049f2c" type="Iltis_Signal_Red" classes="otd-symbol--svg" x="14" y="9">
+      <config>
+        <field key="type" value="Iltis_Signal_Red" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Signal_Red.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+      </config>
+    </symbol>
+    <symbol id="925db739-ce67-44ad-930a-cba5de64d03e" type="Iltis_Signal_Red" classes="otd-symbol--svg" x="19" y="9">
+      <config>
+        <field key="type" value="Iltis_Signal_Red" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Signal_Red.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+        <field key="rotation" value="180" />
+      </config>
+    </symbol>
+    <symbol id="9a0b8978-f28d-4c25-a48f-e799a6eab9ad" type="Iltis_Signal_Red" classes="otd-symbol--svg" x="19" y="10">
+      <config>
+        <field key="type" value="Iltis_Signal_Red" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Signal_Red.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+        <field key="rotation" value="180" />
+        <field key="testSignal" value="red" />
+      </config>
+    </symbol>
+    <symbol id="1c3b8038-e826-4994-9a2e-9b9575b52cad" type="Iltis_Signal_Red" classes="otd-symbol--svg" x="21" y="10">
+      <config>
+        <field key="type" value="Iltis_Signal_Red" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Signal_Red.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+        <field key="testSignal" value="red" />
+      </config>
+    </symbol>
+    <symbol id="a9f82f75-3da1-44da-8bb3-cb0f28f15f0b" type="Iltis_Track_Straight_White" classes="otd-symbol--svg" x="22" y="10">
+      <config>
+        <field key="type" value="Iltis_Track_Straight_White" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Track_Straight_White.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+      </config>
+    </symbol>
+    <symbol id="9cf610c8-924c-4cc8-bf47-6675c6e7dcb0" type="Iltis_Zugnummernanzeiger_White" classes="otd-symbol--svg" x="23" y="10">
+      <config>
+        <field key="type" value="Iltis_Zugnummernanzeiger_White" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Zugnummernanzeiger_White.svg" />
+        <field key="trainNumber" value="8888" />
+        <field key="sizeX" value="3" />
+        <field key="sizeY" value="1" />
+      </config>
+    </symbol>
+    <symbol id="098bed69-581a-473b-a389-07d67294b794" type="Iltis_Signal_Red" classes="otd-symbol--svg" x="26" y="10">
+      <config>
+        <field key="type" value="Iltis_Signal_Red" />
+        <field key="classes" value="otd-symbol--svg" />
+        <field key="file" value="/svg/Iltis_Signal_Red.svg" />
+        <field key="sizeX" value="1" />
+        <field key="sizeY" value="1" />
+        <field key="rotation" value="180" />
       </config>
     </symbol>
   </symbols>

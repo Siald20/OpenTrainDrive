@@ -8,21 +8,12 @@
     <vmin>1</vmin>
     <notes>nichts</notes>
   </loco>
-<<<<<<< HEAD
-  <loco id="adc45874-fbf5-4b71-9b02-92c30955f6e2">
-    <name>test</name>
-    <address></address>
-    <length>20</length>
-    <vmax>200</vmax>
-    <vmin></vmin>
-=======
-  <loco id="a9a5ed61-7d28-46ca-950d-9cc3929a62e0">
+  <loco id="42736d62-111c-479e-b526-7f42919f3d33">
     <name>Re475</name>
     <address>3</address>
     <length>20</length>
-    <vmax>200</vmax>
-    <vmin>1</vmin>
->>>>>>> 94669d19dbc4e8ae036456ec1841780e66e5717d
+    <vmax>160</vmax>
+    <vmin></vmin>
     <notes></notes>
   </loco>
 </locos>

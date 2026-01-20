@@ -69,6 +69,18 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "OTD", "wegzeit")),
+    RequestPath = "/wegzeit"
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "OTD", "station")),
+    RequestPath = "/station"
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "ZD")),
     RequestPath = "/zd"
 });
@@ -89,6 +101,12 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "Symbols")),
     RequestPath = "/symbols"
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "SVG")),
+    RequestPath = "/svg"
 });
 
 bool IsUsersEnabled(IWebHostEnvironment env)
@@ -176,6 +194,54 @@ app.MapGet("/settings/settings.css", () =>
         return Results.NotFound();
     }
     return Results.File(path, "text/css");
+});
+
+// Elemente lesen
+app.MapGet("/elements.xml", () =>
+{
+    var path = Path.Combine(app.Environment.ContentRootPath, "elements.xml");
+    if (!File.Exists(path))
+    {
+        return Results.NotFound();
+    }
+    return Results.File(path, "application/xml");
+});
+
+// Elemente speichern
+app.MapPost("/elements/save", async (List<SignalElementDto> elements, HttpContext context) =>
+{
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
+    var path = Path.Combine(app.Environment.ContentRootPath, "elements.xml");
+    var doc = new XDocument(
+        new XElement("elements",
+            (elements ?? new List<SignalElementDto>()).Select(element => new XElement("signal",
+                new XAttribute("id", string.IsNullOrWhiteSpace(element.Id) ? Guid.NewGuid().ToString() : element.Id),
+                new XAttribute("address", element.Address ?? string.Empty),
+                new XAttribute("aspects", element.Aspects ?? string.Empty),
+                new XAttribute("asb", element.Asb ?? string.Empty),
+                new XAttribute("notes", element.Notes ?? string.Empty)
+            ))
+        )
+    );
+    await using var stream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None);
+    await doc.SaveAsync(stream, SaveOptions.None, default);
+    return Results.Ok(new { saved = elements?.Count ?? 0 });
+});
+
+// SVG Symbole auflisten
+app.MapGet("/svg/list", () =>
+{
+    var path = Path.Combine(app.Environment.ContentRootPath, "SVG");
+    if (!Directory.Exists(path))
+    {
+        return Results.Ok(Array.Empty<string>());
+    }
+    var files = Directory.GetFiles(path, "*.svg");
+    var names = files.Select(Path.GetFileName).Where(name => !string.IsNullOrWhiteSpace(name)).ToArray();
+    return Results.Ok(names);
 });
 
 // Serve generated plan.xml explicitly without exposing entire content root
@@ -539,20 +605,28 @@ app.MapPost("/train/save", async (TrainSaveDto train, HttpContext context) =>
     XElement root;
     if (File.Exists(path))
     {
-        doc = XDocument.Load(path);
-        root = doc.Root ?? new XElement("trains");
-        if (root.Name != "trains")
+        try
         {
-            var existingTrain = root.Name == "train" ? root : null;
-            root = new XElement("trains");
-            if (existingTrain != null)
+            doc = XDocument.Load(path);
+            root = doc.Root ?? new XElement("trains");
+            if (root.Name != "trains")
             {
-                if (existingTrain.Attribute("id") == null)
+                var existingTrain = root.Name == "train" ? root : null;
+                root = new XElement("trains");
+                if (existingTrain != null)
                 {
-                    existingTrain.SetAttributeValue("id", Guid.NewGuid().ToString());
+                    if (existingTrain.Attribute("id") == null)
+                    {
+                        existingTrain.SetAttributeValue("id", Guid.NewGuid().ToString());
+                    }
+                    root.Add(existingTrain);
                 }
-                root.Add(existingTrain);
+                doc = new XDocument(root);
             }
+        }
+        catch
+        {
+            root = new XElement("trains");
             doc = new XDocument(root);
         }
     }
@@ -577,6 +651,43 @@ app.MapPost("/train/save", async (TrainSaveDto train, HttpContext context) =>
     return Results.Ok(new { saved = items.Count, length = totalLength, vmax = finalVmax });
 });
 
+// Bahnhoefe lesen
+app.MapGet("/station.xml", () =>
+{
+    var path = Path.Combine(app.Environment.ContentRootPath, "station.xml");
+    if (!File.Exists(path))
+    {
+        return Results.NotFound();
+    }
+    return Results.File(path, "application/xml");
+});
+
+// Bahnhoefe speichern
+app.MapPost("/station/save", async (List<StationDto> stations, HttpContext context) =>
+{
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
+    var path = Path.Combine(app.Environment.ContentRootPath, "station.xml");
+    var doc = new XDocument(
+        new XElement("stations",
+            (stations ?? new List<StationDto>()).Select(station => new XElement("station",
+                new XAttribute("id", string.IsNullOrWhiteSpace(station.Id) ? Guid.NewGuid().ToString() : station.Id),
+                new XAttribute("name", station.Name ?? string.Empty),
+                new XAttribute("code", station.Code ?? string.Empty),
+                new XAttribute("abbr", station.Abbr ?? string.Empty),
+                new XAttribute("type", station.Type ?? string.Empty),
+                new XAttribute("region", station.Region ?? string.Empty),
+                new XAttribute("notes", station.Notes ?? string.Empty)
+            ))
+        )
+    );
+    await using var stream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None);
+    await doc.SaveAsync(stream, SaveOptions.None, default);
+    return Results.Ok(new { saved = stations?.Count ?? 0 });
+});
+
 // Zug loeschen
 app.MapPost("/train/delete", async (TrainDeleteDto request, HttpContext context) =>
 {
@@ -589,7 +700,15 @@ app.MapPost("/train/delete", async (TrainDeleteDto request, HttpContext context)
     {
         return Results.NotFound();
     }
-    var doc = XDocument.Load(path);
+    XDocument doc;
+    try
+    {
+        doc = XDocument.Load(path);
+    }
+    catch
+    {
+        return Results.Problem("train.xml ist ungueltig.");
+    }
     var root = doc.Root;
     if (root == null)
     {
@@ -782,6 +901,8 @@ public record WaggonDto(string? Id, string? Name, string? Length, string? VMax, 
 public record TrainItemDto(string? Id, string? Type, string? Name, string? Length, string? VMax);
 public record TrainSaveDto(string? Id, string? Name, string? Number, string? Category, string? VMax, List<TrainItemDto>? Items);
 public record TrainDeleteDto(string? Id);
+public record StationDto(string? Id, string? Name, string? Code, string? Abbr, string? Type, string? Region, string? Notes);
+public record SignalElementDto(string? Id, string? Address, string? Aspects, string? Asb, string? Notes);
 public record PlanConfigFieldDto(string? Key, string? Value);
 public record PlanSymbolDto(string? Id, string? Type, string? Classes, int X, int Y, List<PlanConfigFieldDto>? Config);
 public record PlanSaveDto(int GridSize, List<PlanSymbolDto>? Symbols);

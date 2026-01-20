@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="~/train/trains.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/timetable/timetable.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/timetable-viewer/timetableviewer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/wegzeit/wegzeit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/station/station.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/zd/zd.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/auth/auth.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/exit/exit.css" asp-append-version="true" />
@@ -72,6 +74,7 @@
                 <div class="otd-dropdown" role="menu">
                     <button class="otd-dropdown-button" type="button" onclick="openTimetableFenster();">Fahrplan bearbeiten</button>
                     <button class="otd-dropdown-button" type="button" onclick="openTimetableViewer();">Fahrplananzeiger</button>
+                    <button class="otd-dropdown-button" type="button" onclick="openWegZeitFenster();">Weg-Zeit Diagramm</button>
                     <a role="menuitem" href="#">Zuege</a>
                     <a role="menuitem" href="#">Umlaeufe</a>
                     <a role="menuitem" href="#">Fahrzeiten</a>
@@ -123,6 +126,7 @@
                 <div class="otd-dropdown" role="menu">
                     <a role="menuitem" href="#">Projekte</a>
                     <a role="menuitem" href="#">Benutzer</a>
+                    <button class="otd-dropdown-button" type="button" onclick="openStationFenster();">Bahnhoefe</button>
                     <button class="otd-dropdown-button" type="button" onclick="openSettingsFenster();">Einstellungen</button>
                 </div>
             </div>
@@ -180,6 +184,7 @@
         </div>
         <div class="otd-plan-context otd-hidden" id="otd-plan-context" role="menu">
             <button type="button" id="otd-plan-context-edit">Bearbeiten</button>
+            <button type="button" id="otd-plan-context-test">Test</button>
             <button type="button" id="otd-plan-context-duplicate">Duplizieren</button>
             <button type="button" id="otd-plan-context-delete">Loeschen</button>
         </div>
@@ -318,6 +323,8 @@
 @await Html.PartialAsync("~/OTD/Train/train.cshtml")
 @await Html.PartialAsync("~/OTD/timetable/timetable.cshtml")
 @await Html.PartialAsync("~/OTD/timetable-viewer/timetableviewer.cshtml")
+@await Html.PartialAsync("~/OTD/wegzeit/wegzeit.cshtml")
+@await Html.PartialAsync("~/OTD/station/station.cshtml")
 @await Html.PartialAsync("~/OTD/ZD/zd.cshtml")
 @await Html.PartialAsync("~/OTD/auth/auth.cshtml")
 @await Html.PartialAsync("~/OTD/exit/exit.cshtml")
@@ -373,6 +380,18 @@
         const panel = document.getElementById('otd-melde-panel');
         panel.classList.add('otd-hidden');
     }
+
+    window.addMeldeItem = function (message, section = 'system', colorClass = 'otd-melde-item-gray') {
+        const panel = document.getElementById('otd-melde-panel');
+        const body = panel?.querySelector(`.otd-melde-body[data-section="${section}"]`);
+        if (!body) {
+            return;
+        }
+        const item = document.createElement('div');
+        item.className = `otd-melde-item ${colorClass}`;
+        item.textContent = message;
+        body.prepend(item);
+    };
 
     function openLupenbild() {
         const panel = document.getElementById('otd-lupenbild');
@@ -488,6 +507,8 @@
     enablePanelDragging('otd-train');
     enablePanelDragging('otd-timetable');
     enablePanelDragging('otd-timetableviewer');
+    enablePanelDragging('otd-wegzeit');
+    enablePanelDragging('otd-station');
     enablePanelDragging('otd-zd');
     enablePanelDragging('otd-exit');
     enablePanelDragging('otd-settings');

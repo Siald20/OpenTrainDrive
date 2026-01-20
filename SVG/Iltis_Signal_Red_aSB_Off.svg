@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="48"
+   height="48"
+   viewBox="0 0 12.7 12.7"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="Iltis_Signal_Red_aSB_Off.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="26.737475"
+     inkscape:cx="18.195435"
+     inkscape:cy="26.834995"
+     inkscape:window-width="3840"
+     inkscape:window-height="2054"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1"
+     showgrid="true">
+    <inkscape:grid
+       id="grid1"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="0.26458333"
+       spacingy="0.26458333"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="true"
+       visible="true"
+       snapvisiblegridlinesonly="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="powerclip"
+       message=""
+       id="path-effect5"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false" />
+    <inkscape:path-effect
+       effect="powerclip"
+       message=""
+       id="path-effect4"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath3">
+      <path
+         style="display:none;fill:#2517ff;fill-opacity:1;stroke-width:0.160068"
+         d="M 1.2880342,6.3466443 4.4219114,3.0655337 4.4177807,9.6277552 Z"
+         id="path3" />
+      <path
+         id="lpe_path-effect4"
+         style="fill:#2517ff;fill-opacity:1;stroke-width:0.160068"
+         class="powerclip"
+         d="M -5.0069972,-3.943416 H 10.303912 V 16.636419 H -5.0069972 Z m 6.2950314,10.2900603 3.1297465,3.2811109 0.00413,-6.5622215 z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath4">
+      <path
+         style="display:none;fill:#2517ff;fill-opacity:1;stroke-width:0.196042"
+         d="M 1.2880342,6.3449663 4.4219114,1.4233004 4.4177807,11.266632 Z"
+         id="path4" />
+      <path
+         id="lpe_path-effect5"
+         style="fill:#2517ff;fill-opacity:1;stroke-width:0.196042"
+         class="powerclip"
+         d="M -4.9999999,-0.23750019 H 17.7 V 12.9375 H -4.9999999 Z m 6.2880341,6.58246649 3.1297465,4.9216657 0.00413,-9.8433316 z" />
+    </clipPath>
+  </defs>
+  <g
+     id="layer1"
+     transform="matrix(1,0,0,0.66666668,0,2.1166667)"
+     clip-path="url(#clipPath4)"
+     inkscape:path-effect="#path-effect5">
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+       id="rect1"
+       width="12.7"
+       height="3.175"
+       x="9.5367433e-08"
+       y="4.7624998"
+       rx="2.7755576e-17"
+       sodipodi:type="rect"
+       d="M 9.5367433e-8,4.7624998 H 12.7 c 0,0 0,0 0,0 v 3.175 c 0,0 0,0 0,0 H 9.5367433e-8 c 0,0 0,0 0,0 v -3.175 c 0,0 0,0 0,0 z" />
+  </g>
+  <path
+     style="fill:#ff1717;fill-opacity:1;stroke-width:0.264583"
+     d="M -0.00699724,6.3465013 5.3039118,1.056584 l -0.007,10.579835 z"
+     id="path1"
+     clip-path="url(#clipPath3)"
+     inkscape:path-effect="#path-effect4"
+     inkscape:original-d="M -0.00699724,6.3465013 5.3039118,1.056584 l -0.007,10.579835 z" />
+</svg>

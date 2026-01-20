@@ -1,0 +1,472 @@
+<div class="otd-wegzeit-window otd-hidden" id="otd-wegzeit" role="dialog" aria-label="Weg-Zeit Diagramm">
+    <div class="otd-wegzeit-titlebar" data-drag-handle="true">
+        <span class="otd-wegzeit-title">Weg-Zeit Diagramm</span>
+        <div class="otd-wegzeit-actions">
+            <button class="otd-wegzeit-action" type="button" id="wegzeit-refresh">Aktualisieren</button>
+            <button class="otd-wegzeit-close" type="button" aria-label="Schliessen" onclick="closeWegZeitFenster();">X</button>
+        </div>
+    </div>
+    <div class="otd-wegzeit-body">
+        <div class="otd-wegzeit-toolbar">
+            <div class="otd-wegzeit-toolbar-title">Weg-Zeit</div>
+            <div class="otd-wegzeit-toolbar-info" id="wegzeit-info">Lade Fahrplaene ...</div>
+            <div class="otd-wegzeit-toolbar-actions">
+                <select id="wegzeit-label-mode">
+                    <option value="name">Zugname</option>
+                    <option value="number">Zugnummer</option>
+                </select>
+                <button type="button" id="wegzeit-zoom-out">-</button>
+                <button type="button" id="wegzeit-zoom-in">+</button>
+                <button type="button" id="wegzeit-fullscreen">Vollbild</button>
+            </div>
+        </div>
+        <div class="otd-wegzeit-canvas">
+            <svg id="wegzeit-svg" role="img" aria-label="Weg-Zeit Diagramm"></svg>
+        </div>
+        <div class="otd-wegzeit-legend" id="wegzeit-legend"></div>
+        <div class="otd-wegzeit-empty" id="wegzeit-empty">Keine Fahrplaene mit Zeiten gefunden.</div>
+    </div>
+</div>
+
+<script>
+    (function wegZeitDiagramm() {
+        const panel = document.getElementById('otd-wegzeit');
+        if (!panel) return;
+
+        const svg = document.getElementById('wegzeit-svg');
+        const legendEl = document.getElementById('wegzeit-legend');
+        const infoEl = document.getElementById('wegzeit-info');
+        const emptyEl = document.getElementById('wegzeit-empty');
+        const refreshBtn = document.getElementById('wegzeit-refresh');
+        const fullscreenBtn = document.getElementById('wegzeit-fullscreen');
+        const zoomOutBtn = document.getElementById('wegzeit-zoom-out');
+        const zoomInBtn = document.getElementById('wegzeit-zoom-in');
+        const labelModeSelect = document.getElementById('wegzeit-label-mode');
+
+        const storageKey = 'otd-timetable';
+        const ns = 'http://www.w3.org/2000/svg';
+        const palette = [
+            '#f94144',
+            '#f9c74f',
+            '#90be6d',
+            '#43aa8b',
+            '#577590',
+            '#f8961e',
+            '#9b5de5',
+            '#00bbf9',
+            '#4cc9f0',
+            '#ff6b6b'
+        ];
+
+        const state = {
+            trains: [],
+            schedules: {},
+            stations: [],
+            labelMode: 'name',
+            windowMinutes: 60
+        };
+
+        function parseTime(text) {
+            if (!text) return null;
+            const raw = text.toString().trim();
+            let hours = null;
+            let minutes = null;
+            let match = raw.match(/^(\d{1,2})[:.](\d{1,2})$/);
+            if (match) {
+                hours = Number.parseInt(match[1], 10);
+                minutes = Number.parseInt(match[2], 10);
+            } else if (/^\d{3,4}$/.test(raw)) {
+                const padded = raw.padStart(4, '0');
+                hours = Number.parseInt(padded.slice(0, 2), 10);
+                minutes = Number.parseInt(padded.slice(2), 10);
+            } else if (/^\d{1,2}$/.test(raw)) {
+                hours = Number.parseInt(raw, 10);
+                minutes = 0;
+            } else {
+                return null;
+            }
+            if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return null;
+            if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null;
+            return hours * 60 + minutes;
+        }
+
+        function timeToText(totalMinutes) {
+            const minutes = totalMinutes % 60;
+            const hours = Math.floor(totalMinutes / 60) % 24;
+            const hh = hours.toString().padStart(2, '0');
+            const mm = minutes.toString().padStart(2, '0');
+            return `${hh}:${mm}`;
+        }
+
+        function loadSchedules() {
+            try {
+                const raw = localStorage.getItem(storageKey);
+                state.schedules = raw ? JSON.parse(raw) : {};
+            } catch {
+                state.schedules = {};
+            }
+        }
+
+        async function loadStations() {
+            try {
+                const resp = await fetch('/station.xml', { cache: 'no-store' });
+                if (!resp.ok) {
+                    state.stations = [];
+                    return;
+                }
+                const xml = await resp.text();
+                const doc = new DOMParser().parseFromString(xml, 'application/xml');
+                const nodes = doc.querySelectorAll('stations > station');
+                state.stations = Array.from(nodes).map(node => ({
+                    id: node.getAttribute('id') || crypto.randomUUID(),
+                    name: node.getAttribute('name') ?? '',
+                    abbr: node.getAttribute('abbr') ?? ''
+                }));
+            } catch {
+                state.stations = [];
+            }
+        }
+
+        function stationLabelFor(name) {
+            if (!name) return '';
+            const station = state.stations.find(s => s.name === name);
+            return station?.abbr?.trim() ? station.abbr.trim() : name;
+        }
+
+        async function loadTrains() {
+            try {
+                const resp = await fetch('/train.xml', { cache: 'no-store' });
+                if (!resp.ok) {
+                    state.trains = [];
+                    return;
+                }
+                const xml = await resp.text();
+                const doc = new DOMParser().parseFromString(xml, 'application/xml');
+                const nodes = doc.querySelectorAll('trains > train');
+                const trainNodes = nodes.length > 0 ? nodes : doc.querySelectorAll('train');
+                state.trains = Array.from(trainNodes).map(node => ({
+                    id: node.getAttribute('id') || crypto.randomUUID(),
+                    name: node.querySelector('name')?.textContent ?? '',
+                    number: node.querySelector('number')?.textContent ?? '',
+                    category: node.querySelector('category')?.textContent ?? ''
+                }));
+            } catch {
+                state.trains = [];
+            }
+        }
+
+        function getTrainName(trainId) {
+            const train = state.trains.find(t => t.id === trainId);
+            return train?.name?.trim() ? train.name.trim() : 'Unbekannt';
+        }
+
+        function getTrainNumber(trainId) {
+            const train = state.trains.find(t => t.id === trainId);
+            return train?.number?.trim() ? train.number.trim() : 'Unbekannt';
+        }
+
+        function collectData() {
+            const stationOrder = [];
+            const stationIndex = new Map();
+            const stationLabels = [];
+            const trains = [];
+
+            function registerStation(name) {
+                if (!name) return;
+                if (!stationIndex.has(name)) {
+                    stationIndex.set(name, stationOrder.length);
+                    stationOrder.push(name);
+                    stationLabels.push(stationLabelFor(name));
+                }
+            }
+
+            for (const [trainId, rows] of Object.entries(state.schedules || {})) {
+                if (!Array.isArray(rows)) continue;
+                const points = [];
+                for (const row of rows) {
+                    const stationRaw = (row.station ?? '').toString().trim();
+                    const fallback = (row.destination ?? '').toString().trim();
+                    const station = stationRaw || fallback;
+                    const arrival = parseTime(row.arrival);
+                    const departure = parseTime(row.departure);
+                    if (!station || (arrival === null && departure === null)) continue;
+                    registerStation(station);
+                    if (arrival !== null) {
+                        points.push({ station, time: arrival });
+                    }
+                    if (departure !== null && departure !== arrival) {
+                        points.push({ station, time: departure });
+                    }
+                }
+                if (points.length > 0) {
+                    trains.push({ trainId, points });
+                }
+            }
+
+            return { stationOrder, stationLabels, stationIndex, trains };
+        }
+
+        function chooseInterval(range) {
+            if (range <= 180) return 15;
+            if (range <= 360) return 30;
+            if (range <= 720) return 60;
+            return 120;
+        }
+
+        function clearSvg() {
+            while (svg.firstChild) {
+                svg.removeChild(svg.firstChild);
+            }
+        }
+
+        function svgEl(tag, attrs) {
+            const el = document.createElementNS(ns, tag);
+            Object.entries(attrs || {}).forEach(([key, value]) => {
+                if (value !== null && value !== undefined) {
+                    el.setAttribute(key, value.toString());
+                }
+            });
+            return el;
+        }
+
+        function render() {
+            if (!svg) return;
+            clearSvg();
+            if (legendEl) legendEl.innerHTML = '';
+
+            const { stationOrder, stationLabels, stationIndex, trains } = collectData();
+            const allTimes = trains.flatMap(train => train.points.map(p => p.time));
+            if (trains.length === 0 || allTimes.length === 0 || stationOrder.length === 0) {
+                emptyEl?.classList.remove('is-hidden');
+                if (infoEl) infoEl.textContent = 'Keine Fahrplaene verfuegbar';
+                return;
+            }
+            emptyEl?.classList.add('is-hidden');
+
+            const width = svg.clientWidth || 960;
+            const height = svg.clientHeight || 520;
+            const padLeft = 70;
+            const padRight = 30;
+            const padTop = 40;
+            const padBottom = 60;
+
+            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            svg.setAttribute('preserveAspectRatio', 'none');
+
+            const dataMin = Math.min(...allTimes);
+            const interval = 5;
+            const startTick = Math.floor(dataMin / 60) * 60;
+            const endTick = startTick + state.windowMinutes;
+            const minTime = startTick;
+            const maxTime = endTick;
+
+            const usableWidth = width - padLeft - padRight;
+            const usableHeight = height - padTop - padBottom;
+            const stationCount = stationOrder.length;
+            const xStep = stationCount > 1 ? usableWidth / (stationCount - 1) : 0;
+
+            const scaleX = (index) => stationCount > 1
+                ? padLeft + index * xStep
+                : padLeft + usableWidth / 2;
+            const scaleY = (time) => padTop + ((time - minTime) / (maxTime - minTime)) * usableHeight;
+
+            const gridGroup = svgEl('g');
+            for (let i = 0; i < stationOrder.length; i += 1) {
+                const x = scaleX(i);
+                gridGroup.appendChild(svgEl('line', {
+                    x1: x,
+                    y1: padTop,
+                    x2: x,
+                    y2: height - padBottom,
+                    class: 'otd-wegzeit-gridline'
+                }));
+                const label = svgEl('text', {
+                    x,
+                    y: height - padBottom + 20,
+                    class: 'otd-wegzeit-label'
+                });
+                label.setAttribute('text-anchor', 'middle');
+                label.textContent = stationLabels[i] ?? stationOrder[i];
+                gridGroup.appendChild(label);
+            }
+
+            for (let t = startTick; t <= endTick; t += interval) {
+                const y = scaleY(t);
+                gridGroup.appendChild(svgEl('line', {
+                    x1: padLeft,
+                    y1: y,
+                    x2: width - padRight,
+                    y2: y,
+                    class: 'otd-wegzeit-gridline'
+                }));
+                const timeLabel = svgEl('text', {
+                    x: padLeft - 10,
+                    y: y + 4,
+                    class: 'otd-wegzeit-label is-time'
+                });
+                timeLabel.setAttribute('text-anchor', 'end');
+                timeLabel.textContent = timeToText(t);
+                gridGroup.appendChild(timeLabel);
+            }
+            svg.appendChild(gridGroup);
+
+            svg.appendChild(svgEl('line', {
+                x1: padLeft,
+                y1: padTop,
+                x2: padLeft,
+                y2: height - padBottom,
+                class: 'otd-wegzeit-axis'
+            }));
+            svg.appendChild(svgEl('line', {
+                x1: padLeft,
+                y1: height - padBottom,
+                x2: width - padRight,
+                y2: height - padBottom,
+                class: 'otd-wegzeit-axis'
+            }));
+
+            trains.forEach((train, index) => {
+                const color = palette[index % palette.length];
+                const points = train.points.map(point => {
+                    const yIndex = stationIndex.get(point.station) ?? 0;
+                    return `${scaleX(yIndex)},${scaleY(point.time)}`;
+                });
+
+                if (points.length >= 2) {
+                    const line = svgEl('polyline', {
+                        points: points.join(' '),
+                        class: 'otd-wegzeit-trainline',
+                        stroke: color
+                    });
+                    svg.appendChild(line);
+                }
+
+                train.points.forEach(point => {
+                    const yIndex = stationIndex.get(point.station) ?? 0;
+                    const circle = svgEl('circle', {
+                        cx: scaleX(yIndex),
+                        cy: scaleY(point.time),
+                        r: 3,
+                        class: 'otd-wegzeit-point'
+                    });
+                    circle.setAttribute('fill', color);
+                    svg.appendChild(circle);
+                });
+
+                if (train.points.length > 1) {
+                    const baseLabel = state.labelMode === 'number'
+                        ? getTrainNumber(train.trainId)
+                        : getTrainName(train.trainId);
+                    const labelText = `${baseLabel} +0`;
+                    const labelWidth = Math.max(40, labelText.length * 7 + 8);
+                    for (let i = 0; i < train.points.length - 1; i += 1) {
+                        const a = train.points[i];
+                        const b = train.points[i + 1];
+                        const ax = scaleX(stationIndex.get(a.station) ?? 0);
+                        const ay = scaleY(a.time);
+                        const bx = scaleX(stationIndex.get(b.station) ?? 0);
+                        const by = scaleY(b.time);
+                        const labelX = (ax + bx) / 2 + 6;
+                        const labelY = (ay + by) / 2 - 6;
+                        const labelGroup = svgEl('g');
+                        const labelBg = svgEl('rect', {
+                            x: labelX - 4,
+                            y: labelY - 12,
+                            width: labelWidth,
+                            height: 16,
+                            rx: 3,
+                            ry: 3,
+                            fill: 'rgba(10, 15, 30, 0.6)'
+                        });
+                        const label = svgEl('text', {
+                            x: labelX,
+                            y: labelY,
+                            fill: color,
+                            'font-size': 12,
+                            'font-weight': 700
+                        });
+                        label.textContent = labelText;
+                        labelGroup.appendChild(labelBg);
+                        labelGroup.appendChild(label);
+                        svg.appendChild(labelGroup);
+                    }
+                }
+
+                if (legendEl) {
+                    const item = document.createElement('div');
+                    item.className = 'otd-wegzeit-legend-item';
+                    item.innerHTML = `<span class="otd-wegzeit-legend-swatch" style="background:${color}"></span>`;
+                    const label = document.createElement('span');
+                    label.textContent = getTrainName(train.trainId);
+                    item.appendChild(label);
+                    legendEl.appendChild(item);
+                }
+            });
+
+            if (infoEl) {
+                infoEl.textContent = `Zuege: ${trains.length} | Stationen: ${stationOrder.length} | Zeit: ${timeToText(startTick)} - ${timeToText(endTick)}`;
+            }
+        }
+
+        async function refresh() {
+            loadSchedules();
+            await loadStations();
+            await loadTrains();
+            render();
+        }
+
+        window.openWegZeitFenster = function () {
+            panel.classList.remove('otd-hidden');
+            if (!panel.style.left || !panel.style.top) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = panel.offsetWidth || 900;
+                const height = panel.offsetHeight || 540;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                panel.style.left = `${left}px`;
+                panel.style.top = `${top}px`;
+            }
+            refresh();
+        };
+
+        window.closeWegZeitFenster = function () {
+            panel.classList.add('otd-hidden');
+        };
+
+        refreshBtn?.addEventListener('click', refresh);
+        labelModeSelect?.addEventListener('change', () => {
+            state.labelMode = labelModeSelect.value;
+            refresh();
+        });
+        zoomOutBtn?.addEventListener('click', () => {
+            state.windowMinutes = Math.min(360, state.windowMinutes + 30);
+            refresh();
+        });
+        zoomInBtn?.addEventListener('click', () => {
+            state.windowMinutes = Math.max(30, state.windowMinutes - 30);
+            refresh();
+        });
+
+        function updateFullscreenButton() {
+            if (!fullscreenBtn) return;
+            fullscreenBtn.textContent = document.fullscreenElement ? 'Zurueck' : 'Vollbild';
+        }
+
+        fullscreenBtn?.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                panel.requestFullscreen?.().catch(() => { });
+            } else {
+                document.exitFullscreen?.().catch(() => { });
+            }
+        });
+
+        document.addEventListener('fullscreenchange', updateFullscreenButton);
+        updateFullscreenButton();
+        window.addEventListener('storage', (event) => {
+            if (event.key === storageKey) {
+                refresh();
+            }
+        });
+    })();
+</script>

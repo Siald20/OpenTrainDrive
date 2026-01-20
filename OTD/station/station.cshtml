@@ -1,0 +1,272 @@
+<div class="otd-station-window otd-hidden" id="otd-station" role="dialog" aria-label="Bahnhoefe">
+    <div class="otd-station-titlebar" data-drag-handle="true">
+        <span class="otd-station-title">Bahnhoefe</span>
+        <div class="otd-station-title-actions">
+            <span class="otd-station-status" id="otd-station-status">Bereit</span>
+            <button class="otd-station-close" type="button" aria-label="Schliessen" onclick="closeStationFenster();">X</button>
+        </div>
+    </div>
+    <div class="otd-station-body">
+        <div class="otd-station-list">
+            <div class="otd-station-list-head">
+                <span>Liste</span>
+                <button type="button" id="station-add">Neu</button>
+            </div>
+            <div class="otd-station-list-body" id="station-list"></div>
+        </div>
+        <div class="otd-station-editor">
+            <div class="otd-station-editor-head">Details</div>
+            <div class="otd-station-fields">
+                <label class="otd-station-field">
+                    Name
+                    <input type="text" id="station-name" maxlength="40" />
+                </label>
+                <label class="otd-station-field">
+                    Kurzcode
+                    <input type="text" id="station-code" maxlength="12" />
+                </label>
+                <label class="otd-station-field">
+                    Abkuerzung
+                    <input type="text" id="station-abbr" maxlength="12" />
+                </label>
+                <label class="otd-station-field">
+                    Stellwerktyp
+                    <select id="station-type">
+                        <option value="">-</option>
+                        <option value="Domino 67">Domino 67</option>
+                        <option value="Domino 69">Domino 69</option>
+                        <option value="Domino 55m">Domino 55m</option>
+                        <option value="Domino 55o">Domino 55o</option>
+                        <option value="Simis C">Simis C</option>
+                        <option value="Simis W">Simis W</option>
+                    </select>
+                </label>
+                <label class="otd-station-field">
+                    Region
+                    <input type="text" id="station-region" maxlength="24" />
+                </label>
+                <label class="otd-station-field" style="grid-column: 1 / -1;">
+                    Hinweis
+                    <textarea id="station-notes" maxlength="200"></textarea>
+                </label>
+            </div>
+            <div class="otd-station-actions">
+                <button type="button" id="station-delete">Loeschen</button>
+                <button type="button" id="station-save">Speichern</button>
+            </div>
+            <div class="otd-station-empty" id="station-empty">Bitte einen Bahnhof waehlen oder neu anlegen.</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function stationEditor() {
+        const panel = document.getElementById('otd-station');
+        if (!panel) return;
+
+        const statusEl = document.getElementById('otd-station-status');
+        const listEl = document.getElementById('station-list');
+        const emptyEl = document.getElementById('station-empty');
+        const addBtn = document.getElementById('station-add');
+        const deleteBtn = document.getElementById('station-delete');
+        const saveBtn = document.getElementById('station-save');
+        const inputs = {
+            name: document.getElementById('station-name'),
+            code: document.getElementById('station-code'),
+            abbr: document.getElementById('station-abbr'),
+            type: document.getElementById('station-type'),
+            region: document.getElementById('station-region'),
+            notes: document.getElementById('station-notes')
+        };
+
+        const state = {
+            stations: [],
+            selectedId: null,
+            loadedOnce: false
+        };
+
+        function setStatus(text) {
+            if (statusEl) statusEl.textContent = text;
+        }
+
+        function clearInputs() {
+            inputs.name.value = '';
+            inputs.code.value = '';
+            inputs.abbr.value = '';
+            inputs.type.value = '';
+            inputs.region.value = '';
+            inputs.notes.value = '';
+        }
+
+        function selectStation(id) {
+            state.selectedId = id;
+            const station = state.stations.find(s => s.id === id);
+            if (!station) {
+                clearInputs();
+                if (emptyEl) emptyEl.style.display = 'block';
+                renderList();
+                return;
+            }
+            if (emptyEl) emptyEl.style.display = 'none';
+            inputs.name.value = station.name ?? '';
+            inputs.code.value = station.code ?? '';
+            inputs.abbr.value = station.abbr ?? '';
+            inputs.type.value = station.type ?? '';
+            inputs.region.value = station.region ?? '';
+            inputs.notes.value = station.notes ?? '';
+            renderList();
+        }
+
+        function renderList() {
+            if (!listEl) return;
+            listEl.innerHTML = '';
+            state.stations.forEach(station => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'otd-station-list-item';
+                if (station.id === state.selectedId) {
+                    btn.classList.add('is-selected');
+                }
+                const name = station.name?.trim() ? station.name.trim() : '(Ohne Name)';
+                const code = station.code?.trim() ? ` ${station.code.trim()}` : '';
+                btn.textContent = `${name}${code}`;
+                btn.dataset.id = station.id;
+                listEl.appendChild(btn);
+            });
+        }
+
+        function updateSelected(field, value) {
+            const station = state.stations.find(s => s.id === state.selectedId);
+            if (!station) return;
+            station[field] = value;
+            if (field === 'name' || field === 'code') {
+                renderList();
+            }
+        }
+
+        async function loadFromServer() {
+            try {
+                setStatus('Lade ...');
+                const resp = await fetch('/station.xml', { cache: 'no-store' });
+                if (!resp.ok) {
+                    state.stations = [];
+                    state.selectedId = null;
+                    renderList();
+                    clearInputs();
+                    if (emptyEl) emptyEl.style.display = 'block';
+                    setStatus('Keine station.xml gefunden');
+                    state.loadedOnce = true;
+                    return;
+                }
+                const xml = await resp.text();
+                const doc = new DOMParser().parseFromString(xml, 'application/xml');
+                const nodes = doc.querySelectorAll('stations > station');
+                state.stations = Array.from(nodes).map(node => ({
+                    id: node.getAttribute('id') || crypto.randomUUID(),
+                    name: node.getAttribute('name') ?? '',
+                    code: node.getAttribute('code') ?? '',
+                    abbr: node.getAttribute('abbr') ?? '',
+                    type: node.getAttribute('type') ?? '',
+                    region: node.getAttribute('region') ?? '',
+                    notes: node.getAttribute('notes') ?? ''
+                }));
+                state.selectedId = state.stations[0]?.id ?? null;
+                renderList();
+                selectStation(state.selectedId);
+                setStatus(`Geladen (${state.stations.length})`);
+                state.loadedOnce = true;
+            } catch {
+                setStatus('Laden fehlgeschlagen');
+            }
+        }
+
+        async function saveToServer() {
+            try {
+                setStatus('Speichere ...');
+                const payload = state.stations.map(station => ({
+                    id: station.id,
+                    name: station.name ?? '',
+                    code: station.code ?? '',
+                    abbr: station.abbr ?? '',
+                    type: station.type ?? '',
+                    region: station.region ?? '',
+                    notes: station.notes ?? ''
+                }));
+                const resp = await fetch('/station/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                setStatus('Gespeichert');
+            } catch {
+                setStatus('Speichern fehlgeschlagen');
+            }
+        }
+
+        addBtn?.addEventListener('click', () => {
+            const station = {
+                id: crypto.randomUUID(),
+                name: '',
+                code: '',
+                abbr: '',
+                type: '',
+                region: '',
+                notes: ''
+            };
+            state.stations.push(station);
+            renderList();
+            selectStation(station.id);
+            setStatus('Neuer Bahnhof');
+        });
+
+        deleteBtn?.addEventListener('click', () => {
+            if (!state.selectedId) {
+                setStatus('Kein Bahnhof ausgewaehlt');
+                return;
+            }
+            state.stations = state.stations.filter(s => s.id !== state.selectedId);
+            state.selectedId = state.stations[0]?.id ?? null;
+            renderList();
+            selectStation(state.selectedId);
+            setStatus('Bahnhof geloescht');
+        });
+
+        saveBtn?.addEventListener('click', saveToServer);
+
+        listEl?.addEventListener('click', (event) => {
+            const btn = event.target.closest('.otd-station-list-item');
+            if (!btn) return;
+            selectStation(btn.dataset.id);
+        });
+
+        inputs.name?.addEventListener('input', () => updateSelected('name', inputs.name.value.trim()));
+        inputs.code?.addEventListener('input', () => updateSelected('code', inputs.code.value.trim()));
+        inputs.abbr?.addEventListener('input', () => updateSelected('abbr', inputs.abbr.value.trim()));
+        inputs.type?.addEventListener('input', () => updateSelected('type', inputs.type.value.trim()));
+        inputs.type?.addEventListener('change', () => updateSelected('type', inputs.type.value.trim()));
+        inputs.region?.addEventListener('input', () => updateSelected('region', inputs.region.value.trim()));
+        inputs.notes?.addEventListener('input', () => updateSelected('notes', inputs.notes.value.trim()));
+
+        window.openStationFenster = function () {
+            panel.classList.remove('otd-hidden');
+            if (!panel.style.left || !panel.style.top) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = panel.offsetWidth || 820;
+                const height = panel.offsetHeight || 420;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                panel.style.left = `${left}px`;
+                panel.style.top = `${top}px`;
+            }
+            if (!state.loadedOnce) {
+                loadFromServer();
+            }
+        };
+
+        window.closeStationFenster = function () {
+            panel.classList.add('otd-hidden');
+        };
+    })();
+</script>

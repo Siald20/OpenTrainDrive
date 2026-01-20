@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="144"
+   height="48"
+   viewBox="0 0 38.1 12.7"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="Iltis_Zugnummernanzeiger.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="18.90625"
+     inkscape:cx="66.168595"
+     inkscape:cy="32.555372"
+     inkscape:window-width="3840"
+     inkscape:window-height="2054"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="powerclip"
+       message=""
+       id="path-effect5"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false" />
+    <inkscape:path-effect
+       effect="powerclip"
+       message=""
+       id="path-effect4"
+       is_visible="true"
+       lpeversion="1"
+       inverse="true"
+       flatten="false"
+       hide_clip="false" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath2">
+      <rect
+         style="display:none;fill:#ff8a17;fill-opacity:1;stroke-width:0.208377"
+         id="rect3"
+         width="33.684738"
+         height="8.452673"
+         x="2.096987"
+         y="2.093051"
+         rx="2.6427087e-17"
+         d="m 2.096987,2.093051 h 33.684738 c 0,0 0,0 0,0 v 8.452673 c 0,0 0,0 0,0 H 2.096987 c 0,0 0,0 0,0 V 2.093051 Z" />
+      <path
+         id="lpe_path-effect4"
+         style="fill:#ff8a17;fill-opacity:1;stroke-width:0.208377"
+         class="powerclip"
+         d="M -3.6705235,-3.6705235 H 41.707547 V 16.377521 H -3.6705235 Z M 2.096987,2.093051 v 8.452673 c 0,0 0,0 0,0 h 33.684738 c 0,0 0,0 0,0 V 2.093051 c 0,0 0,0 0,0 z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath3">
+      <rect
+         style="display:none;fill:#ff8a17;fill-opacity:1;stroke-width:0.147382"
+         id="rect4"
+         width="11.233975"
+         height="12.679009"
+         x="0.69935244"
+         y="-0.035423636"
+         rx="8.8135242e-18" />
+      <path
+         id="lpe_path-effect5"
+         style="fill:#ff8a17;fill-opacity:1;stroke-width:0.147382"
+         class="powerclip"
+         d="M -4.9999999,-0.23750019 H 17.7 V 12.9375 H -4.9999999 Z m 5.69935234,0.20207655 v 0 12.67900964 c 0,0 0,0 0,0 H 11.933328 c 0,0 0,0 0,0 V -0.03542364 c 0,0 0,0 0,0 z" />
+    </clipPath>
+  </defs>
+  <g
+     id="layer1"
+     transform="matrix(2.9984699,0,0,0.66666668,-1.9058894e-7,2.1166667)"
+     clip-path="url(#clipPath3)"
+     inkscape:path-effect="#path-effect5">
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+       id="rect1"
+       width="12.7"
+       height="3.175"
+       x="9.5367433e-08"
+       y="4.7624998"
+       rx="2.7755576e-17"
+       sodipodi:type="rect"
+       d="M 9.5367433e-8,4.7624998 H 12.7 c 0,0 0,0 0,0 v 3.175 c 0,0 0,0 0,0 H 9.5367433e-8 c 0,0 0,0 0,0 v -3.175 c 0,0 0,0 0,0 z" />
+  </g>
+  <path
+     style="fill:#ffffff;stroke-width:0.232833;fill-opacity:1"
+     id="rect2"
+     width="35.378071"
+     height="10.048044"
+     x="1.3294765"
+     y="1.3294765"
+     rx="2.7755579e-17"
+     clip-path="url(#clipPath2)"
+     inkscape:path-effect="#path-effect4"
+     sodipodi:type="rect"
+     d="M 1.3294765,1.3294765 H 36.707547 c 0,0 0,0 0,0 V 11.377521 c 0,0 0,0 0,0 H 1.3294765 c 0,0 0,0 0,0 V 1.3294765 Z" />
+</svg>

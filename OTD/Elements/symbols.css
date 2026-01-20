@@ -48,6 +48,18 @@
   background-image: var(--otd-symbol-accent1), var(--otd-symbol-accent2);
 }
 
+.otd-symbol--svg {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+}
+
+.otd-symbol--svg::before,
+.otd-symbol--svg::after {
+  display: none;
+}
+
 .otd-symbol--track-straight-h,
 .otd-symbol--track-straight-v,
 .otd-symbol--track-curve-ne,
