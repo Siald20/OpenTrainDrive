@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/timetable-viewer/timetableviewer.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/wegzeit/wegzeit.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/station/station.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/signal/signal.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/zd/zd.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/auth/auth.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/exit/exit.css" asp-append-version="true" />
@@ -347,6 +348,7 @@
 @await Html.PartialAsync("~/OTD/timetable-viewer/timetableviewer.cshtml")
 @await Html.PartialAsync("~/OTD/wegzeit/wegzeit.cshtml")
 @await Html.PartialAsync("~/OTD/station/station.cshtml")
+@await Html.PartialAsync("~/OTD/signal/signal.cshtml")
 @await Html.PartialAsync("~/OTD/ZD/zd.cshtml")
 @await Html.PartialAsync("~/OTD/auth/auth.cshtml")
 @await Html.PartialAsync("~/OTD/exit/exit.cshtml")
@@ -527,6 +529,9 @@
             if (event.button !== 0) {
                 return;
             }
+            if (event.target.closest('button, input, select, textarea')) {
+                return;
+            }
             dragging = true;
             startX = event.clientX;
             startY = event.clientY;
@@ -589,6 +594,7 @@
     enablePanelDragging('otd-timetableviewer');
     enablePanelDragging('otd-wegzeit');
     enablePanelDragging('otd-station');
+    enablePanelDragging('otd-signal-editor');
     enablePanelDragging('otd-zd');
     enablePanelDragging('otd-exit');
     enablePanelDragging('otd-settings');

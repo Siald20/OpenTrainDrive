@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.StaticFiles;
+using System.Text;
 using System.Xml.Linq;
 using System.Globalization;
 using OpenTrainDrive.Models;
@@ -98,6 +99,13 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(
         Path.Combine(app.Environment.ContentRootPath, "OTD", "station")),
     RequestPath = "/station",
+    OnPrepareResponse = applyNoCache
+});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "OTD", "signal")),
+    RequestPath = "/signal",
     OnPrepareResponse = applyNoCache
 });
 app.UseStaticFiles(new StaticFileOptions
@@ -292,6 +300,26 @@ app.MapGet("/plan.xml", () =>
     return Results.File(path, "application/xml");
 });
 
+app.MapGet("/switchingdevices.xml", () =>
+{
+    var path = Path.Combine(app.Environment.ContentRootPath, "switchingdevices.xml");
+    if (!File.Exists(path))
+    {
+        return Results.NotFound();
+    }
+    return Results.File(path, "application/xml");
+});
+
+app.MapGet("/signal.xml", () =>
+{
+    var path = Path.Combine(app.Environment.ContentRootPath, "signal.xml");
+    if (!File.Exists(path))
+    {
+        return Results.NotFound();
+    }
+    return Results.File(path, "application/xml");
+});
+
 // Plan speichern
 app.MapPost("/plan/save", async (PlanSaveDto plan, HttpContext context) =>
 {
@@ -334,6 +362,62 @@ app.MapPost("/plan/save", async (PlanSaveDto plan, HttpContext context) =>
     await using var stream = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.None);
     await doc.SaveAsync(stream, SaveOptions.None, default);
     return Results.Ok(new { saved = plan.Symbols?.Count ?? 0 });
+});
+
+app.MapPost("/switchingdevices/save", async (XmlSaveDto payload, HttpContext context) =>
+{
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
+    if (string.IsNullOrWhiteSpace(payload.Xml))
+    {
+        return Results.BadRequest("Empty XML");
+    }
+    var xml = payload.Xml.Trim();
+    if (!xml.StartsWith("<?xml", StringComparison.Ordinal))
+    {
+        xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + xml;
+    }
+    try
+    {
+        _ = XDocument.Parse(xml);
+    }
+    catch
+    {
+        return Results.BadRequest("Invalid XML");
+    }
+    var path = Path.Combine(app.Environment.ContentRootPath, "switchingdevices.xml");
+    await File.WriteAllTextAsync(path, xml, new UTF8Encoding(false));
+    return Results.Ok(new { saved = true });
+});
+
+app.MapPost("/signal/save", async (XmlSaveDto payload, HttpContext context) =>
+{
+    if (IsUsersEnabled(app.Environment) && !IsAdminUser(context))
+    {
+        return Results.Forbid();
+    }
+    if (string.IsNullOrWhiteSpace(payload.Xml))
+    {
+        return Results.BadRequest("Empty XML");
+    }
+    var xml = payload.Xml.Trim();
+    if (!xml.StartsWith("<?xml", StringComparison.Ordinal))
+    {
+        xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + xml;
+    }
+    try
+    {
+        _ = XDocument.Parse(xml);
+    }
+    catch
+    {
+        return Results.BadRequest("Invalid XML");
+    }
+    var path = Path.Combine(app.Environment.ContentRootPath, "signal.xml");
+    await File.WriteAllTextAsync(path, xml, new UTF8Encoding(false));
+    return Results.Ok(new { saved = true });
 });
 
 // Einstellungen lesen
@@ -1069,6 +1153,7 @@ public record SignalElementDto(string? Id, string? Address, string? Aspects, str
 public record PlanConfigFieldDto(string? Key, string? Value);
 public record PlanSymbolDto(string? Id, string? Type, string? Classes, int X, int Y, List<PlanConfigFieldDto>? Config);
 public record PlanSaveDto(int GridSize, List<PlanSymbolDto>? Symbols);
+public record XmlSaveDto(string? Xml);
 public record ZdSaveDto(string? Id, string? Number, string? Suffix, string? Scope, string? Route, string? Extra, string? Diskri);
 public record UserDto(string? Name, string? Password, string? Role, bool Enabled);
 public record AuthLoginDto(string? Username, string? Password);

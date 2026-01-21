@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?><signals>
+  <signal uid="f47ac10b-58cc-4372-a567-0e02b2c3d479" name="A" index="1">
+    <model manufacturer="Viessmann" scale="H0" catalognumber="8888">
+      <signal_type>Hauptsignal</signal_type>
+      <vmax>0</vmax>
+
+    </model>
+    <velocity>
+      <F1>0</F1>
+      <F2>40</F2>
+      <F3>60</F3>
+      <F5>90</F5>
+      <F6>40</F6>
+    </velocity>
+    <functions>
+      <hasAsb>no</hasAsb>
+      <hasBes>no</hasBes>
+      <hasHis>no</hasHis>
+      <hasSigSp>no</hasSigSp>
+      <hasAbfE>no</hasAbfE>
+      <hasBpr>no</hasBpr>
+      <hasVred>no</hasVred>
+      <hasVsig>no</hasVsig>
+      <hasV>no</hasV>
+      <hasDs>no</hasDs>
+    </functions>
+    <BAZ_BES>
+        <hasBaz>no</hasBaz>
+        <bazEP1/>
+        <bazEP2/>
+        <bazT/>
+    </BAZ_BES>
+    <settings>
+        <virtual>no</virtual>
+        <noEnd>no</noEnd>
+        <noStopBeforSignal>no</noStopBeforSignal>
+        <shuntingBorder>no</shuntingBorder>
+        <invisibleSignal>no</invisibleSignal>
+    </settings>
+    <etcs>
+        <hasEtcsL2>no</hasEtcsL2>
+        <signalTypeL2/>
+    </etcs>
+    <fbAndVzf>
+        <shortDrive>no</shortDrive>
+        <shortDriveStart>no</shortDriveStart>
+        <shortDriveEnd>no</shortDriveEnd>
+        <showFbfromSignal>no</showFbfromSignal>
+        <SignalEnd>no</SignalEnd>
+        <FBVelocity/>
+    </fbAndVzf>
+    <ZLandAP>
+        <LKneeded>yes</LKneeded>
+        <vZNf>no</vZNf>
+        <zlStarrEnd>no</zlStarrEnd>
+        <apv>no</apv>
+        <block>0</block>
+        <triggerAP>no</triggerAP>
+        <gfm>no</gfm>
+        <sk>no</sk>
+        <time>0</time>
+    </ZLandAP>
+  </signal>
+<signal uid="9a0b8978-f28d-4c25-a48f-e799a6eab9ad" name="H1" index="1"><model manufacturer="" scale="" catalognumber=""><signal_type/><vmax/></model><velocity><F1/></velocity><functions><hasAsb>no</hasAsb><hasBes>no</hasBes><hasHis>no</hasHis><hasSigSp>no</hasSigSp><hasAbfE>no</hasAbfE><hasBpr>no</hasBpr><hasVred>no</hasVred><hasVsig>no</hasVsig><hasV>no</hasV><hasDs>no</hasDs></functions><BAZ_BES><hasBaz>no</hasBaz><bazEP1/><bazEP2/><bazT/></BAZ_BES><settings><virtual>no</virtual><noEnd>no</noEnd><noStopBeforSignal>no</noStopBeforSignal><shuntingBorder>no</shuntingBorder><invisibleSignal>no</invisibleSignal></settings><etcs><hasEtcsL2>no</hasEtcsL2><signalTypeL2/></etcs><fbAndVzf><shortDrive>no</shortDrive><shortDriveStart>no</shortDriveStart><shortDriveEnd>no</shortDriveEnd><showFbfromSignal>no</showFbfromSignal><SignalEnd>no</SignalEnd><FBVelocity/></fbAndVzf><ZLandAP><LKneeded>no</LKneeded><vZNf>no</vZNf><zlStarrEnd>no</zlStarrEnd><apv>no</apv><block>0</block><triggerAP>no</triggerAP><gfm>no</gfm><sk>no</sk><time>0</time></ZLandAP></signal><signal uid="0c1b38e7-8ad9-45d7-a1e7-245ba2241b8b" name="" index="1"><model manufacturer="" scale="" catalognumber=""><signal_type/><vmax/></model><velocity><F1/></velocity><functions><hasAsb>yes</hasAsb><hasBes>no</hasBes><hasHis>no</hasHis><hasSigSp>no</hasSigSp><hasAbfE>no</hasAbfE><hasBpr>no</hasBpr><hasVred>no</hasVred><hasVsig>no</hasVsig><hasV>no</hasV><hasDs>no</hasDs></functions><BAZ_BES><hasBaz>no</hasBaz><bazEP1/><bazEP2/><bazT/></BAZ_BES><settings><virtual>no</virtual><noEnd>no</noEnd><noStopBeforSignal>no</noStopBeforSignal><shuntingBorder>no</shuntingBorder><invisibleSignal>no</invisibleSignal></settings><etcs><hasEtcsL2>no</hasEtcsL2><signalTypeL2/></etcs><fbAndVzf><shortDrive>no</shortDrive><shortDriveStart>no</shortDriveStart><shortDriveEnd>no</shortDriveEnd><showFbfromSignal>no</showFbfromSignal><SignalEnd>no</SignalEnd><FBVelocity/></fbAndVzf><ZLandAP><LKneeded>no</LKneeded><vZNf>no</vZNf><zlStarrEnd>no</zlStarrEnd><apv>no</apv><block>0</block><triggerAP>no</triggerAP><gfm>no</gfm><sk>no</sk><time>0</time></ZLandAP></signal></signals>

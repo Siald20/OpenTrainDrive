@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Blocks>
+  <block uid="f47ac10b-58cc-4372-a567-0e02b2c3d479" name="A" index="1">
+    <model manufacturer="Roco" scale="H0" catalognumber="8888">
+      <block_type>TMN</block_type>
+      <dirLeft>yes</dirLeft>
+      <dirRight>yes</dirRight>
+      <linkWith>0</linkWith>
+      <length>0</length>
+      <GFM>0</GFM>
+    </model>
+  </block>
+</Blocks>

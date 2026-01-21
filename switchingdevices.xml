@@ -1,6 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- Definition of Switching Devices like Turnouts and Signals -->
-<switchingdevices>
+<?xml version="1.0" encoding="utf-8"?><!-- Definition of Switching Devices like Turnouts and Signals --><switchingdevices>
   <switchingdevice uid="f47ac10b-58cc-4372-a567-0e02b2c3d479" name="W1" type="turnout" index="1">
     <decoder>
       <commandstation>DCC Accessory</commandstation>
@@ -8,10 +6,10 @@
     </decoder>
     <positions>
       <position name="gerade" description="Weiche gerade gestellt">
-        <decoder address="10" output="0" />
+        <decoder address="10" output="0"/>
       </position>
       <position name="abzweigend" description="Weiche abzweigend gestellt">
-        <decoder address="10" output="1" />
+        <decoder address="10" output="1"/>
       </position>
     </positions>
   </switchingdevice>
@@ -26,26 +24,26 @@
     </decoder>
     <positions>
       <position name="Halt" description="Halt">
-        <decoder address="50" output="0" />
-        <decoder address="51" output="0" />
-        <decoder address="52" output="0" />
+        <decoder address="50" output="0"/>
+        <decoder address="51" output="0"/>
+        <decoder address="52" output="0"/>
       </position>
       <position name="1" description="Freie Fahrt">
-        <decoder address="50" output="1" />
-        <decoder address="51" output="0" />
-        <decoder address="52" output="0" />
+        <decoder address="50" output="1"/>
+        <decoder address="51" output="0"/>
+        <decoder address="52" output="0"/>
       </position>
       <position name="2" description="Fahrbegriff 2 (40 km/h)">
-        <decoder address="50" output="1" />
-        <decoder address="51" output="1" />
-        <decoder address="52" output="0" />
+        <decoder address="50" output="1"/>
+        <decoder address="51" output="1"/>
+        <decoder address="52" output="0"/>
       </position>
       <position name="HS" description="Hilfssignal">
-        <decoder address="53" output="1" />
+        <decoder address="53" output="1"/>
       </position>
       <position name="BS" description="besetzte Einfahrt">
-        <decoder address="54" output="1" />
+        <decoder address="54" output="1"/>
       </position>
     </positions>
   </switchingdevice>
-</switchingdevices>
+<switchingdevice uid="9a0b8978-f28d-4c25-a48f-e799a6eab9ad" name="H1" type="signal" index="1"><model><signalsystem>N</signalsystem><notes/></model><decoder><commandstation/><protocol/></decoder><positions><position><decoder address="123" output="1"/></position></positions></switchingdevice><switchingdevice uid="0c1b38e7-8ad9-45d7-a1e7-245ba2241b8b" name="" type="signal" index="1"><model><signalsystem/><notes/></model><decoder><commandstation/><protocol/></decoder><positions/></switchingdevice></switchingdevices>

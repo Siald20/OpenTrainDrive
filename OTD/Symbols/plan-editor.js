@@ -39,9 +39,7 @@
     paletteFilter: '',
     dirty: false,
     saveTimer: null,
-    isSaving: false,
-    signalElements: {},
-    signalLoaded: false
+    isSaving: false
   };
 
   const configFields = [
@@ -524,49 +522,6 @@
     return text.includes('track') || text.includes('straight') || text.includes('gleis');
   }
 
-  async function loadSignalElements() {
-    try {
-      const resp = await fetch('/elements.xml', { cache: 'no-store' });
-      if (!resp.ok) {
-        state.signalElements = {};
-        state.signalLoaded = true;
-        return;
-      }
-      const xml = await resp.text();
-      const doc = new DOMParser().parseFromString(xml, 'application/xml');
-      const nodes = doc.querySelectorAll('elements > signal');
-      const map = {};
-      nodes.forEach(node => {
-        const id = node.getAttribute('id') || '';
-        if (!id) return;
-        map[id] = {
-          id,
-          address: node.getAttribute('address') ?? '',
-          aspects: node.getAttribute('aspects') ?? '',
-          asb: node.getAttribute('asb') ?? '',
-          notes: node.getAttribute('notes') ?? ''
-        };
-      });
-      state.signalElements = map;
-      state.signalLoaded = true;
-    } catch {
-      state.signalElements = {};
-      state.signalLoaded = true;
-    }
-  }
-
-  async function saveSignalElements() {
-    const payload = Object.values(state.signalElements);
-    const resp = await fetch('/elements/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    if (!resp.ok) {
-      throw new Error(`HTTP ${resp.status}`);
-    }
-  }
-
   function ensureTestPanel() {
     let panel = document.getElementById('otd-test-panel');
     if (panel) return panel;
@@ -647,64 +602,6 @@
     });
 
     panel.classList.remove('otd-hidden');
-  }
-
-  function ensureSignalEditor() {
-    let panel = document.getElementById('otd-signal-editor');
-    if (panel) return panel;
-    panel = document.createElement('div');
-    panel.id = 'otd-signal-editor';
-    panel.className = 'otd-signal-editor otd-hidden';
-    panel.innerHTML = `
-      <div class="otd-signal-editor-titlebar">
-        <span>Signal bearbeiten</span>
-        <button type="button" class="otd-signal-editor-close">X</button>
-      </div>
-      <div class="otd-signal-editor-body">
-        <label>Adresse<input type="text" id="otd-signal-address" /></label>
-        <label>Fahrbegriffe<input type="text" id="otd-signal-aspects" placeholder="z.B. Hp0, Hp1, Hp2" /></label>
-        <label>ASB<input type="text" id="otd-signal-asb" /></label>
-        <label>Notizen<textarea id="otd-signal-notes"></textarea></label>
-        <div class="otd-signal-editor-actions">
-          <button type="button" id="otd-signal-save">Speichern</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(panel);
-    panel.querySelector('.otd-signal-editor-close')?.addEventListener('click', () => {
-      panel.classList.add('otd-hidden');
-    });
-    return panel;
-  }
-
-  async function openSignalEditor(sym) {
-    if (!state.signalLoaded) {
-      await loadSignalElements();
-    }
-    const panel = ensureSignalEditor();
-    const entry = state.signalElements[sym.id] || { id: sym.id, address: '', aspects: '', asb: '', notes: '' };
-    state.signalElements[sym.id] = entry;
-
-    panel.querySelector('#otd-signal-address').value = entry.address ?? '';
-    panel.querySelector('#otd-signal-aspects').value = entry.aspects ?? '';
-    panel.querySelector('#otd-signal-asb').value = entry.asb ?? '';
-    panel.querySelector('#otd-signal-notes').value = entry.notes ?? '';
-    panel.classList.remove('otd-hidden');
-
-    const saveBtn = panel.querySelector('#otd-signal-save');
-    saveBtn.onclick = async () => {
-      entry.address = panel.querySelector('#otd-signal-address').value.trim();
-      entry.aspects = panel.querySelector('#otd-signal-aspects').value.trim();
-      entry.asb = panel.querySelector('#otd-signal-asb').value.trim();
-      entry.notes = panel.querySelector('#otd-signal-notes').value.trim();
-      try {
-        await saveSignalElements();
-        setStatus('Signal gespeichert');
-        panel.classList.add('otd-hidden');
-      } catch {
-        setStatus('Signal speichern fehlgeschlagen');
-      }
-    };
   }
 
   function duplicateSelected() {
@@ -1140,7 +1037,9 @@
     if (!state.selectedId) return;
     const sym = getSelectedSymbol();
     if (sym && isSignalSymbol(sym)) {
-      openSignalEditor(sym);
+      if (typeof window.openSignalEditMenu === 'function') {
+        window.openSignalEditMenu(sym);
+      }
       hideContextMenu();
       return;
     }
@@ -1171,11 +1070,19 @@
   });
 
   canvas.addEventListener('contextmenu', (evt) => {
-    if (!state.editMode) return;
     const target = evt.target.closest('.otd-plan-symbol');
     if (!target) return;
     evt.preventDefault();
     selectSymbol(target.dataset.id);
+    const sym = getSelectedSymbol();
+    if (sym && isSignalSymbol(sym)) {
+      if (typeof window.openSignalEditMenu === 'function') {
+        window.openSignalEditMenu(sym);
+      }
+      hideContextMenu();
+      return;
+    }
+    if (!state.editMode) return;
     showContextMenu(evt.clientX, evt.clientY);
   });
 

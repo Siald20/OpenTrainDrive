@@ -1,0 +1,777 @@
+﻿
+<div class="otd-signal-window otd-hidden" id="otd-signal-editor" role="dialog" aria-label="Signal bearbeiten">
+    <div class="otd-signal-titlebar" data-drag-handle="true">
+        <span class="otd-signal-title">Signal bearbeiten</span>
+        <div class="otd-signal-title-actions">
+            <span class="otd-signal-status" id="otd-signal-status">Bereit</span>
+            <button class="otd-signal-close" type="button" aria-label="Schliessen" id="signal-close" onclick="closeSignalEditMenu();">X</button>
+        </div>
+    </div>
+    <div class="otd-signal-body">
+        <div class="otd-signal-form">
+            <div class="otd-signal-tabs" role="tablist" aria-label="Signaleditor Bereiche">
+                <button type="button" class="otd-signal-tab" data-tab="overview">Uebersicht</button>
+                <button type="button" class="otd-signal-tab is-active" data-tab="switching">Switchingdevice</button>
+                <button type="button" class="otd-signal-tab" data-tab="definition">Signaldefinition</button>
+                <button type="button" class="otd-signal-tab" data-tab="velocity">Geschwindigkeit</button>
+                <button type="button" class="otd-signal-tab" data-tab="options">Optionen</button>
+            </div>
+
+            <div class="otd-signal-tabpanel" data-tab="overview">
+                <div class="otd-signal-section">
+                    <div class="otd-signal-section-title">Uebersicht</div>
+                    <div class="otd-signal-overview">
+                        Bearbeite hier die Signalstammdaten. Speichern schreibt nach switchingdevices.xml und signal.xml.
+                        <ul class="otd-signal-overview-list">
+                            <li>Switchingdevice: Adresse, Decoder und Positionen.</li>
+                            <li>Signaldefinition: Modell, Typ und Vmax.</li>
+                            <li>Geschwindigkeit: Fahrbegriffe/F-Werte.</li>
+                            <li>Optionen: Funktionen, Settings und Zusatzfelder.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="otd-signal-tabpanel is-active" data-tab="switching">
+                <div class="otd-signal-section">
+                    <div class="otd-signal-section-title">Switchingdevice</div>
+                    <div class="otd-signal-fields">
+                        <label class="otd-signal-field">
+                            UID
+                            <input type="text" id="signal-uid" readonly />
+                        </label>
+                        <label class="otd-signal-field">
+                            Signalname
+                            <input type="text" id="signal-name" maxlength="40" />
+                        </label>
+                        <label class="otd-signal-field">
+                            Index
+                            <input type="number" id="signal-index" min="0" />
+                        </label>
+                        <label class="otd-signal-field">
+                            Signalsystem
+                            <input type="text" id="signal-system" maxlength="40" />
+                        </label>
+                    </div>
+                    <label class="otd-signal-field">
+                        Notizen
+                        <textarea id="signal-switch-notes" maxlength="200"></textarea>
+                    </label>
+                    <div class="otd-signal-fields">
+                        <label class="otd-signal-field">
+                            Commandstation
+                            <input type="text" id="signal-switch-commandstation" />
+                        </label>
+                        <label class="otd-signal-field">
+                            Protocol
+                            <input type="text" id="signal-switch-protocol" />
+                        </label>
+                    </div>
+                    <div class="otd-signal-subsection">
+                        <div class="otd-signal-subsection-title">Positionen</div>
+                        <div class="otd-signal-list" id="signal-positions"></div>
+                        <button type="button" class="otd-signal-add-btn" id="signal-position-add">Position +</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="otd-signal-tabpanel" data-tab="definition">
+                <div class="otd-signal-section">
+                    <div class="otd-signal-section-title">Signaldefinition</div>
+                    <div class="otd-signal-fields">
+                        <label class="otd-signal-field">
+                            Hersteller
+                            <input type="text" id="signal-manufacturer" />
+                        </label>
+                        <label class="otd-signal-field">
+                            Massstab
+                            <input type="text" id="signal-scale" />
+                        </label>
+                        <label class="otd-signal-field">
+                            Katalognummer
+                            <input type="text" id="signal-catalog" />
+                        </label>
+                        <label class="otd-signal-field">
+                            Signaltyp
+                            <input type="text" id="signal-type" />
+                        </label>
+                        <label class="otd-signal-field">
+                            Vmax
+                            <input type="text" id="signal-vmax" />
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="otd-signal-tabpanel" data-tab="velocity">
+                <div class="otd-signal-section">
+                    <div class="otd-signal-section-title">Geschwindigkeiten</div>
+                    <div class="otd-signal-list" id="signal-velocity"></div>
+                    <button type="button" class="otd-signal-add-btn" id="signal-velocity-add">Feld +</button>
+                </div>
+            </div>
+
+            <div class="otd-signal-tabpanel" data-tab="options">
+                <div class="otd-signal-section">
+                    <div class="otd-signal-section-title">Optionen</div>
+                    <div class="otd-signal-subsection">
+                        <div class="otd-signal-subsection-title">Funktionen</div>
+                        <div class="otd-signal-fields">
+                            <label class="otd-signal-field">hasAsb<select id="signal-fn-hasAsb"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">hasBes<select id="signal-fn-hasBes"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">hasHis<select id="signal-fn-hasHis"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">hasSigSp<select id="signal-fn-hasSigSp"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">hasAbfE<select id="signal-fn-hasAbfE"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">hasBpr<select id="signal-fn-hasBpr"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">hasVred<select id="signal-fn-hasVred"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">hasVsig<select id="signal-fn-hasVsig"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">hasV<select id="signal-fn-hasV"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">hasDs<select id="signal-fn-hasDs"><option value="no">no</option><option value="yes">yes</option></select></label>
+                        </div>
+                    </div>
+                    <div class="otd-signal-subsection">
+                        <div class="otd-signal-subsection-title">BAZ_BES</div>
+                        <div class="otd-signal-fields">
+                            <label class="otd-signal-field">hasBaz<select id="signal-baz-hasBaz"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">bazEP1<input type="text" id="signal-baz-ep1" /></label>
+                            <label class="otd-signal-field">bazEP2<input type="text" id="signal-baz-ep2" /></label>
+                            <label class="otd-signal-field">bazT<input type="text" id="signal-baz-t" /></label>
+                        </div>
+                    </div>
+                    <div class="otd-signal-subsection">
+                        <div class="otd-signal-subsection-title">Settings</div>
+                        <div class="otd-signal-fields">
+                            <label class="otd-signal-field">virtual<select id="signal-set-virtual"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">noEnd<select id="signal-set-noEnd"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">noStopBeforSignal<select id="signal-set-noStop"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">shuntingBorder<select id="signal-set-shunting"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">invisibleSignal<select id="signal-set-invisible"><option value="no">no</option><option value="yes">yes</option></select></label>
+                        </div>
+                    </div>
+                    <div class="otd-signal-subsection">
+                        <div class="otd-signal-subsection-title">ETCS</div>
+                        <div class="otd-signal-fields">
+                            <label class="otd-signal-field">hasEtcsL2<select id="signal-etcs-has"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">signalTypeL2<input type="text" id="signal-etcs-type" /></label>
+                        </div>
+                    </div>
+                    <div class="otd-signal-subsection">
+                        <div class="otd-signal-subsection-title">fbAndVzf</div>
+                        <div class="otd-signal-fields">
+                            <label class="otd-signal-field">shortDrive<select id="signal-fb-shortDrive"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">shortDriveStart<select id="signal-fb-shortDriveStart"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">shortDriveEnd<select id="signal-fb-shortDriveEnd"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">showFbfromSignal<select id="signal-fb-show"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">SignalEnd<select id="signal-fb-end"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">FBVelocity<input type="text" id="signal-fb-velocity" /></label>
+                        </div>
+                    </div>
+                    <div class="otd-signal-subsection">
+                        <div class="otd-signal-subsection-title">ZLandAP</div>
+                        <div class="otd-signal-fields">
+                            <label class="otd-signal-field">LKneeded<select id="signal-zl-lk"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">vZNf<select id="signal-zl-vZNf"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">zlStarrEnd<select id="signal-zl-starr"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">apv<select id="signal-zl-apv"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">block<input type="text" id="signal-zl-block" /></label>
+                            <label class="otd-signal-field">triggerAP<select id="signal-zl-trigger"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">gfm<select id="signal-zl-gfm"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">sk<select id="signal-zl-sk"><option value="no">no</option><option value="yes">yes</option></select></label>
+                            <label class="otd-signal-field">time<input type="text" id="signal-zl-time" /></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="otd-signal-actions">
+        <button type="button" id="signal-save">Speichern</button>
+    </div>
+</div>
+
+<script>
+    (function signalEditor() {
+        const panel = document.getElementById('otd-signal-editor');
+        if (!panel) return;
+
+        const statusEl = document.getElementById('otd-signal-status');
+        const closeBtn = document.getElementById('signal-close');
+        const saveBtn = document.getElementById('signal-save');
+        const positionAddBtn = document.getElementById('signal-position-add');
+        const velocityAddBtn = document.getElementById('signal-velocity-add');
+        const positionsEl = document.getElementById('signal-positions');
+        const velocityEl = document.getElementById('signal-velocity');
+        const tabButtons = panel.querySelectorAll('.otd-signal-tab');
+        const tabPanels = panel.querySelectorAll('.otd-signal-tabpanel');
+
+        const inputs = {
+            uid: document.getElementById('signal-uid'),
+            name: document.getElementById('signal-name'),
+            index: document.getElementById('signal-index'),
+            system: document.getElementById('signal-system'),
+            notes: document.getElementById('signal-switch-notes'),
+            commandstation: document.getElementById('signal-switch-commandstation'),
+            protocol: document.getElementById('signal-switch-protocol'),
+            manufacturer: document.getElementById('signal-manufacturer'),
+            scale: document.getElementById('signal-scale'),
+            catalog: document.getElementById('signal-catalog'),
+            type: document.getElementById('signal-type'),
+            vmax: document.getElementById('signal-vmax')
+        };
+
+        const selectIds = [
+            'signal-fn-hasAsb', 'signal-fn-hasBes', 'signal-fn-hasHis', 'signal-fn-hasSigSp',
+            'signal-fn-hasAbfE', 'signal-fn-hasBpr', 'signal-fn-hasVred', 'signal-fn-hasVsig',
+            'signal-fn-hasV', 'signal-fn-hasDs', 'signal-baz-hasBaz', 'signal-set-virtual',
+            'signal-set-noEnd', 'signal-set-noStop', 'signal-set-shunting', 'signal-set-invisible',
+            'signal-etcs-has', 'signal-fb-shortDrive', 'signal-fb-shortDriveStart', 'signal-fb-shortDriveEnd',
+            'signal-fb-show', 'signal-fb-end', 'signal-zl-lk', 'signal-zl-vZNf', 'signal-zl-starr',
+            'signal-zl-apv', 'signal-zl-trigger', 'signal-zl-gfm', 'signal-zl-sk'
+        ];
+
+        const state = {
+            currentId: null,
+            switchingDoc: null,
+            signalDoc: null,
+            loadedOnce: false
+        };
+
+        function setStatus(text) {
+            if (statusEl) statusEl.textContent = text;
+        }
+
+        function setActiveTab(tabKey) {
+            tabButtons.forEach(btn => {
+                const active = btn.dataset.tab === tabKey;
+                btn.classList.toggle('is-active', active);
+                btn.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+            tabPanels.forEach(panelEl => {
+                const active = panelEl.dataset.tab === tabKey;
+                panelEl.classList.toggle('is-active', active);
+                panelEl.setAttribute('aria-hidden', active ? 'false' : 'true');
+            });
+        }
+
+        function parseXml(text, fallbackRoot) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'application/xml');
+            if (doc.querySelector('parsererror')) {
+                return parser.parseFromString(`<?xml version="1.0" encoding="utf-8"?><${fallbackRoot}></${fallbackRoot}>`, 'application/xml');
+            }
+            return doc;
+        }
+
+        function ensureRoot(doc, name) {
+            let root = doc.querySelector(name);
+            if (!root) {
+                root = doc.createElement(name);
+                doc.appendChild(root);
+            }
+            return root;
+        }
+
+        function ensureSwitchingDevice(uid) {
+            const doc = state.switchingDoc;
+            const root = ensureRoot(doc, 'switchingdevices');
+            let node = root.querySelector(`switchingdevice[uid="${uid}"]`);
+            if (!node) {
+                node = doc.createElement('switchingdevice');
+                node.setAttribute('uid', uid);
+                node.setAttribute('name', '');
+                node.setAttribute('type', 'signal');
+                node.setAttribute('index', '1');
+                const model = doc.createElement('model');
+                model.appendChild(doc.createElement('signalsystem'));
+                model.appendChild(doc.createElement('notes'));
+                node.appendChild(model);
+                const decoder = doc.createElement('decoder');
+                decoder.appendChild(doc.createElement('commandstation'));
+                decoder.appendChild(doc.createElement('protocol'));
+                node.appendChild(decoder);
+                node.appendChild(doc.createElement('positions'));
+                root.appendChild(node);
+            }
+            return node;
+        }
+
+        function ensureSignalDef(uid) {
+            const doc = state.signalDoc;
+            const root = ensureRoot(doc, 'signals');
+            let node = root.querySelector(`signal[uid="${uid}"]`);
+            if (!node) {
+                node = doc.createElement('signal');
+                node.setAttribute('uid', uid);
+                node.setAttribute('name', '');
+                node.setAttribute('index', '1');
+                const model = doc.createElement('model');
+                model.setAttribute('manufacturer', '');
+                model.setAttribute('scale', '');
+                model.setAttribute('catalognumber', '');
+                model.appendChild(doc.createElement('signal_type'));
+                model.appendChild(doc.createElement('vmax'));
+                node.appendChild(model);
+                node.appendChild(doc.createElement('velocity'));
+                const functions = doc.createElement('functions');
+                ['hasAsb', 'hasBes', 'hasHis', 'hasSigSp', 'hasAbfE', 'hasBpr', 'hasVred', 'hasVsig', 'hasV', 'hasDs']
+                    .forEach(key => {
+                        const el = doc.createElement(key);
+                        el.textContent = 'no';
+                        functions.appendChild(el);
+                    });
+                node.appendChild(functions);
+                const baz = doc.createElement('BAZ_BES');
+                ['hasBaz', 'bazEP1', 'bazEP2', 'bazT'].forEach(key => baz.appendChild(doc.createElement(key)));
+                node.appendChild(baz);
+                const settings = doc.createElement('settings');
+                ['virtual', 'noEnd', 'noStopBeforSignal', 'shuntingBorder', 'invisibleSignal']
+                    .forEach(key => {
+                        const el = doc.createElement(key);
+                        el.textContent = 'no';
+                        settings.appendChild(el);
+                    });
+                node.appendChild(settings);
+                const etcs = doc.createElement('etcs');
+                const etcsFlag = doc.createElement('hasEtcsL2');
+                etcsFlag.textContent = 'no';
+                etcs.appendChild(etcsFlag);
+                etcs.appendChild(doc.createElement('signalTypeL2'));
+                node.appendChild(etcs);
+                const fb = doc.createElement('fbAndVzf');
+                ['shortDrive', 'shortDriveStart', 'shortDriveEnd', 'showFbfromSignal', 'SignalEnd']
+                    .forEach(key => {
+                        const el = doc.createElement(key);
+                        el.textContent = 'no';
+                        fb.appendChild(el);
+                    });
+                fb.appendChild(doc.createElement('FBVelocity'));
+                node.appendChild(fb);
+                const zl = doc.createElement('ZLandAP');
+                ['LKneeded', 'vZNf', 'zlStarrEnd', 'apv', 'block', 'triggerAP', 'gfm', 'sk', 'time']
+                    .forEach(key => {
+                        const el = doc.createElement(key);
+                        el.textContent = key === 'block' || key === 'time' ? '0' : 'no';
+                        zl.appendChild(el);
+                    });
+                node.appendChild(zl);
+                root.appendChild(node);
+            }
+            return node;
+        }
+
+        function readText(parent, selector) {
+            const node = parent?.querySelector(selector);
+            return node?.textContent ?? '';
+        }
+
+        function setText(parent, selector, value) {
+            if (!parent) return;
+            let node = parent.querySelector(selector);
+            if (!node) {
+                node = parent.ownerDocument.createElement(selector);
+                parent.appendChild(node);
+            }
+            node.textContent = value ?? '';
+        }
+
+        function isYes(value) {
+            const text = (value ?? '').toString().toLowerCase().trim();
+            return text === 'yes' || text === 'true' || text === '1';
+        }
+
+        function setSelectValue(id, value) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.value = isYes(value) ? 'yes' : 'no';
+        }
+
+        function getSelectValue(id) {
+            const el = document.getElementById(id);
+            if (!el) return 'no';
+            return el.value === 'yes' ? 'yes' : 'no';
+        }
+        function renderPositions(positions) {
+            if (!positionsEl) return;
+            positionsEl.innerHTML = '';
+            positions.forEach((pos) => {
+                const item = document.createElement('div');
+                item.className = 'otd-signal-list-item';
+                item.innerHTML = `
+                    <div class="otd-signal-list-header">
+                        <input type="text" class="signal-pos-name" placeholder="Name" />
+                        <input type="text" class="signal-pos-desc" placeholder="Beschreibung" />
+                        <button type="button" class="signal-pos-remove">X</button>
+                    </div>
+                    <div class="signal-decoder-list"></div>
+                    <div class="otd-signal-list-actions">
+                        <button type="button" class="signal-decoder-add">Decoder +</button>
+                    </div>
+                `;
+                item.querySelector('.signal-pos-name').value = pos.name || '';
+                item.querySelector('.signal-pos-desc').value = pos.description || '';
+                const decoderList = item.querySelector('.signal-decoder-list');
+                const addDecoderRow = (decoder) => {
+                    const row = document.createElement('div');
+                    row.className = 'otd-signal-list-header';
+                    row.innerHTML = `
+                        <input type="text" class="signal-decoder-address" placeholder="Adresse" />
+                        <input type="text" class="signal-decoder-output" placeholder="Output" />
+                        <button type="button" class="signal-decoder-remove">X</button>
+                    `;
+                    row.querySelector('.signal-decoder-address').value = decoder?.address ?? '';
+                    row.querySelector('.signal-decoder-output').value = decoder?.output ?? '';
+                    row.querySelector('.signal-decoder-remove').addEventListener('click', () => row.remove());
+                    decoderList.appendChild(row);
+                };
+                (pos.decoders || [{ address: '', output: '' }]).forEach(addDecoderRow);
+                item.querySelector('.signal-decoder-add').addEventListener('click', () => addDecoderRow({ address: '', output: '' }));
+                item.querySelector('.signal-pos-remove').addEventListener('click', () => item.remove());
+                positionsEl.appendChild(item);
+            });
+        }
+
+        function renderVelocity(fields) {
+            if (!velocityEl) return;
+            velocityEl.innerHTML = '';
+            fields.forEach((field) => {
+                const item = document.createElement('div');
+                item.className = 'otd-signal-list-item';
+                item.innerHTML = `
+                    <div class="otd-signal-list-header">
+                        <input type="text" class="signal-velocity-key" placeholder="Schluessel" />
+                        <input type="text" class="signal-velocity-value" placeholder="Wert" />
+                        <button type="button" class="signal-velocity-remove">X</button>
+                    </div>
+                `;
+                item.querySelector('.signal-velocity-key').value = field.key || '';
+                item.querySelector('.signal-velocity-value').value = field.value || '';
+                item.querySelector('.signal-velocity-remove').addEventListener('click', () => item.remove());
+                velocityEl.appendChild(item);
+            });
+        }
+
+        function collectPositions() {
+            if (!positionsEl) return [];
+            return Array.from(positionsEl.querySelectorAll('.otd-signal-list-item')).map(item => {
+                const name = item.querySelector('.signal-pos-name')?.value.trim() ?? '';
+                const description = item.querySelector('.signal-pos-desc')?.value.trim() ?? '';
+                const decoders = Array.from(item.querySelectorAll('.signal-decoder-list .otd-signal-list-header')).map(row => ({
+                    address: row.querySelector('.signal-decoder-address')?.value.trim() ?? '',
+                    output: row.querySelector('.signal-decoder-output')?.value.trim() ?? ''
+                })).filter(dec => dec.address || dec.output);
+                return { name, description, decoders };
+            }).filter(pos => pos.name || pos.description || pos.decoders.length);
+        }
+
+        function collectVelocity() {
+            if (!velocityEl) return [];
+            return Array.from(velocityEl.querySelectorAll('.otd-signal-list-item')).map(item => ({
+                key: item.querySelector('.signal-velocity-key')?.value.trim() ?? '',
+                value: item.querySelector('.signal-velocity-value')?.value.trim() ?? ''
+            })).filter(field => field.key);
+        }
+        function loadIntoForm(uid) {
+            const switching = ensureSwitchingDevice(uid);
+            const signal = ensureSignalDef(uid);
+            inputs.uid.value = uid;
+            const name = switching.getAttribute('name') || signal.getAttribute('name') || '';
+            inputs.name.value = name;
+            inputs.index.value = switching.getAttribute('index') || signal.getAttribute('index') || '';
+            const model = switching.querySelector('model');
+            inputs.system.value = readText(model, 'signalsystem');
+            inputs.notes.value = readText(model, 'notes');
+            const decoder = switching.querySelector('decoder');
+            inputs.commandstation.value = readText(decoder, 'commandstation');
+            inputs.protocol.value = readText(decoder, 'protocol');
+            const positions = switching.querySelectorAll('positions > position');
+            const positionList = Array.from(positions).map(pos => ({
+                name: pos.getAttribute('name') ?? '',
+                description: pos.getAttribute('description') ?? '',
+                decoders: Array.from(pos.querySelectorAll('decoder')).map(dec => ({
+                    address: dec.getAttribute('address') ?? '',
+                    output: dec.getAttribute('output') ?? ''
+                }))
+            }));
+            renderPositions(positionList.length ? positionList : [{ name: '', description: '', decoders: [{ address: '', output: '' }] }]);
+
+            const sigModel = signal.querySelector('model');
+            inputs.manufacturer.value = sigModel?.getAttribute('manufacturer') ?? '';
+            inputs.scale.value = sigModel?.getAttribute('scale') ?? '';
+            inputs.catalog.value = sigModel?.getAttribute('catalognumber') ?? '';
+            inputs.type.value = readText(sigModel, 'signal_type');
+            inputs.vmax.value = readText(sigModel, 'vmax');
+
+            const velocity = signal.querySelectorAll('velocity > *');
+            const velocityList = Array.from(velocity).map(node => ({ key: node.nodeName, value: node.textContent ?? '' }));
+            renderVelocity(velocityList.length ? velocityList : [{ key: 'F1', value: '' }]);
+
+            const functions = signal.querySelector('functions');
+            setSelectValue('signal-fn-hasAsb', readText(functions, 'hasAsb'));
+            setSelectValue('signal-fn-hasBes', readText(functions, 'hasBes'));
+            setSelectValue('signal-fn-hasHis', readText(functions, 'hasHis'));
+            setSelectValue('signal-fn-hasSigSp', readText(functions, 'hasSigSp'));
+            setSelectValue('signal-fn-hasAbfE', readText(functions, 'hasAbfE'));
+            setSelectValue('signal-fn-hasBpr', readText(functions, 'hasBpr'));
+            setSelectValue('signal-fn-hasVred', readText(functions, 'hasVred'));
+            setSelectValue('signal-fn-hasVsig', readText(functions, 'hasVsig'));
+            setSelectValue('signal-fn-hasV', readText(functions, 'hasV'));
+            setSelectValue('signal-fn-hasDs', readText(functions, 'hasDs'));
+
+            const baz = signal.querySelector('BAZ_BES');
+            setSelectValue('signal-baz-hasBaz', readText(baz, 'hasBaz'));
+            document.getElementById('signal-baz-ep1').value = readText(baz, 'bazEP1');
+            document.getElementById('signal-baz-ep2').value = readText(baz, 'bazEP2');
+            document.getElementById('signal-baz-t').value = readText(baz, 'bazT');
+
+            const settings = signal.querySelector('settings');
+            setSelectValue('signal-set-virtual', readText(settings, 'virtual'));
+            setSelectValue('signal-set-noEnd', readText(settings, 'noEnd'));
+            setSelectValue('signal-set-noStop', readText(settings, 'noStopBeforSignal'));
+            setSelectValue('signal-set-shunting', readText(settings, 'shuntingBorder'));
+            setSelectValue('signal-set-invisible', readText(settings, 'invisibleSignal'));
+
+            const etcs = signal.querySelector('etcs');
+            setSelectValue('signal-etcs-has', readText(etcs, 'hasEtcsL2'));
+            document.getElementById('signal-etcs-type').value = readText(etcs, 'signalTypeL2');
+
+            const fb = signal.querySelector('fbAndVzf');
+            setSelectValue('signal-fb-shortDrive', readText(fb, 'shortDrive'));
+            setSelectValue('signal-fb-shortDriveStart', readText(fb, 'shortDriveStart'));
+            setSelectValue('signal-fb-shortDriveEnd', readText(fb, 'shortDriveEnd'));
+            setSelectValue('signal-fb-show', readText(fb, 'showFbfromSignal'));
+            setSelectValue('signal-fb-end', readText(fb, 'SignalEnd'));
+            document.getElementById('signal-fb-velocity').value = readText(fb, 'FBVelocity');
+
+            const zl = signal.querySelector('ZLandAP');
+            setSelectValue('signal-zl-lk', readText(zl, 'LKneeded'));
+            setSelectValue('signal-zl-vZNf', readText(zl, 'vZNf'));
+            setSelectValue('signal-zl-starr', readText(zl, 'zlStarrEnd'));
+            setSelectValue('signal-zl-apv', readText(zl, 'apv'));
+            document.getElementById('signal-zl-block').value = readText(zl, 'block');
+            setSelectValue('signal-zl-trigger', readText(zl, 'triggerAP'));
+            setSelectValue('signal-zl-gfm', readText(zl, 'gfm'));
+            setSelectValue('signal-zl-sk', readText(zl, 'sk'));
+            document.getElementById('signal-zl-time').value = readText(zl, 'time');
+        }
+        async function loadDocs() {
+            try {
+                setStatus('Lade ...');
+                const [switchResp, signalResp] = await Promise.all([
+                    fetch('/switchingdevices.xml', { cache: 'no-store' }),
+                    fetch('/signal.xml', { cache: 'no-store' })
+                ]);
+                const switchingXml = switchResp.ok ? await switchResp.text() : '<?xml version="1.0" encoding="utf-8"?><switchingdevices></switchingdevices>';
+                const signalXml = signalResp.ok ? await signalResp.text() : '<?xml version="1.0" encoding="utf-8"?><signals></signals>';
+                state.switchingDoc = parseXml(switchingXml, 'switchingdevices');
+                state.signalDoc = parseXml(signalXml, 'signals');
+                state.loadedOnce = true;
+                setStatus('Bereit');
+            } catch {
+                state.switchingDoc = parseXml('<?xml version="1.0" encoding="utf-8"?><switchingdevices></switchingdevices>', 'switchingdevices');
+                state.signalDoc = parseXml('<?xml version="1.0" encoding="utf-8"?><signals></signals>', 'signals');
+                state.loadedOnce = true;
+                setStatus('Laden fehlgeschlagen');
+            }
+        }
+
+        async function saveDocs() {
+            if (!state.currentId) return;
+            setStatus('Speichere ...');
+            const uid = state.currentId;
+            const switching = ensureSwitchingDevice(uid);
+            const signal = ensureSignalDef(uid);
+
+            const name = inputs.name.value.trim();
+            const index = inputs.index.value.trim();
+            switching.setAttribute('name', name);
+            switching.setAttribute('type', 'signal');
+            switching.setAttribute('index', index || '1');
+            signal.setAttribute('name', name);
+            signal.setAttribute('index', index || '1');
+
+            const switchModel = switching.querySelector('model') || switching.ownerDocument.createElement('model');
+            if (!switchModel.parentElement) switching.appendChild(switchModel);
+            setText(switchModel, 'signalsystem', inputs.system.value.trim());
+            setText(switchModel, 'notes', inputs.notes.value.trim());
+
+            const decoder = switching.querySelector('decoder') || switching.ownerDocument.createElement('decoder');
+            if (!decoder.parentElement) switching.appendChild(decoder);
+            setText(decoder, 'commandstation', inputs.commandstation.value.trim());
+            setText(decoder, 'protocol', inputs.protocol.value.trim());
+
+            const positions = switching.querySelector('positions') || switching.ownerDocument.createElement('positions');
+            if (!positions.parentElement) switching.appendChild(positions);
+            positions.innerHTML = '';
+            collectPositions().forEach((pos) => {
+                const posEl = switching.ownerDocument.createElement('position');
+                if (pos.name) posEl.setAttribute('name', pos.name);
+                if (pos.description) posEl.setAttribute('description', pos.description);
+                pos.decoders.forEach(dec => {
+                    const decEl = switching.ownerDocument.createElement('decoder');
+                    if (dec.address) decEl.setAttribute('address', dec.address);
+                    if (dec.output) decEl.setAttribute('output', dec.output);
+                    posEl.appendChild(decEl);
+                });
+                positions.appendChild(posEl);
+            });
+
+            const model = signal.querySelector('model') || signal.ownerDocument.createElement('model');
+            if (!model.parentElement) signal.appendChild(model);
+            model.setAttribute('manufacturer', inputs.manufacturer.value.trim());
+            model.setAttribute('scale', inputs.scale.value.trim());
+            model.setAttribute('catalognumber', inputs.catalog.value.trim());
+            setText(model, 'signal_type', inputs.type.value.trim());
+            setText(model, 'vmax', inputs.vmax.value.trim());
+
+            const velocity = signal.querySelector('velocity') || signal.ownerDocument.createElement('velocity');
+            if (!velocity.parentElement) signal.appendChild(velocity);
+            velocity.innerHTML = '';
+            collectVelocity().forEach(field => {
+                const el = signal.ownerDocument.createElement(field.key);
+                el.textContent = field.value ?? '';
+                velocity.appendChild(el);
+            });
+
+            const functions = signal.querySelector('functions') || signal.ownerDocument.createElement('functions');
+            if (!functions.parentElement) signal.appendChild(functions);
+            setText(functions, 'hasAsb', getSelectValue('signal-fn-hasAsb'));
+            setText(functions, 'hasBes', getSelectValue('signal-fn-hasBes'));
+            setText(functions, 'hasHis', getSelectValue('signal-fn-hasHis'));
+            setText(functions, 'hasSigSp', getSelectValue('signal-fn-hasSigSp'));
+            setText(functions, 'hasAbfE', getSelectValue('signal-fn-hasAbfE'));
+            setText(functions, 'hasBpr', getSelectValue('signal-fn-hasBpr'));
+            setText(functions, 'hasVred', getSelectValue('signal-fn-hasVred'));
+            setText(functions, 'hasVsig', getSelectValue('signal-fn-hasVsig'));
+            setText(functions, 'hasV', getSelectValue('signal-fn-hasV'));
+            setText(functions, 'hasDs', getSelectValue('signal-fn-hasDs'));
+
+            const baz = signal.querySelector('BAZ_BES') || signal.ownerDocument.createElement('BAZ_BES');
+            if (!baz.parentElement) signal.appendChild(baz);
+            setText(baz, 'hasBaz', getSelectValue('signal-baz-hasBaz'));
+            setText(baz, 'bazEP1', document.getElementById('signal-baz-ep1').value.trim());
+            setText(baz, 'bazEP2', document.getElementById('signal-baz-ep2').value.trim());
+            setText(baz, 'bazT', document.getElementById('signal-baz-t').value.trim());
+
+            const settings = signal.querySelector('settings') || signal.ownerDocument.createElement('settings');
+            if (!settings.parentElement) signal.appendChild(settings);
+            setText(settings, 'virtual', getSelectValue('signal-set-virtual'));
+            setText(settings, 'noEnd', getSelectValue('signal-set-noEnd'));
+            setText(settings, 'noStopBeforSignal', getSelectValue('signal-set-noStop'));
+            setText(settings, 'shuntingBorder', getSelectValue('signal-set-shunting'));
+            setText(settings, 'invisibleSignal', getSelectValue('signal-set-invisible'));
+
+            const etcs = signal.querySelector('etcs') || signal.ownerDocument.createElement('etcs');
+            if (!etcs.parentElement) signal.appendChild(etcs);
+            setText(etcs, 'hasEtcsL2', getSelectValue('signal-etcs-has'));
+            setText(etcs, 'signalTypeL2', document.getElementById('signal-etcs-type').value.trim());
+
+            const fb = signal.querySelector('fbAndVzf') || signal.ownerDocument.createElement('fbAndVzf');
+            if (!fb.parentElement) signal.appendChild(fb);
+            setText(fb, 'shortDrive', getSelectValue('signal-fb-shortDrive'));
+            setText(fb, 'shortDriveStart', getSelectValue('signal-fb-shortDriveStart'));
+            setText(fb, 'shortDriveEnd', getSelectValue('signal-fb-shortDriveEnd'));
+            setText(fb, 'showFbfromSignal', getSelectValue('signal-fb-show'));
+            setText(fb, 'SignalEnd', getSelectValue('signal-fb-end'));
+            setText(fb, 'FBVelocity', document.getElementById('signal-fb-velocity').value.trim());
+
+            const zl = signal.querySelector('ZLandAP') || signal.ownerDocument.createElement('ZLandAP');
+            if (!zl.parentElement) signal.appendChild(zl);
+            setText(zl, 'LKneeded', getSelectValue('signal-zl-lk'));
+            setText(zl, 'vZNf', getSelectValue('signal-zl-vZNf'));
+            setText(zl, 'zlStarrEnd', getSelectValue('signal-zl-starr'));
+            setText(zl, 'apv', getSelectValue('signal-zl-apv'));
+            setText(zl, 'block', document.getElementById('signal-zl-block').value.trim());
+            setText(zl, 'triggerAP', getSelectValue('signal-zl-trigger'));
+            setText(zl, 'gfm', getSelectValue('signal-zl-gfm'));
+            setText(zl, 'sk', getSelectValue('signal-zl-sk'));
+            setText(zl, 'time', document.getElementById('signal-zl-time').value.trim());
+
+            const serializer = new XMLSerializer();
+            const switchingXml = serializer.serializeToString(state.switchingDoc);
+            const signalXml = serializer.serializeToString(state.signalDoc);
+            const payload = (xml) => ({ xml });
+            try {
+                const [switchResp, signalResp] = await Promise.all([
+                    fetch('/switchingdevices/save', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload(switchingXml))
+                    }),
+                    fetch('/signal/save', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload(signalXml))
+                    })
+                ]);
+                if (!switchResp.ok || !signalResp.ok) {
+                    throw new Error('save failed');
+                }
+                setStatus('Gespeichert');
+                panel.classList.add('otd-hidden');
+            } catch {
+                setStatus('Speichern fehlgeschlagen');
+            }
+        }
+        positionAddBtn?.addEventListener('click', () => {
+            if (!positionsEl) return;
+            renderPositions([...collectPositions(), { name: '', description: '', decoders: [{ address: '', output: '' }] }]);
+        });
+
+        velocityAddBtn?.addEventListener('click', () => {
+            if (!velocityEl) return;
+            renderVelocity([...collectVelocity(), { key: '', value: '' }]);
+        });
+
+        function closePanel() {
+            panel.classList.add('otd-hidden');
+        }
+
+        closeBtn?.addEventListener('click', closePanel);
+        saveBtn?.addEventListener('click', saveDocs);
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabKey = btn.dataset.tab;
+                if (tabKey) setActiveTab(tabKey);
+            });
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key !== 'Escape') return;
+            if (panel.classList.contains('otd-hidden')) return;
+            closePanel();
+        });
+
+        window.closeSignalEditMenu = function () {
+            closePanel();
+        };
+
+        window.openSignalEditMenu = async function (sym) {
+            const uid = sym?.id;
+            if (!uid) return;
+            if (!state.loadedOnce) {
+                await loadDocs();
+            }
+            state.currentId = uid;
+            loadIntoForm(uid);
+            setActiveTab('switching');
+            panel.classList.remove('otd-hidden');
+            if (!panel.style.left || !panel.style.top) {
+                const workspace = document.querySelector('.otd-workspace');
+                const rect = workspace?.getBoundingClientRect();
+                const width = panel.offsetWidth || 900;
+                const height = panel.offsetHeight || 640;
+                const left = rect ? Math.max(12, (rect.width - width) / 2) : 12;
+                const top = rect ? Math.max(12, (rect.height - height) / 2) : 12;
+                panel.style.left = `${left}px`;
+                panel.style.top = `${top}px`;
+            }
+        };
+
+        selectIds.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('change', () => { });
+            }
+        });
+    })();
+</script>
