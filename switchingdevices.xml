@@ -1,49 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Definition of Switching Devices like Turnouts and Signals --><switchingdevices>
-  <switchingdevice uid="f47ac10b-58cc-4372-a567-0e02b2c3d479" name="W1" type="turnout" index="1">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Definition of Switching Devices like Turnouts and Signals -->
+<switchingdevices>
+  <switchingdevice uid="3f8a1b2c-4d5e-4f7a-8b9c-0d1e2f3a4b5c" name="W1" type="turnout" index="1">
     <decoder>
-      <commandstation>DCC Accessory</commandstation>
-      <protocol>DCC Accessory</protocol>
+      <commandstation>1</commandstation>
+      <protocol>DCC</protocol>
     </decoder>
-    <positions>
-      <position name="gerade" description="Weiche gerade gestellt">
-        <decoder address="10" output="0"/>
-      </position>
-      <position name="abzweigend" description="Weiche abzweigend gestellt">
-        <decoder address="10" output="1"/>
-      </position>
-    </positions>
+    <states>
+      <state id="streight" description="gerade">
+        <decoder address="10" output="0" />
+      </state>
+      <state id="diverging" description="abzweigend">
+        <decoder address="10" output="1" />
+      </state>
+    </states>
   </switchingdevice>
-  <switchingdevice uid="f47ac10b-58cc-4372-a567-0e02b2c3d479" name="S1" type="signal" index="1">
+  <switchingdevice uid="3f8a1b2c-4d5e-4f7a-8b9c-0d1e2f3a4b5c" name="W2" type="double-slip-turnout" index="2">
+    <decoder>
+      <commandstation>1</commandstation>
+      <protocol>DCC</protocol>
+    </decoder>
+    <states>
+      <state id="straight" description="gerade über Hauptgleis">
+        <decoder address="11" output="0" />
+        <decoder address="12" output="0" />
+      </state>
+      <state id="straight-crossing" description="abzweigend vom Hauptgleis auf überkreuzendes Gleis">
+        <decoder address="11" output="0" />
+        <decoder address="12" output="1" />
+      </state>
+      <state id="crossing" description="gerade über überkreuzendes Gleis">
+        <decoder address="11" output="1" />
+        <decoder address="12" output="1" />
+      </state>
+      <state id="crossing-straight" description="abzweigend vom überkreuzendem Gleis auf Hauptgleis">
+        <decoder address="11" output="1" />
+        <decoder address="12" output="0" />
+      </state>
+    </states>
+    <switchingdevice uid="3f8a1b2c-4d5e-4f7a-8b9c-0d1e2f3a4b5c" name="W3" type="three-way-turnout" index="3">
+    <decoder>
+      <commandstation>1</commandstation>
+      <protocol>DCC</protocol>
+    </decoder>
+    <states>
+      <state id="straight" description="gerade">
+        <decoder address="13" output="0" />
+        <decoder address="14" output="0" />
+      </state>
+      <state id="left" description="abzweigend nach links">
+        <decoder address="13" output="1" />
+        <decoder address="14" output="0" />        
+      </state>
+      <state id="right" description="abzweigend nach rechts">
+        <decoder address="13" output="0" />
+        <decoder address="14" output="1" />
+      </state>
+    </states>
+  </switchingdevice>
+  <switchingdevice uid="a7b8c9d0-e1f2-4a3b-5c6d-7e8f9a0b1c2d" id="S1" type="signal" index="4">
     <model>
       <signalsystem>SBB-L</signalsystem>
       <notes>Hauptsignal SBB Typ L</notes>
     </model>
     <decoder>
-      <commandstation>DCC Accessory</commandstation>
-      <protocol>DCC Accessory</protocol>
+      <commandstation>1</commandstation>
+      <protocol>DCC</protocol>
     </decoder>
-    <positions>
-      <position name="Halt" description="Halt">
-        <decoder address="50" output="0"/>
-        <decoder address="51" output="0"/>
-        <decoder address="52" output="0"/>
-      </position>
-      <position name="1" description="Freie Fahrt">
-        <decoder address="50" output="1"/>
-        <decoder address="51" output="0"/>
-        <decoder address="52" output="0"/>
-      </position>
-      <position name="2" description="Fahrbegriff 2 (40 km/h)">
-        <decoder address="50" output="1"/>
-        <decoder address="51" output="1"/>
-        <decoder address="52" output="0"/>
-      </position>
-      <position name="HS" description="Hilfssignal">
-        <decoder address="53" output="1"/>
-      </position>
-      <position name="BS" description="besetzte Einfahrt">
-        <decoder address="54" output="1"/>
-      </position>
-    </positions>
+    <states>
+      <state id="Halt" description="Halt">
+        <decoder address="50" output="0" />
+        <decoder address="51" output="0" />
+        <decoder address="52" output="0" />
+      </state>
+      <state id="1" description="Freie Fahrt">
+        <decoder address="50" output="1" />
+        <decoder address="51" output="0" />
+        <decoder address="52" output="0" />
+      </state>
+      <state id="2" description="Fahrbegriff 2 (40 km/h)">
+        <decoder address="50" output="1" />
+        <decoder address="51" output="1" />
+        <decoder address="52" output="0" />
+      </state>
+      <state id="HS" description="Hilfssignal">
+        <decoder address="53" output="1" />
+      </state>
+      <state id="BS" description="besetzte Einfahrt">
+        <decoder address="54" output="1" />
+      </state>
+    </states>
   </switchingdevice>
-<switchingdevice uid="9a0b8978-f28d-4c25-a48f-e799a6eab9ad" name="H1" type="signal" index="1"><model><signalsystem>N</signalsystem><notes/></model><decoder><commandstation/><protocol/></decoder><positions><position><decoder address="123" output="1"/></position></positions></switchingdevice><switchingdevice uid="0c1b38e7-8ad9-45d7-a1e7-245ba2241b8b" name="" type="signal" index="1"><model><signalsystem/><notes/></model><decoder><commandstation/><protocol/></decoder><positions/></switchingdevice></switchingdevices>
+</switchingdevices>
