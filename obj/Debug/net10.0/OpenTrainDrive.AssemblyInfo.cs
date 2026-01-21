@@ -13,7 +13,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OpenTrainDrive")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+81f3213d8503b77ff5693ea3af717a4ea9b5ae07")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+495300f2557d577bc5bfd5ab40e2b9f7b418c6da")]
+>>>>>>> c29fda8b31b645ff647b57613e425937669181ad
 [assembly: System.Reflection.AssemblyProductAttribute("OpenTrainDrive")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OpenTrainDrive")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
