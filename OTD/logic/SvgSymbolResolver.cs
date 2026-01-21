@@ -2,6 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+namespace OTD.logic.svgAPI;
+
+/// <summary>
+/// Hilfsfunktionen zum Auflosen von SVG-Dateien anhand von Elementname und Farbe.
+/// </summary>
 public static class SvgSymbolResolver
 {
     private static readonly Dictionary<string, string> ColorMap = new(StringComparer.OrdinalIgnoreCase)
@@ -27,6 +32,12 @@ public static class SvgSymbolResolver
         "_On", "_Off", "_on", "_off"
     };
 
+    /// <summary>
+    /// Sucht eine passende SVG-Datei im Verzeichnis und gibt den Dateinamen zuruck.
+    /// </summary>
+    /// <param name="elementName">Symbolname ohne feste Farbsuffixe.</param>
+    /// <param name="color">Farbe oder Farbcode.</param>
+    /// <param name="svgDirectory">Basisverzeichnis der SVG-Dateien.</param>
     public static string? ResolveSvgFile(string elementName, string color, string svgDirectory)
     {
         if (string.IsNullOrWhiteSpace(elementName) || string.IsNullOrWhiteSpace(color))
@@ -79,6 +90,12 @@ public static class SvgSymbolResolver
         return null;
     }
 
+    /// <summary>
+    /// Wie ResolveSvgFile, aber mit SVG-Pfad-Prefix.
+    /// </summary>
+    /// <param name="elementName">Symbolname ohne feste Farbsuffixe.</param>
+    /// <param name="color">Farbe oder Farbcode.</param>
+    /// <param name="svgDirectory">Basisverzeichnis der SVG-Dateien.</param>
     public static string? ResolveSvgPath(string elementName, string color, string svgDirectory)
     {
         var file = ResolveSvgFile(elementName, color, svgDirectory);

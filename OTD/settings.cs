@@ -1,5 +1,8 @@
 namespace OpenTrainDrive.Models;
 
+/// <summary>
+/// DTO fuer die Anwendungseinstellungen.
+/// </summary>
 public record SettingsDto(
     string? ProjectName,
     string? Language,

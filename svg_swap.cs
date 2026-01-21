@@ -2,8 +2,16 @@
 using System.IO;
 using System.Security.Cryptography;
 
+namespace OpenTrainDrive.Tools;
+
+/// <summary>
+/// Kommandozeilenwerkzeug zum Tauschen oder Umschalten von SVG-Dateien.
+/// </summary>
 static class SvgSwap
 {
+    /// <summary>
+    /// Einstiegspunkt der Anwendung.
+    /// </summary>
     static int Main(string[] args)
     {
         if (args.Length == 0 || args[0] is "-h" or "--help")

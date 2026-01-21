@@ -1,6 +1,8 @@
 namespace OpenTrainDrive.Services
 {
-    // Minimal placeholder service kept for compatibility while cleaning up browser-control logic
+    /// <summary>
+    /// Platzhalterdienst zur Kompatibilitaet waehrend der Bereinigung der Browserlogik.
+    /// </summary>
     public class BrowserService
     {
     }

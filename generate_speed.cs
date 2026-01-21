@@ -1,12 +1,20 @@
-using System;
+﻿using System;
 using System.Xml.Linq;
 
-/* rein KI generierter Code, hat aber nicht zum richtigen Ergebnis geführt: An sich war der Auftrag, den
-gesamten Geschwindigkeitbereich linear von 1 bis 255 auf die 128 Geschwindigkeitsstufen abzubilden. P.S.: das Auto-Ergänzen
-hier im Code-Editor hat geschnallt was ich wollte, nachdem ich den halben Text geschrieben hatte ;-). */
+namespace OpenTrainDrive.Tools;
 
+/* rein KI generierter Code, hat aber nicht zum richtigen Ergebnis gefuehrt: An sich war der Auftrag, den
+ gesamten Geschwindigkeitbereich linear von 1 bis 255 auf die 128 Geschwindigkeitsstufen abzubilden. P.S.: das Auto-Ergaenzen
+ hier im Code-Editor hat geschnallt was ich wollte, nachdem ich den halben Text geschrieben hatte ;-). */
+
+/// <summary>
+/// Hilfsklasse zum Erzeugen einer linearen Geschwindigkeitstabelle.
+/// </summary>
 class LocoSpeedtools
 {
+    /// <summary>
+    /// Gibt eine 128-stufige Geschwindigkeitstabelle als XML aus.
+    /// </summary>
     static void CalculatingSpeedTable()
     {
         // Generate a linear speed step table for 128 speed steps
@@ -29,3 +37,5 @@ class LocoSpeedtools
         Console.WriteLine(speedtable.ToString());
     }
 }
+
+

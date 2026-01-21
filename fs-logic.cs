@@ -2,8 +2,18 @@ using System.Text.RegularExpressions;
 
 namespace OpenTrainDrive;
 
+/// <summary>
+/// Hilfsfunktionen zum Umschreiben von SVG-Dateinamen anhand von Logikfeldern.
+/// </summary>
 public static class FsLogic
 {
+    /// <summary>
+    /// Wendet eine einzelne Feldregel auf einen SVG-Dateinamen an.
+    /// </summary>
+    /// <param name="file">SVG-Dateiname oder Pfad.</param>
+    /// <param name="fieldKey">Schluessel des Feldes.</param>
+    /// <param name="fieldValue">Wert des Feldes.</param>
+    /// <returns>Der angepasste Dateiname.</returns>
     public static string ApplySvgField(string file, string? fieldKey, string? fieldValue)
     {
         if (string.IsNullOrWhiteSpace(file) || string.IsNullOrWhiteSpace(fieldKey))
@@ -34,6 +44,12 @@ public static class FsLogic
         };
     }
 
+    /// <summary>
+    /// Wendet mehrere Feldregeln nacheinander auf einen SVG-Dateinamen an.
+    /// </summary>
+    /// <param name="file">SVG-Dateiname oder Pfad.</param>
+    /// <param name="fields">Liste der Feldregeln.</param>
+    /// <returns>Der angepasste Dateiname.</returns>
     public static string ApplySvgFields(string file, IEnumerable<KeyValuePair<string, string?>> fields)
     {
         var current = file;
@@ -44,6 +60,11 @@ public static class FsLogic
         return current;
     }
 
+    /// <summary>
+    /// Normalisiert bekannte Sonderfaelle von SVG-Dateinamen.
+    /// </summary>
+    /// <param name="file">SVG-Dateiname oder Pfad.</param>
+    /// <returns>Der normalisierte Dateiname.</returns>
     public static string NormalizeSvgFile(string file)
     {
         if (string.IsNullOrWhiteSpace(file))
@@ -57,6 +78,11 @@ public static class FsLogic
         return file;
     }
 
+    /// <summary>
+    /// Setzt eine Weiche auf Gerade (weiss).
+    /// </summary>
+    /// <param name="file">SVG-Dateiname oder Pfad.</param>
+    /// <returns>Der angepasste Dateiname.</returns>
     public static string ToSwitchStraight(string file)
     {
         if (string.IsNullOrWhiteSpace(file))
@@ -98,6 +124,11 @@ public static class FsLogic
         return file;
     }
 
+    /// <summary>
+    /// Setzt eine Weiche auf Abzweig (weiss).
+    /// </summary>
+    /// <param name="file">SVG-Dateiname oder Pfad.</param>
+    /// <returns>Der angepasste Dateiname.</returns>
     public static string ToSwitchTurnout(string file)
     {
         if (string.IsNullOrWhiteSpace(file))
@@ -139,6 +170,11 @@ public static class FsLogic
         return file;
     }
 
+    /// <summary>
+    /// Setzt eine Weiche auf Gerade (gruen).
+    /// </summary>
+    /// <param name="file">SVG-Dateiname oder Pfad.</param>
+    /// <returns>Der angepasste Dateiname.</returns>
     public static string ToSwitchStraightGreen(string file)
     {
         var white = ToSwitchStraight(file);
@@ -153,6 +189,11 @@ public static class FsLogic
         return white.Replace("Iltis_Switch_Straight.svg", "Iltis_Switch_Straight_Green.svg", StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Setzt eine Weiche auf Abzweig (gruen).
+    /// </summary>
+    /// <param name="file">SVG-Dateiname oder Pfad.</param>
+    /// <returns>Der angepasste Dateiname.</returns>
     public static string ToSwitchTurnoutGreen(string file)
     {
         var white = ToSwitchTurnout(file);
@@ -167,6 +208,11 @@ public static class FsLogic
         return white.Replace("Iltis_Switch_Turnout.svg", "Iltis_Switch_Turnout_Green.svg", StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Setzt eine Strecke auf gruen.
+    /// </summary>
+    /// <param name="file">SVG-Dateiname oder Pfad.</param>
+    /// <returns>Der angepasste Dateiname.</returns>
     public static string ToTrackGreen(string file)
     {
         if (string.IsNullOrWhiteSpace(file))
@@ -181,6 +227,11 @@ public static class FsLogic
         return file;
     }
 
+    /// <summary>
+    /// Setzt den Zugnummernanzeiger auf gruen.
+    /// </summary>
+    /// <param name="file">SVG-Dateiname oder Pfad.</param>
+    /// <returns>Der angepasste Dateiname.</returns>
     public static string ToNumberGreen(string file)
     {
         if (string.IsNullOrWhiteSpace(file))
@@ -195,6 +246,11 @@ public static class FsLogic
         return file;
     }
 
+    /// <summary>
+    /// Setzt ein Signal auf gruen.
+    /// </summary>
+    /// <param name="file">SVG-Dateiname oder Pfad.</param>
+    /// <returns>Der angepasste Dateiname.</returns>
     public static string ToSignalGreen(string file)
     {
         if (string.IsNullOrWhiteSpace(file))
@@ -209,6 +265,11 @@ public static class FsLogic
         return file;
     }
 
+    /// <summary>
+    /// Setzt ein Signal auf rot.
+    /// </summary>
+    /// <param name="file">SVG-Dateiname oder Pfad.</param>
+    /// <returns>Der angepasste Dateiname.</returns>
     public static string ToSignalRed(string file)
     {
         if (string.IsNullOrWhiteSpace(file))

@@ -5,20 +5,33 @@ using OpenTrainDrive.Models;
 
 namespace OpenTrainDrive.Controllers;
 
+/// <summary>
+/// MVC-Controller fuer die Standardseiten und das Beenden der Anwendung.
+/// </summary>
 public class HomeController : Controller
 {
     private readonly IHostApplicationLifetime _lifetime;
 
+    /// <summary>
+    /// Erstellt den Controller und erhaelt den Application-Lifetime-Dienst.
+    /// </summary>
+    /// <param name="lifetime">Lifetime-Instanz der Host-Anwendung.</param>
     public HomeController(IHostApplicationLifetime lifetime)
     {
         _lifetime = lifetime;
     }
 
+    /// <summary>
+    /// Startseite.
+    /// </summary>
     public IActionResult Index()
     {
         return View();
     }
 
+    /// <summary>
+    /// Datenschutzhinweise.
+    /// </summary>
     public IActionResult Privacy()
     {
         return View();
@@ -26,6 +39,9 @@ public class HomeController : Controller
 
     
 
+    /// <summary>
+    /// Stoppt die Anwendung kontrolliert.
+    /// </summary>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Stop()
@@ -39,6 +55,9 @@ public class HomeController : Controller
         return Content("Application stopping...");
     }
 
+    /// <summary>
+    /// Fehleransicht mit Request-ID.
+    /// </summary>
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
