@@ -11,97 +11,97 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = OpenTrainDrive
 build_property.RootNamespace = OpenTrainDrive
-build_property.ProjectDir = C:\Users\saemi\Documents\OpenTrainDrive\
+build_property.ProjectDir = /home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\saemi\Documents\OpenTrainDrive
+build_property.MSBuildProjectDirectory = /home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/auth/auth.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXGF1dGhcYXV0aC5jc2h0bWw=
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/auth/auth.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL2F1dGgvYXV0aC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/drive/drive.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXGRyaXZlXGRyaXZlLmNzaHRtbA==
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/drive/drive.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL2RyaXZlL2RyaXZlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/exit/exit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXGV4aXRcZXhpdC5jc2h0bWw=
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/exit/exit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL2V4aXQvZXhpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/iltis.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXGlsdGlzLmNzaHRtbA==
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/iltis.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL2lsdGlzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/Loco/loco.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXExvY29cbG9jby5jc2h0bWw=
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/Loco/loco.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL0xvY28vbG9jby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/railcar/railcar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXHJhaWxjYXJccmFpbGNhci5jc2h0bWw=
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/railcar/railcar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL3JhaWxjYXIvcmFpbGNhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/settings.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXHNldHRpbmdzLmNzaHRtbA==
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/settings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL3NldHRpbmdzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/signal/signal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXHNpZ25hbFxzaWduYWwuY3NodG1s
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/signal/signal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL3NpZ25hbC9zaWduYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/station/station.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXHN0YXRpb25cc3RhdGlvbi5jc2h0bWw=
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/station/station.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL3N0YXRpb24vc3RhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/timetable-viewer/timetableviewer.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXHRpbWV0YWJsZS12aWV3ZXJcdGltZXRhYmxldmlld2VyLmNzaHRtbA==
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/timetable-viewer/timetableviewer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL3RpbWV0YWJsZS12aWV3ZXIvdGltZXRhYmxldmlld2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/timetable/timetable.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXHRpbWV0YWJsZVx0aW1ldGFibGUuY3NodG1s
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/timetable/timetable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL3RpbWV0YWJsZS90aW1ldGFibGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/Train/train.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXFRyYWluXHRyYWluLmNzaHRtbA==
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/Train/train.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL1RyYWluL3RyYWluLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/wegzeit/wegzeit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXHdlZ3plaXRcd2VnemVpdC5jc2h0bWw=
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/wegzeit/wegzeit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL3dlZ3plaXQvd2VnemVpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/OTD/ZD/zd.cshtml]
-build_metadata.AdditionalFiles.TargetPath = T1REXFpEXHpkLmNzaHRtbA==
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/OTD/ZD/zd.cshtml]
+build_metadata.AdditionalFiles.TargetPath = T1REL1pEL3pkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/saemi/Documents/OpenTrainDrive/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-5afe0wp8hs
+[/home/hua/Dokumente/Batec/Modellbahn-Insel/Steuerung/Software/OpenTrainDrive-Main/OpenTrainDrive/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-xaglwvwmks
