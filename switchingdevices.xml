@@ -7,7 +7,7 @@
       <protocol>DCC</protocol>
     </decoder>
     <states>
-      <state id="streight" description="gerade">
+      <state id="straight" description="gerade">
         <decoder address="10" output="0" />
       </state>
       <state id="diverging" description="abzweigend">

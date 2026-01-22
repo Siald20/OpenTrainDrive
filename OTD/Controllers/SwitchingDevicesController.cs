@@ -4,32 +4,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
+using System.IO;
+using Microsoft.Extensions.Hosting;
+
 namespace OpenTrainDrive.Engines
 {
 	/// <summary>
 	/// Controller for switching devices (turnouts and signals).
 	/// </summary>
-	public class SwitchingDevicesController
+	public static class SwitchingDevicesController
 	{
-		private string _xmlPath;
-		private readonly List<SwitchingDevice> _devices;
-
-		public SwitchingDevicesController()
-		{
-			_devices = new List<SwitchingDevice>();
-		}
+		// Reference to switchingdevices.xml in application path
+		private static string _xmlPath;
+		private static List<SwitchingDevice> _devices = new();
 
 		/// <summary>
-		/// Set the XML path and load devices from file.
+		/// Loading all device data from switchingdevices.xml
 		/// </summary>
-		public void SetXmlPath(string xmlPath)
+		public static void Initialize()
 		{
-			_xmlPath = xmlPath;
-			_devices.Clear();
+			_xmlPath = GetDefaultXmlPath();
 			_devices.AddRange(LoadDevices());
 		}
 
-		private List<SwitchingDevice> LoadDevices()
+		/// <summary>
+		/// Gets the default path to switchingdevices.xml in the application directory.
+		/// </summary>
+		private static string GetDefaultXmlPath()
+		{
+			// Use AppContext.BaseDirectory to get the application path
+			var appPath = AppContext.BaseDirectory;
+			var xmlFile = Path.Combine(appPath, "switchingdevices.xml");
+			if (File.Exists(xmlFile))
+				return xmlFile;
+			// Fallback: try project root (for development)
+			var devPath = Path.Combine(appPath, "..", "..", "..", "switchingdevices.xml");
+			devPath = Path.GetFullPath(devPath);
+			if (File.Exists(devPath))
+				return devPath;
+			return xmlFile; // Default, even if not found
+		}
+
+		private static List<SwitchingDevice> LoadDevices()
 		{
 			var devices = new List<SwitchingDevice>();
 			if (string.IsNullOrEmpty(_xmlPath))
@@ -62,11 +78,11 @@ namespace OpenTrainDrive.Engines
 		/// <summary>
 		/// Set turnout or signal to a given state (as defined in switchingdevices.xml; e.g., "gerade", "abzweigend").
 		/// </summary>
-		public bool SetState(string uid, string state)
+		public static bool SetState(string uid, string state)
 		{
 			var _commandStation = "1"; // Example command station ID
-            
-            var turnout = _devices.FirstOrDefault(d => d.Type == "turnout" && d.UID == uid);
+
+			var turnout = _devices.FirstOrDefault(d => d.Type == "turnout" && d.UID == uid);
 			if (turnout == null) return false;
 			var pos = turnout.Positions.FirstOrDefault(p => p.Name == state);
 			if (pos == null) return false;
@@ -78,10 +94,19 @@ namespace OpenTrainDrive.Engines
 			return true;
 		}
 
-		private void SendDecoderCommand(string commandStation, int address, int output)
+		private static void SendDecoderCommand(string commandStation, int address, int output)
 		{
 			// TODO: Implement actual command to hardware/command station
 			Console.WriteLine($"Send to {commandStation}: Address={address}, Output={output}");
+		}
+
+		/// <summary>
+		/// Disposes static resources used by the controller.
+		/// </summary>
+		public static void Dispose()
+		{
+			_devices.Clear();
+			_xmlPath = null;
 		}
 	}
 
